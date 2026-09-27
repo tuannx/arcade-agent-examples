@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: kafka (smell sweep) (kafka)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (11)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">kafka (smell sweep) &mdash; version kafka &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">31450</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">399273</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">7</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">11</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Default["Default\n(6 entities)"]
+    Docker["Docker\n(925 entities)"]
+    Examples["Examples\n(165 entities)"]
+    Server["Server\n(8 entities)"]
+    Builders["Builders\n(27 entities)"]
+    Share["Share\n(197 entities)"]
+    Kafka["Kafka\n(30122 entities)"]
+    Builders --> Kafka
+    Builders --> Share
+    Default --> Docker
+    Default --> Kafka
+    Docker --> Kafka
+    Examples --> Docker
+    Examples --> Kafka
+    Kafka --> Builders
+    Kafka --> Docker
+    Kafka --> Examples
+    Kafka --> Share
+    Server --> Docker
+    Server --> Kafka
+    Share --> Docker
+    Share --> Examples
+    Share --> Kafka
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=3 after common prefix '') with dependency-affinity facade refinement (1083 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Default</strong></td>
+                <td>Entities in (default)</td>
+                <td>6</td>
+                
+                <td class="entity-list">LineSplit, LineSplit.main, Pipe, Pipe.main, WordCount, WordCount.main</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Docker</strong></td>
+                <td>Entities in kafka.docker</td>
+                <td>925</td>
+                
+                <td class="entity-list">kafka.docker.Appenders, kafka.docker.Appenders.getProperties, kafka.docker.Appenders.setProperties, kafka.docker.Configuration, kafka.docker.Configuration.getAdditionalProperties, kafka.docker.Configuration.getAppenders, kafka.docker.Configuration.getLoggers, kafka.docker.Configuration.getProperties, ... (+917 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Examples</strong></td>
+                <td>Entities in kafka.examples</td>
+                <td>165</td>
+                
+                <td class="entity-list">kafka.examples.Consumer, kafka.examples.Consumer.Consumer, kafka.examples.Consumer.createKafkaConsumer, kafka.examples.Consumer.onPartitionsAssigned, kafka.examples.Consumer.onPartitionsLost, kafka.examples.Consumer.onPartitionsRevoked, kafka.examples.Consumer.run, kafka.examples.Consumer.shutdown, ... (+157 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Server</strong></td>
+                <td>Entities in kafka.server</td>
+                <td>8</td>
+                
+                <td class="entity-list">kafka.server.TierStateMachine, kafka.server.TierStateMachine.TierStateMachine, kafka.server.TierStateMachine.buildProducerSnapshotFile, kafka.server.TierStateMachine.buildRemoteLogAuxState, kafka.server.TierStateMachine.buildRemoteStorageException, kafka.server.TierStateMachine.fetchEarlierEpochEndOffset, kafka.server.TierStateMachine.readLeaderEpochCheckpoint, kafka.server.TierStateMachine.start</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Builders</strong></td>
+                <td>Entities in kafka.server.builders</td>
+                <td>27</td>
+                
+                <td class="entity-list">kafka.server.builders.KafkaApisBuilder, kafka.server.builders.KafkaApisBuilder.build, kafka.server.builders.KafkaApisBuilder.setApiVersionManager, kafka.server.builders.KafkaApisBuilder.setAuthorizerPlugin, kafka.server.builders.KafkaApisBuilder.setAutoTopicCreationManager, kafka.server.builders.KafkaApisBuilder.setBrokerId, kafka.server.builders.KafkaApisBuilder.setBrokerTopicStats, kafka.server.builders.KafkaApisBuilder.setClientMetricsManager, ... (+19 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Share</strong></td>
+                <td>Entities in kafka.server.share</td>
+                <td>197</td>
+                
+                <td class="entity-list">kafka.server.share.DelayedShareFetch, kafka.server.share.DelayedShareFetch.DelayedShareFetch, kafka.server.share.DelayedShareFetch.acquirablePartitions, kafka.server.share.DelayedShareFetch.anyPartitionHasLogReadError, kafka.server.share.DelayedShareFetch.cancelRemoteFetchTask, kafka.server.share.DelayedShareFetch.combineLogReadResponse, kafka.server.share.DelayedShareFetch.completeAsyncRequestWithEmptyResponse, kafka.server.share.DelayedShareFetch.completeErroneousRemoteShareFetchRequest, ... (+189 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Kafka</strong></td>
+                <td>Entities in org.apache.kafka</td>
+                <td>30122</td>
+                
+                <td class="entity-list">kafka.examples.ExactlyOnceMessageProcessor, kafka.examples.ExactlyOnceMessageProcessor.ExactlyOnceMessageProcessor, kafka.examples.ExactlyOnceMessageProcessor.close, kafka.examples.ExactlyOnceMessageProcessor.getOffsetsToCommit, kafka.examples.ExactlyOnceMessageProcessor.getRemainingRecords, kafka.examples.ExactlyOnceMessageProcessor.maybeRetry, kafka.examples.ExactlyOnceMessageProcessor.onPartitionsAssigned, kafka.examples.ExactlyOnceMessageProcessor.onPartitionsLost, ... (+30114 more)</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (11)</h2>
+    
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 5 components: Builders <-> Docker <-> Examples <-> Kafka <-> Share</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Builders, Docker, Examples, Kafka, Share</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Builders contains 27 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Builders into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Builders</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Share contains 197 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Share into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Share</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Config' pattern is scattered across 3 components: Builders, Docker, Kafka</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Config'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Builders, Docker, Kafka</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Exception' pattern is scattered across 3 components: Kafka, Server, Share</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Exception'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Kafka, Server, Share</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Handler' pattern is scattered across 3 components: Docker, Kafka, Share</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Handler'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Docker, Kafka, Share</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Listener' pattern is scattered across 3 components: Docker, Kafka, Share</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Listener'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Docker, Kafka, Share</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Manager' pattern is scattered across 4 components: Builders, Docker, Kafka, Share</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Manager'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Builders, Docker, Kafka, Share</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Utils' pattern is scattered across 4 components: Docker, Examples, Kafka, Share</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Docker, Examples, Kafka, Share</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Docker is depended on by 5 other components (83% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Docker into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Docker</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Kafka is depended on by 6 other components (100% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Kafka into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Kafka</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.state.internals</code></td>
+                    <td>2775</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.internals</code></td>
+                    <td>1685</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.requests</code></td>
+                    <td>1642</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.consumer.internals</code></td>
+                    <td>1637</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.admin</code></td>
+                    <td>1225</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.storage.internals.log</code></td>
+                    <td>1016</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.kstream.internals</code></td>
+                    <td>873</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group</code></td>
+                    <td>727</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime</code></td>
+                    <td>695</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.raft</code></td>
+                    <td>689</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.kstream</code></td>
+                    <td>538</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.controller</code></td>
+                    <td>524</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.record.internal</code></td>
+                    <td>513</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.errors</code></td>
+                    <td>491</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.mirror</code></td>
+                    <td>481</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.consumer</code></td>
+                    <td>480</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools</code></td>
+                    <td>472</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.producer.internals</code></td>
+                    <td>464</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.network</code></td>
+                    <td>378</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams</code></td>
+                    <td>369</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.internals.assignment</code></td>
+                    <td>358</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients</code></td>
+                    <td>344</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.message</code></td>
+                    <td>324</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.storage</code></td>
+                    <td>317</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.admin.internals</code></td>
+                    <td>311</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.consumer.internals.events</code></td>
+                    <td>304</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.workload</code></td>
+                    <td>302</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.raft.internals</code></td>
+                    <td>292</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.utils.internals</code></td>
+                    <td>281</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.common.runtime</code></td>
+                    <td>272</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server</code></td>
+                    <td>268</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.state</code></td>
+                    <td>266</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.streams</code></td>
+                    <td>261</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.distributed</code></td>
+                    <td>258</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata</code></td>
+                    <td>229</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.log.remote.storage</code></td>
+                    <td>227</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image</code></td>
+                    <td>224</td>
+                </tr>
+            
+                <tr>
+                    <td><code>kafka.server.share</code></td>
+                    <td>221</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.config</code></td>
+                    <td>208</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common</code></td>
+                    <td>207</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.data</code></td>
+                    <td>198</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.transforms</code></td>
+                    <td>188</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.share.persister</code></td>
+                    <td>182</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.log.remote.metadata.storage</code></td>
+                    <td>181</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.kstream.internals.graph</code></td>
+                    <td>175</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.producer</code></td>
+                    <td>174</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.isolation</code></td>
+                    <td>171</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.query</code></td>
+                    <td>168</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.config</code></td>
+                    <td>164</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor</code></td>
+                    <td>159</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.util</code></td>
+                    <td>158</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.metrics</code></td>
+                    <td>156</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.protocol</code></td>
+                    <td>147</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.utils</code></td>
+                    <td>144</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.share</code></td>
+                    <td>142</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.timeline</code></td>
+                    <td>141</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.protocol.types</code></td>
+                    <td>136</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.util</code></td>
+                    <td>134</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.metrics</code></td>
+                    <td>133</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.internals.metrics</code></td>
+                    <td>133</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.oauthbearer.internals.secured</code></td>
+                    <td>132</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.telemetry.internals</code></td>
+                    <td>131</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.rest</code></td>
+                    <td>129</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.quota</code></td>
+                    <td>123</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.classic</code></td>
+                    <td>123</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.modern</code></td>
+                    <td>123</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.internals</code></td>
+                    <td>122</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.api</code></td>
+                    <td>121</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.errors</code></td>
+                    <td>120</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.serialization</code></td>
+                    <td>118</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.modern.consumer</code></td>
+                    <td>109</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.immutable.pcollections</code></td>
+                    <td>106</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.oauthbearer</code></td>
+                    <td>105</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.metrics.stats</code></td>
+                    <td>104</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.authenticator</code></td>
+                    <td>103</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image.node</code></td>
+                    <td>99</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.apicheck</code></td>
+                    <td>98</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.transaction</code></td>
+                    <td>98</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools.consumer</code></td>
+                    <td>97</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.rest</code></td>
+                    <td>96</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.state.internals.metrics</code></td>
+                    <td>95</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.snapshot</code></td>
+                    <td>93</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.purgatory</code></td>
+                    <td>92</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.controller.metrics</code></td>
+                    <td>91</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.storage.log.metrics</code></td>
+                    <td>90</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.assignment</code></td>
+                    <td>90</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.header</code></td>
+                    <td>88</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.clients.consumer.internals.metrics</code></td>
+                    <td>87</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.tools</code></td>
+                    <td>85</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.internals</code></td>
+                    <td>85</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.oauthbearer.internals.unsecured</code></td>
+                    <td>84</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.share.fetch</code></td>
+                    <td>81</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.network</code></td>
+                    <td>80</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.compress</code></td>
+                    <td>78</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.scram.internals</code></td>
+                    <td>76</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.common</code></td>
+                    <td>76</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata.authorizer</code></td>
+                    <td>73</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.shell.command</code></td>
+                    <td>71</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.errors</code></td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.auth</code></td>
+                    <td>68</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.assignor</code></td>
+                    <td>68</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.kstream.internals.suppress</code></td>
+                    <td>68</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.kstream.internals.foreignkeyjoin</code></td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.modern.share</code></td>
+                    <td>64</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.share.dlq</code></td>
+                    <td>64</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.fault</code></td>
+                    <td>64</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.assignor</code></td>
+                    <td>62</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.coordinator</code></td>
+                    <td>60</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.acl</code></td>
+                    <td>58</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.oauthbearer.internals</code></td>
+                    <td>57</td>
+                </tr>
+            
+                <tr>
+                    <td><code>kafka.server.builders</code></td>
+                    <td>57</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.internals.tasks</code></td>
+                    <td>57</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools.reassign</code></td>
+                    <td>57</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.internals.namedtopology</code></td>
+                    <td>56</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.gradle</code></td>
+                    <td>54</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.share</code></td>
+                    <td>52</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.ssl</code></td>
+                    <td>49</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.converters</code></td>
+                    <td>49</td>
+                </tr>
+            
+                <tr>
+                    <td><code>kafka.examples</code></td>
+                    <td>49</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.rest.resources</code></td>
+                    <td>48</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.util.timer</code></td>
+                    <td>48</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.util</code></td>
+                    <td>46</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image.loader</code></td>
+                    <td>46</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.storage.internals.checkpoint</code></td>
+                    <td>46</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.kerberos</code></td>
+                    <td>45</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.oauthbearer.internals.secured.assertion</code></td>
+                    <td>45</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.streams.assignor</code></td>
+                    <td>45</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.authorizer</code></td>
+                    <td>44</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.standalone</code></td>
+                    <td>44</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.metrics</code></td>
+                    <td>44</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.agent</code></td>
+                    <td>44</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.api.streams.assignor</code></td>
+                    <td>42</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.streams.topics</code></td>
+                    <td>42</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.sink</code></td>
+                    <td>41</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.source</code></td>
+                    <td>40</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.json</code></td>
+                    <td>39</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.message.checker</code></td>
+                    <td>39</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.common</code></td>
+                    <td>39</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.file</code></td>
+                    <td>38</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata.storage</code></td>
+                    <td>38</td>
+                </tr>
+            
+                <tr>
+                    <td><code>kafka.docker</code></td>
+                    <td>37</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.util</code></td>
+                    <td>36</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.logger</code></td>
+                    <td>36</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.partition</code></td>
+                    <td>36</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.connector</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.connector.policy</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.producer</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image.publisher</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.health</code></td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.mutable</code></td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.storage.internals.epoch</code></td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.quota</code></td>
+                    <td>32</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.resource</code></td>
+                    <td>32</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.errors</code></td>
+                    <td>32</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.task</code></td>
+                    <td>32</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.api.assignor</code></td>
+                    <td>31</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.share.session</code></td>
+                    <td>31</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image.writer</code></td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.share.metrics</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.util.json</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.internals.metrics</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.feature</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.oauthbearer.internals.expiring</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.common</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.connect</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata.publisher</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata.properties</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.config.provider</code></td>
+                    <td>27</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.header.internals</code></td>
+                    <td>27</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.token.delegation</code></td>
+                    <td>27</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.metadata</code></td>
+                    <td>27</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.query.internals</code></td>
+                    <td>27</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata.util</code></td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.log.remote.metadata.storage.serialization</code></td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.transforms.predicates</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.share.context</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.queue</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools.streams</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.memory</code></td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools.consumer.group</code></td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.cli</code></td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image.loader.metrics</code></td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.trogdor.basic</code></td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.rest.entities</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.coordinator</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.streams</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.errors.internals</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.metrics.internals</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.replica</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.rest.basic.auth.extension</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata.placement</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.plain.internals</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.token.delegation.internals</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.transforms.util</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.controller.errors</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.share.metrics</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.scram</code></td>
+                    <td>18</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image.node.printer</code></td>
+                    <td>18</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.common.serialization</code></td>
+                    <td>18</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.cache</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.acl</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.record</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.metadata.bootstrap</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.controller</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.shell</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.telemetry</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.rest.errors</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.transforms.field</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.security</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.immutable</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.network</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.storage.log</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.maven</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.network.metrics</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools.api</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.fault</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.shell.glob</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.shell.state</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.log.remote.quota</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.security.plain</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.transaction</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.processor.assignment.assignors</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.header</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.rest.util</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>kafka.server</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.coordinator.group.api.streams</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.partition</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.server</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.raft.errors</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools.filter</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.image.publisher.metrics</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.replica</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.deferred</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.examples.wordcount</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.runtime.health</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.logger</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.shell.node</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.shell.node.printer</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.config.types</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.rest</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.mirror.formatters</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.mirror.rest</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.log</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.metrics</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.security.authorizer</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.streams</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.log.remote</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.examples.pageview</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>(default)</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.config.internals</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.authorizer.internals</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.consumer</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.fetcher</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.storage.internals.utils</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.tools.consumer.group.share</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.policy</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.components</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.connect.mirror.rest.resources</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>kafka.server.handlers</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.cache</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.clients</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.core</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.storage</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.timeline</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.kstream.internals.emitstrategy</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.jmh.fetchsession</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.annotation</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.examples.pipe</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.streams.examples.temperature</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.record</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.common.telemetry</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.kafka.server.record</code></td>
+                    <td>1</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>

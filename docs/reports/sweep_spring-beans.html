@@ -1,0 +1,4067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: spring-beans (smell sweep) (spring-beans)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (15)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">spring-beans (smell sweep) &mdash; version spring-beans &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">2643</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">17098</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">391</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">15</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Abstractnestablepropertyaccessor["Abstractnestablepropertyaccessor\n(1 entities)"]
+    Abstractnestablepropertyaccessor2["Abstractnestablepropertyaccessor2\n(1 entities)"]
+    Convertforproperty["Convertforproperty\n(1 entities)"]
+    Convertifnecessary["Convertifnecessary\n(1 entities)"]
+    Createarray["Createarray\n(1 entities)"]
+    Createdefaultpropertyvalue["Createdefaultpropertyvalue\n(1 entities)"]
+    Createnotwritablepropertyexception["Createnotwritablepropertyexception\n(1 entities)"]
+    Finalsegment["Finalsegment\n(1 entities)"]
+    Getlocalpropertyhandler["Getlocalpropertyhandler\n(1 entities)"]
+    Getnestedpath["Getnestedpath\n(1 entities)"]
+    Getnestedpropertyaccessor["Getnestedpropertyaccessor\n(1 entities)"]
+    Getpropertyaccessorforsegments["Getpropertyaccessorforsegments\n(1 entities)"]
+    Getpropertyhandler["Getpropertyhandler\n(1 entities)"]
+    Getpropertyholdingvalue["Getpropertyholdingvalue\n(1 entities)"]
+    Getpropertytype["Getpropertytype\n(1 entities)"]
+    Getpropertytypedescriptor["Getpropertytypedescriptor\n(1 entities)"]
+    Getpropertyvalue["Getpropertyvalue\n(1 entities)"]
+    Getrootclass["Getrootclass\n(1 entities)"]
+    Getrootinstance["Getrootinstance\n(1 entities)"]
+    Getwrappedclass["Getwrappedclass\n(1 entities)"]
+    Getwrappedinstance["Getwrappedinstance\n(1 entities)"]
+    Growarrayifnecessary["Growarrayifnecessary\n(1 entities)"]
+    Growcollectionifnecessary["Growcollectionifnecessary\n(1 entities)"]
+    Isreadableproperty["Isreadableproperty\n(1 entities)"]
+    Iswritableproperty["Iswritableproperty\n(1 entities)"]
+    Newnestedpropertyaccessor["Newnestedpropertyaccessor\n(1 entities)"]
+    Newvalue["Newvalue\n(1 entities)"]
+    Processkeyedproperty["Processkeyedproperty\n(1 entities)"]
+    Processlocalproperty["Processlocalproperty\n(1 entities)"]
+    Resolvepropertypath["Resolvepropertypath\n(1 entities)"]
+    Setdefaultvalue["Setdefaultvalue\n(1 entities)"]
+    Setpropertyvalue["Setpropertyvalue\n(1 entities)"]
+    Setwrappedinstance["Setwrappedinstance\n(1 entities)"]
+    Tostring["Tostring\n(1 entities)"]
+    Abstractpropertyaccessor["Abstractpropertyaccessor\n(1 entities)"]
+    Getautogrowcollectionlimit["Getautogrowcollectionlimit\n(1 entities)"]
+    Getmaxnestedpathdepth["Getmaxnestedpathdepth\n(1 entities)"]
+    Getpropertytype2["Getpropertytype2\n(1 entities)"]
+    Getpropertyvalue2["Getpropertyvalue2\n(1 entities)"]
+    Isautogrownestedpaths["Isautogrownestedpaths\n(1 entities)"]
+    Isextractoldvalueforeditor["Isextractoldvalueforeditor\n(1 entities)"]
+    Setautogrowcollectionlimit["Setautogrowcollectionlimit\n(1 entities)"]
+    Setautogrownestedpaths["Setautogrownestedpaths\n(1 entities)"]
+    Setextractoldvalueforeditor["Setextractoldvalueforeditor\n(1 entities)"]
+    Setmaxnestedpathdepth["Setmaxnestedpathdepth\n(1 entities)"]
+    Setpropertyvalue2["Setpropertyvalue2\n(1 entities)"]
+    Setpropertyvalues["Setpropertyvalues\n(1 entities)"]
+    Beaninfofactory["Beaninfofactory\n(1 entities)"]
+    Getbeaninfo["Getbeaninfo\n(1 entities)"]
+    Beaninstantiationexception["Beaninstantiationexception\n(1 entities)"]
+    Beaninstantiationexception2["Beaninstantiationexception2\n(1 entities)"]
+    Getbeanclass["Getbeanclass\n(1 entities)"]
+    Getconstructingmethod["Getconstructingmethod\n(1 entities)"]
+    Getconstructor["Getconstructor\n(1 entities)"]
+    Beanmetadataattribute["Beanmetadataattribute\n(1 entities)"]
+    Beanmetadataattribute2["Beanmetadataattribute2\n(1 entities)"]
+    Equals["Equals\n(1 entities)"]
+    Getname["Getname\n(1 entities)"]
+    Getsource["Getsource\n(1 entities)"]
+    Getvalue["Getvalue\n(1 entities)"]
+    Hashcode["Hashcode\n(1 entities)"]
+    Setsource["Setsource\n(1 entities)"]
+    Tostring2["Tostring2\n(1 entities)"]
+    Beanmetadataattributeaccessor["Beanmetadataattributeaccessor\n(3 entities)"]
+    Addmetadataattribute["Addmetadataattribute\n(1 entities)"]
+    Getattribute["Getattribute\n(1 entities)"]
+    Getmetadataattribute["Getmetadataattribute\n(1 entities)"]
+    Getsource2["Getsource2\n(1 entities)"]
+    Removeattribute["Removeattribute\n(1 entities)"]
+    Setattribute["Setattribute\n(1 entities)"]
+    Setsource2["Setsource2\n(1 entities)"]
+    Beanmetadataelement["Beanmetadataelement\n(40 entities)"]
+    Getsource3["Getsource3\n(1 entities)"]
+    Beanutils["Beanutils\n(1 entities)"]
+    Copyproperties["Copyproperties\n(1 entities)"]
+    Finddeclaredmethod["Finddeclaredmethod\n(1 entities)"]
+    Finddeclaredmethodwithminimalparameters["Finddeclaredmethodwithminimalparameters\n(1 entities)"]
+    Findeditorbyconvention["Findeditorbyconvention\n(1 entities)"]
+    Findmethod["Findmethod\n(1 entities)"]
+    Findmethodwithminimalparameters["Findmethodwithminimalparameters\n(1 entities)"]
+    Findprimaryconstructor["Findprimaryconstructor\n(1 entities)"]
+    Findpropertyformethod["Findpropertyformethod\n(1 entities)"]
+    Findpropertytype["Findpropertytype\n(1 entities)"]
+    Getparameternames["Getparameternames\n(1 entities)"]
+    Getpropertydescriptor["Getpropertydescriptor\n(1 entities)"]
+    Getpropertydescriptors["Getpropertydescriptors\n(1 entities)"]
+    Getresolvableconstructor["Getresolvableconstructor\n(1 entities)"]
+    Getwritemethodparameter["Getwritemethodparameter\n(1 entities)"]
+    Hasuniquewritemethod["Hasuniquewritemethod\n(1 entities)"]
+    Instantiate["Instantiate\n(1 entities)"]
+    Instantiateclass["Instantiateclass\n(1 entities)"]
+    Isassignable["Isassignable\n(1 entities)"]
+    Issimpleproperty["Issimpleproperty\n(1 entities)"]
+    Issimplevaluetype["Issimplevaluetype\n(1 entities)"]
+    Resolvesignature["Resolvesignature\n(1 entities)"]
+    Beanutilsruntimehints["Beanutilsruntimehints\n(1 entities)"]
+    Registerhints["Registerhints\n(1 entities)"]
+    Beanwrapper["Beanwrapper\n(1 entities)"]
+    Getautogrowcollectionlimit2["Getautogrowcollectionlimit2\n(1 entities)"]
+    Getpropertydescriptor2["Getpropertydescriptor2\n(1 entities)"]
+    Getpropertydescriptors2["Getpropertydescriptors2\n(1 entities)"]
+    Getwrappedclass2["Getwrappedclass2\n(1 entities)"]
+    Getwrappedinstance2["Getwrappedinstance2\n(1 entities)"]
+    Setautogrowcollectionlimit2["Setautogrowcollectionlimit2\n(1 entities)"]
+    Beanwrapperimpl["Beanwrapperimpl\n(1 entities)"]
+    Beanwrapperimpl2["Beanwrapperimpl2\n(1 entities)"]
+    Convertforproperty2["Convertforproperty2\n(1 entities)"]
+    Createnotwritablepropertyexception2["Createnotwritablepropertyexception2\n(1 entities)"]
+    Getcachedintrospectionresults["Getcachedintrospectionresults\n(1 entities)"]
+    Getlocalpropertyhandler2["Getlocalpropertyhandler2\n(1 entities)"]
+    Getpropertydescriptor3["Getpropertydescriptor3\n(1 entities)"]
+    Getpropertydescriptors3["Getpropertydescriptors3\n(1 entities)"]
+    Newnestedpropertyaccessor2["Newnestedpropertyaccessor2\n(1 entities)"]
+    Setbeaninstance["Setbeaninstance\n(1 entities)"]
+    Setintrospectionclass["Setintrospectionclass\n(1 entities)"]
+    Setwrappedinstance2["Setwrappedinstance2\n(1 entities)"]
+    Beansexception["Beansexception\n(70 entities)"]
+    Beansexception2["Beansexception2\n(1 entities)"]
+    Cachedintrospectionresults["Cachedintrospectionresults\n(1 entities)"]
+    Cachedintrospectionresults2["Cachedintrospectionresults2\n(1 entities)"]
+    Acceptclassloader["Acceptclassloader\n(1 entities)"]
+    Buildgenerictypeawarepropertydescriptor["Buildgenerictypeawarepropertydescriptor\n(1 entities)"]
+    Clearclassloader["Clearclassloader\n(1 entities)"]
+    Forclass["Forclass\n(1 entities)"]
+    Getbeanclass2["Getbeanclass2\n(1 entities)"]
+    Getbeaninfo2["Getbeaninfo2\n(1 entities)"]
+    Getpropertydescriptor4["Getpropertydescriptor4\n(1 entities)"]
+    Getpropertydescriptors4["Getpropertydescriptors4\n(1 entities)"]
+    Introspectinterfaces["Introspectinterfaces\n(1 entities)"]
+    Introspectplainaccessors["Introspectplainaccessors\n(1 entities)"]
+    Isclassloaderaccepted["Isclassloaderaccepted\n(1 entities)"]
+    Isinvalidreadonlypropertytype["Isinvalidreadonlypropertytype\n(1 entities)"]
+    Isplainaccessor["Isplainaccessor\n(1 entities)"]
+    Isunderneathclassloader["Isunderneathclassloader\n(1 entities)"]
+    Configurablepropertyaccessor["Configurablepropertyaccessor\n(1 entities)"]
+    Getautogrowcollectionlimit3["Getautogrowcollectionlimit3\n(1 entities)"]
+    Getconversionservice["Getconversionservice\n(1 entities)"]
+    Getmaxnestedpathdepth2["Getmaxnestedpathdepth2\n(1 entities)"]
+    Isautogrownestedpaths2["Isautogrownestedpaths2\n(1 entities)"]
+    Isextractoldvalueforeditor2["Isextractoldvalueforeditor2\n(1 entities)"]
+    Setautogrowcollectionlimit3["Setautogrowcollectionlimit3\n(1 entities)"]
+    Setautogrownestedpaths2["Setautogrownestedpaths2\n(1 entities)"]
+    Setconversionservice["Setconversionservice\n(1 entities)"]
+    Setextractoldvalueforeditor2["Setextractoldvalueforeditor2\n(1 entities)"]
+    Setmaxnestedpathdepth2["Setmaxnestedpathdepth2\n(1 entities)"]
+    Conversionnotsupportedexception["Conversionnotsupportedexception\n(1 entities)"]
+    Conversionnotsupportedexception2["Conversionnotsupportedexception2\n(1 entities)"]
+    Directfieldaccessor["Directfieldaccessor\n(1 entities)"]
+    Directfieldaccessor2["Directfieldaccessor2\n(1 entities)"]
+    Createnotwritablepropertyexception3["Createnotwritablepropertyexception3\n(1 entities)"]
+    Getlocalpropertyhandler3["Getlocalpropertyhandler3\n(1 entities)"]
+    Newnestedpropertyaccessor3["Newnestedpropertyaccessor3\n(1 entities)"]
+    Extendedbeaninfo["Extendedbeaninfo\n(1 entities)"]
+    Extendedbeaninfo2["Extendedbeaninfo2\n(1 entities)"]
+    Findcandidatewritemethods["Findcandidatewritemethods\n(1 entities)"]
+    Findexistingpropertydescriptor["Findexistingpropertydescriptor\n(1 entities)"]
+    Getadditionalbeaninfo["Getadditionalbeaninfo\n(1 entities)"]
+    Getbeandescriptor["Getbeandescriptor\n(1 entities)"]
+    Getdefaulteventindex["Getdefaulteventindex\n(1 entities)"]
+    Getdefaultpropertyindex["Getdefaultpropertyindex\n(1 entities)"]
+    Geteventsetdescriptors["Geteventsetdescriptors\n(1 entities)"]
+    Geticon["Geticon\n(1 entities)"]
+    Getmethoddescriptors["Getmethoddescriptors\n(1 entities)"]
+    Getpropertydescriptors5["Getpropertydescriptors5\n(1 entities)"]
+    Handlecandidatewritemethod["Handlecandidatewritemethod\n(1 entities)"]
+    Iscandidatewritemethod["Iscandidatewritemethod\n(1 entities)"]
+    Propertynamefor["Propertynamefor\n(1 entities)"]
+    Extendedbeaninfofactory["Extendedbeaninfofactory\n(1 entities)"]
+    Getbeaninfo3["Getbeaninfo3\n(1 entities)"]
+    Supports["Supports\n(1 entities)"]
+    Fatalbeanexception["Fatalbeanexception\n(22 entities)"]
+    Fatalbeanexception2["Fatalbeanexception2\n(1 entities)"]
+    Generictypeawarepropertydescriptor["Generictypeawarepropertydescriptor\n(1 entities)"]
+    Generictypeawarepropertydescriptor2["Generictypeawarepropertydescriptor2\n(1 entities)"]
+    Equals2["Equals2\n(1 entities)"]
+    Getbeanclass3["Getbeanclass3\n(1 entities)"]
+    Getpropertyeditorclass["Getpropertyeditorclass\n(1 entities)"]
+    Getpropertytype3["Getpropertytype3\n(1 entities)"]
+    Getreadmethod["Getreadmethod\n(1 entities)"]
+    Getreadmethodtype["Getreadmethodtype\n(1 entities)"]
+    Gettypedescriptor["Gettypedescriptor\n(1 entities)"]
+    Getuniquewritemethodfallback["Getuniquewritemethodfallback\n(1 entities)"]
+    Getwritemethod["Getwritemethod\n(1 entities)"]
+    Getwritemethodfallback["Getwritemethodfallback\n(1 entities)"]
+    Getwritemethodforactualaccess["Getwritemethodforactualaccess\n(1 entities)"]
+    Getwritemethodparameter2["Getwritemethodparameter2\n(1 entities)"]
+    Getwritemethodtype["Getwritemethodtype\n(1 entities)"]
+    Hasuniquewritemethod2["Hasuniquewritemethod2\n(1 entities)"]
+    Hashcode2["Hashcode2\n(1 entities)"]
+    Invalidpropertyexception["Invalidpropertyexception\n(1 entities)"]
+    Invalidpropertyexception2["Invalidpropertyexception2\n(1 entities)"]
+    Getbeanclass4["Getbeanclass4\n(1 entities)"]
+    Getpropertyname["Getpropertyname\n(1 entities)"]
+    Invalidpropertypathexception["Invalidpropertypathexception\n(1 entities)"]
+    Invalidpropertypathexception2["Invalidpropertypathexception2\n(1 entities)"]
+    Geterrorcode["Geterrorcode\n(1 entities)"]
+    Getpropertypath["Getpropertypath\n(1 entities)"]
+    Mergeable["Mergeable\n(1 entities)"]
+    Ismergeenabled["Ismergeenabled\n(1 entities)"]
+    Merge["Merge\n(1 entities)"]
+    Methodinvocationexception["Methodinvocationexception\n(1 entities)"]
+    Methodinvocationexception2["Methodinvocationexception2\n(1 entities)"]
+    Geterrorcode2["Geterrorcode2\n(1 entities)"]
+    Mutablepropertyvalues["Mutablepropertyvalues\n(1 entities)"]
+    Mutablepropertyvalues2["Mutablepropertyvalues2\n(1 entities)"]
+    Add["Add\n(1 entities)"]
+    Addpropertyvalue["Addpropertyvalue\n(1 entities)"]
+    Addpropertyvalues["Addpropertyvalues\n(1 entities)"]
+    Changessince["Changessince\n(1 entities)"]
+    Clearprocessedproperty["Clearprocessedproperty\n(1 entities)"]
+    Contains["Contains\n(1 entities)"]
+    Equals3["Equals3\n(1 entities)"]
+    Get["Get\n(1 entities)"]
+    Getpropertyvalue3["Getpropertyvalue3\n(1 entities)"]
+    Getpropertyvaluelist["Getpropertyvaluelist\n(1 entities)"]
+    Getpropertyvalues["Getpropertyvalues\n(1 entities)"]
+    Hashcode3["Hashcode3\n(1 entities)"]
+    Isconverted["Isconverted\n(1 entities)"]
+    Isempty["Isempty\n(1 entities)"]
+    Iterator["Iterator\n(1 entities)"]
+    Mergeifrequired["Mergeifrequired\n(1 entities)"]
+    Registerprocessedproperty["Registerprocessedproperty\n(1 entities)"]
+    Removepropertyvalue["Removepropertyvalue\n(1 entities)"]
+    Setconverted["Setconverted\n(1 entities)"]
+    Setpropertyvalueat["Setpropertyvalueat\n(1 entities)"]
+    Size["Size\n(1 entities)"]
+    Spliterator["Spliterator\n(1 entities)"]
+    Stream["Stream\n(1 entities)"]
+    Tostring3["Tostring3\n(1 entities)"]
+    Notreadablepropertyexception["Notreadablepropertyexception\n(1 entities)"]
+    Notreadablepropertyexception2["Notreadablepropertyexception2\n(1 entities)"]
+    Notwritablepropertyexception["Notwritablepropertyexception\n(1 entities)"]
+    Notwritablepropertyexception2["Notwritablepropertyexception2\n(1 entities)"]
+    Getpossiblematches["Getpossiblematches\n(1 entities)"]
+    Nullvalueinnestedpathexception["Nullvalueinnestedpathexception\n(1 entities)"]
+    Nullvalueinnestedpathexception2["Nullvalueinnestedpathexception2\n(1 entities)"]
+    Propertyaccessexception["Propertyaccessexception\n(1 entities)"]
+    Propertyaccessexception2["Propertyaccessexception2\n(1 entities)"]
+    Geterrorcode3["Geterrorcode3\n(1 entities)"]
+    Getpropertychangeevent["Getpropertychangeevent\n(1 entities)"]
+    Getpropertyname2["Getpropertyname2\n(1 entities)"]
+    Getvalue2["Getvalue2\n(1 entities)"]
+    Propertyaccessor["Propertyaccessor\n(1 entities)"]
+    Getpropertytype4["Getpropertytype4\n(1 entities)"]
+    Getpropertytypedescriptor2["Getpropertytypedescriptor2\n(1 entities)"]
+    Getpropertyvalue4["Getpropertyvalue4\n(1 entities)"]
+    Isreadableproperty2["Isreadableproperty2\n(1 entities)"]
+    Iswritableproperty2["Iswritableproperty2\n(1 entities)"]
+    Setpropertyvalue3["Setpropertyvalue3\n(1 entities)"]
+    Setpropertyvalues2["Setpropertyvalues2\n(1 entities)"]
+    Propertyaccessorfactory["Propertyaccessorfactory\n(1 entities)"]
+    Propertyaccessorfactory2["Propertyaccessorfactory2\n(1 entities)"]
+    Forbeanpropertyaccess["Forbeanpropertyaccess\n(1 entities)"]
+    Fordirectfieldaccess["Fordirectfieldaccess\n(1 entities)"]
+    Propertyaccessorutils["Propertyaccessorutils\n(1 entities)"]
+    Canonicalpropertyname["Canonicalpropertyname\n(1 entities)"]
+    Canonicalpropertynames["Canonicalpropertynames\n(1 entities)"]
+    Getfirstnestedpropertyseparatorindex["Getfirstnestedpropertyseparatorindex\n(1 entities)"]
+    Getlastnestedpropertyseparatorindex["Getlastnestedpropertyseparatorindex\n(1 entities)"]
+    Getnestedpropertyseparatorindex["Getnestedpropertyseparatorindex\n(1 entities)"]
+    Getpropertyname3["Getpropertyname3\n(1 entities)"]
+    Isnestedorindexedproperty["Isnestedorindexedproperty\n(1 entities)"]
+    Matchesproperty["Matchesproperty\n(1 entities)"]
+    Propertybatchupdateexception["Propertybatchupdateexception\n(1 entities)"]
+    Propertybatchupdateexception2["Propertybatchupdateexception2\n(1 entities)"]
+    Contains2["Contains2\n(1 entities)"]
+    Getexceptioncount["Getexceptioncount\n(1 entities)"]
+    Getmessage["Getmessage\n(1 entities)"]
+    Getpropertyaccessexception["Getpropertyaccessexception\n(1 entities)"]
+    Getpropertyaccessexceptions["Getpropertyaccessexceptions\n(1 entities)"]
+    Printstacktrace["Printstacktrace\n(1 entities)"]
+    Tostring4["Tostring4\n(1 entities)"]
+    Propertydescriptorutils["Propertydescriptorutils\n(1 entities)"]
+    Copynonmethodproperties["Copynonmethodproperties\n(1 entities)"]
+    Determinebasicproperties["Determinebasicproperties\n(1 entities)"]
+    Equals4["Equals4\n(1 entities)"]
+    Findindexedpropertytype["Findindexedpropertytype\n(1 entities)"]
+    Findpropertytype2["Findpropertytype2\n(1 entities)"]
+    Propertyeditorregistrar["Propertyeditorregistrar\n(1 entities)"]
+    Overridesdefaulteditors["Overridesdefaulteditors\n(1 entities)"]
+    Registercustomeditors["Registercustomeditors\n(1 entities)"]
+    Propertyeditorregistry["Propertyeditorregistry\n(1 entities)"]
+    Findcustomeditor["Findcustomeditor\n(1 entities)"]
+    Registercustomeditor["Registercustomeditor\n(1 entities)"]
+    Propertyeditorregistrysupport["Propertyeditorregistrysupport\n(1 entities)"]
+    Actualpropertynameof["Actualpropertynameof\n(1 entities)"]
+    Addstrippedpropertypaths["Addstrippedpropertypaths\n(1 entities)"]
+    Copycustomeditorsto["Copycustomeditorsto\n(1 entities)"]
+    Copydefaulteditorsto["Copydefaulteditorsto\n(1 entities)"]
+    Createdefaulteditors["Createdefaulteditors\n(1 entities)"]
+    Findcustomeditor2["Findcustomeditor2\n(1 entities)"]
+    Getconversionservice2["Getconversionservice2\n(1 entities)"]
+    Getcustomeditor["Getcustomeditor\n(1 entities)"]
+    Getdefaulteditor["Getdefaulteditor\n(1 entities)"]
+    Getpropertytype5["Getpropertytype5\n(1 entities)"]
+    Guesspropertytypefromeditors["Guesspropertytypefromeditors\n(1 entities)"]
+    Hascustomeditorforelement["Hascustomeditorforelement\n(1 entities)"]
+    Matchesproperty2["Matchesproperty2\n(1 entities)"]
+    Overridedefaulteditor["Overridedefaulteditor\n(1 entities)"]
+    Registercustomeditor2["Registercustomeditor2\n(1 entities)"]
+    Registerdefaulteditors["Registerdefaulteditors\n(1 entities)"]
+    Setconversionservice2["Setconversionservice2\n(1 entities)"]
+    Setdefaulteditorregistrar["Setdefaulteditorregistrar\n(1 entities)"]
+    Useconfigvalueeditors["Useconfigvalueeditors\n(1 entities)"]
+    Propertymatches["Propertymatches\n(1 entities)"]
+    Propertymatches2["Propertymatches2\n(1 entities)"]
+    Appendhintmessage["Appendhintmessage\n(1 entities)"]
+    Builderrormessage["Builderrormessage\n(1 entities)"]
+    Calculatestringdistance["Calculatestringdistance\n(1 entities)"]
+    Forfield["Forfield\n(1 entities)"]
+    Forproperty["Forproperty\n(1 entities)"]
+    Getpossiblematches2["Getpossiblematches2\n(1 entities)"]
+    Getpropertyname4["Getpropertyname4\n(1 entities)"]
+    Propertypath["Propertypath\n(1 entities)"]
+    Propertypath2["Propertypath2\n(1 entities)"]
+    Canonicalname["Canonicalname\n(1 entities)"]
+    Canonicalnameororiginal["Canonicalnameororiginal\n(1 entities)"]
+    Equals5["Equals5\n(1 entities)"]
+    Hashcode4["Hashcode4\n(1 entities)"]
+    Parse["Parse\n(1 entities)"]
+    Segments["Segments\n(1 entities)"]
+    Subpath["Subpath\n(1 entities)"]
+    Tostring5["Tostring5\n(1 entities)"]
+    Propertyvalue["Propertyvalue\n(1 entities)"]
+    Propertyvalue2["Propertyvalue2\n(1 entities)"]
+    Equals6["Equals6\n(1 entities)"]
+    Getconvertedvalue["Getconvertedvalue\n(1 entities)"]
+    Getname2["Getname2\n(1 entities)"]
+    Getoriginalpropertyvalue["Getoriginalpropertyvalue\n(1 entities)"]
+    Getvalue3["Getvalue3\n(1 entities)"]
+    Hashcode5["Hashcode5\n(1 entities)"]
+    Isconverted2["Isconverted2\n(1 entities)"]
+    Isoptional["Isoptional\n(1 entities)"]
+    Setconvertedvalue["Setconvertedvalue\n(1 entities)"]
+    Setoptional["Setoptional\n(1 entities)"]
+    Tostring6["Tostring6\n(1 entities)"]
+    Propertyvalues["Propertyvalues\n(1 entities)"]
+    Changessince2["Changessince2\n(1 entities)"]
+    Contains3["Contains3\n(1 entities)"]
+    Getpropertyvalue5["Getpropertyvalue5\n(1 entities)"]
+    Getpropertyvalues2["Getpropertyvalues2\n(1 entities)"]
+    Isempty2["Isempty2\n(1 entities)"]
+    Iterator2["Iterator2\n(1 entities)"]
+    Spliterator2["Spliterator2\n(1 entities)"]
+    Stream2["Stream2\n(1 entities)"]
+    Propertyvalueseditor["Propertyvalueseditor\n(1 entities)"]
+    Setastext["Setastext\n(1 entities)"]
+    Simplebeaninfofactory["Simplebeaninfofactory\n(1 entities)"]
+    Getbeaninfo4["Getbeaninfo4\n(1 entities)"]
+    Getorder["Getorder\n(1 entities)"]
+    Simpletypeconverter["Simpletypeconverter\n(1 entities)"]
+    Simpletypeconverter2["Simpletypeconverter2\n(1 entities)"]
+    Standardbeaninfofactory["Standardbeaninfofactory\n(1 entities)"]
+    Getbeaninfo5["Getbeaninfo5\n(1 entities)"]
+    Getorder2["Getorder2\n(1 entities)"]
+    Typeconverter["Typeconverter\n(1 entities)"]
+    Convertifnecessary2["Convertifnecessary2\n(1 entities)"]
+    Typeconverterdelegate["Typeconverterdelegate\n(1 entities)"]
+    Typeconverterdelegate2["Typeconverterdelegate2\n(1 entities)"]
+    Attempttoconvertstringtoenum["Attempttoconvertstringtoenum\n(1 entities)"]
+    Buildindexedpropertyname["Buildindexedpropertyname\n(1 entities)"]
+    Buildkeyedpropertyname["Buildkeyedpropertyname\n(1 entities)"]
+    Cancreatecopy["Cancreatecopy\n(1 entities)"]
+    Convertifnecessary3["Convertifnecessary3\n(1 entities)"]
+    Converttotypedarray["Converttotypedarray\n(1 entities)"]
+    Converttotypedcollection["Converttotypedcollection\n(1 entities)"]
+    Converttotypedmap["Converttotypedmap\n(1 entities)"]
+    Doconverttextvalue["Doconverttextvalue\n(1 entities)"]
+    Doconvertvalue["Doconvertvalue\n(1 entities)"]
+    Finddefaulteditor["Finddefaulteditor\n(1 entities)"]
+    Typeconvertersupport["Typeconvertersupport\n(1 entities)"]
+    Convertifnecessary4["Convertifnecessary4\n(1 entities)"]
+    Typemismatchexception["Typemismatchexception\n(1 entities)"]
+    Typemismatchexception2["Typemismatchexception2\n(1 entities)"]
+    Geterrorcode4["Geterrorcode4\n(1 entities)"]
+    Getpropertyname5["Getpropertyname5\n(1 entities)"]
+    Getrequiredtype["Getrequiredtype\n(1 entities)"]
+    Getvalue4["Getvalue4\n(1 entities)"]
+    Initpropertyname["Initpropertyname\n(1 entities)"]
+    Factory["Factory\n(168 entities)"]
+    Annotation["Annotation\n(89 entities)"]
+    Aot["Aot\n(177 entities)"]
+    Config["Config\n(434 entities)"]
+    Groovy["Groovy\n(39 entities)"]
+    Parsing["Parsing\n(107 entities)"]
+    Serviceloader["Serviceloader\n(9 entities)"]
+    Support["Support\n(748 entities)"]
+    Wiring["Wiring\n(16 entities)"]
+    Xml["Xml\n(171 entities)"]
+    Propertyeditors["Propertyeditors\n(114 entities)"]
+    Support2["Support2\n(61 entities)"]
+    Abstractnestablepropertyaccessor --> Abstractpropertyaccessor
+    Abstractpropertyaccessor --> Configurablepropertyaccessor
+    Abstractpropertyaccessor --> Typeconvertersupport
+    Actualpropertynameof --> Propertyeditors
+    Addstrippedpropertypaths --> Propertyeditors
+    Annotation --> Aot
+    Annotation --> Beansexception
+    Annotation --> Beanutils
+    Annotation --> Config
+    Annotation --> Factory
+    Annotation --> Mutablepropertyvalues
+    Annotation --> Propertyvalues
+    Annotation --> Simpletypeconverter
+    Annotation --> Support
+    Annotation --> Typeconverter
+    Aot --> Beaninstantiationexception
+    Aot --> Beansexception
+    Aot --> Beanutils
+    Aot --> Config
+    Aot --> Factory
+    Aot --> Mutablepropertyvalues
+    Aot --> Propertyvalue
+    Aot --> Support
+    Aot --> Typeconverter
+    Beaninstantiationexception --> Fatalbeanexception
+    Beanmetadataattribute --> Beanmetadataelement
+    Beanmetadataattributeaccessor --> Beanmetadataelement
+    Beanwrapperimpl --> Abstractnestablepropertyaccessor
+    Beanwrapperimpl --> Beanwrapper
+    Config --> Beanmetadataelement
+    Config --> Beansexception
+    Config --> Beanutils
+    Config --> Beanwrapper
+    Config --> Factory
+    Config --> Fatalbeanexception
+    Config --> Mergeable
+    Config --> Mutablepropertyvalues
+    Config --> Propertyaccessorfactory
+    Config --> Propertyeditorregistrar
+    Config --> Propertyeditorregistry
+    Config --> Propertyvalue
+    Config --> Propertyvalues
+    Config --> Simpletypeconverter
+    Config --> Support2
+    Config --> Typeconverter
+    Conversionnotsupportedexception --> Typemismatchexception
+    Copycustomeditorsto --> Propertyeditors
+    Copydefaulteditorsto --> Propertyeditors
+    Createdefaulteditors --> Propertyeditors
+    Directfieldaccessor --> Abstractnestablepropertyaccessor
+    Extendedbeaninfofactory --> Standardbeaninfofactory
+    Factory --> Beansexception
+    Factory --> Beanutils
+    Factory --> Config
+    Factory --> Fatalbeanexception
+    Factory --> Support
+    Fatalbeanexception --> Beansexception
+    Findcustomeditor2 --> Propertyeditors
+    Getconversionservice2 --> Propertyeditors
+    Getcustomeditor --> Propertyeditors
+    Getdefaulteditor --> Propertyeditors
+    Getpropertytype5 --> Propertyeditors
+    Groovy --> Beanwrapper
+    Groovy --> Beanwrapperimpl
+    Groovy --> Config
+    Groovy --> Factory
+    Groovy --> Mutablepropertyvalues
+    Groovy --> Parsing
+    Groovy --> Support
+    Groovy --> Xml
+    Guesspropertytypefromeditors --> Propertyeditors
+    Hascustomeditorforelement --> Propertyeditors
+    Invalidpropertyexception --> Fatalbeanexception
+    Invalidpropertypathexception --> Propertyaccessexception
+    Matchesproperty2 --> Propertyeditors
+    Methodinvocationexception --> Propertyaccessexception
+    Mutablepropertyvalues --> Propertyvalues
+    Notreadablepropertyexception --> Invalidpropertyexception
+    Notwritablepropertyexception --> Invalidpropertyexception
+    Nullvalueinnestedpathexception --> Invalidpropertyexception
+    Overridedefaulteditor --> Propertyeditors
+    Parsing --> Beanmetadataelement
+    Parsing --> Config
+    Parsing --> Factory
+    Parsing --> Propertyvalue
+    Parsing --> Propertyvalues
+    Propertyaccessexception --> Beansexception
+    Propertybatchupdateexception --> Beansexception
+    Propertyeditorregistrysupport --> Propertyeditorregistry
+    Propertyeditorregistrysupport --> Propertyeditors
+    Propertyvalue --> Beanmetadataattributeaccessor
+    Propertyvalueseditor --> Propertyeditors
+    Registercustomeditor2 --> Propertyeditors
+    Registerdefaulteditors --> Propertyeditors
+    Serviceloader --> Config
+    Serviceloader --> Factory
+    Setastext --> Propertyeditors
+    Setconversionservice2 --> Propertyeditors
+    Setdefaulteditorregistrar --> Propertyeditors
+    Simplebeaninfofactory --> Beaninfofactory
+    Simpletypeconverter --> Typeconvertersupport
+    Standardbeaninfofactory --> Beaninfofactory
+    Support --> Beaninstantiationexception
+    Support --> Beanmetadataattributeaccessor
+    Support --> Beanmetadataelement
+    Support --> Beansexception
+    Support --> Beanutils
+    Support --> Beanwrapper
+    Support --> Beanwrapperimpl
+    Support --> Config
+    Support --> Factory
+    Support --> Invalidpropertyexception
+    Support --> Mergeable
+    Support --> Mutablepropertyvalues
+    Support --> Propertyaccessor
+    Support --> Propertyeditorregistrar
+    Support --> Propertyeditorregistry
+    Support --> Propertyeditorregistrysupport
+    Support --> Propertyvalue
+    Support --> Propertyvalues
+    Support --> Simpletypeconverter
+    Support --> Typeconverter
+    Support --> Typemismatchexception
+    Support2 --> Beansexception
+    Support2 --> Beanwrapperimpl
+    Support2 --> Propertyeditorregistrar
+    Support2 --> Propertyeditorregistry
+    Support2 --> Propertyeditorregistrysupport
+    Support2 --> Propertyeditors
+    Support2 --> Simpletypeconverter
+    Support2 --> Typeconverter
+    Support2 --> Typemismatchexception
+    Typeconvertersupport --> Propertyeditorregistrysupport
+    Typeconvertersupport --> Typeconverter
+    Typemismatchexception --> Propertyaccessexception
+    Useconfigvalueeditors --> Propertyeditors
+    Wiring --> Config
+    Wiring --> Factory
+    Xml --> Beanmetadataattribute
+    Xml --> Beanmetadataattributeaccessor
+    Xml --> Beanutils
+    Xml --> Config
+    Xml --> Factory
+    Xml --> Fatalbeanexception
+    Xml --> Mutablepropertyvalues
+    Xml --> Parsing
+    Xml --> Propertyvalue
+    Xml --> Support
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=2 after common prefix 'org.springframework.beans') with dependency-affinity facade refinement (364 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Abstractnestablepropertyaccessor</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Abstractnestablepropertyaccessor2</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.AbstractNestablePropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.AbstractNestablePropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Convertforproperty</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.convertForProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.convertForProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Convertifnecessary</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.convertIfNecessary</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.convertIfNecessary</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Createarray</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.createArray</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.createArray</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Createdefaultpropertyvalue</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.createDefaultPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.createDefaultPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Createnotwritablepropertyexception</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.createNotWritablePropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.createNotWritablePropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Finalsegment</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.finalSegment</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.finalSegment</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getlocalpropertyhandler</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getLocalPropertyHandler</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getLocalPropertyHandler</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getnestedpath</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getNestedPath</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getNestedPath</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getnestedpropertyaccessor</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getNestedPropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getNestedPropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyaccessorforsegments</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getPropertyAccessorForSegments</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyAccessorForSegments</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyhandler</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getPropertyHandler</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyHandler</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyholdingvalue</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getPropertyHoldingValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyHoldingValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertytype</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertytypedescriptor</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getPropertyTypeDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyTypeDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvalue</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getrootclass</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getRootClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getRootClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getrootinstance</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getRootInstance</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getRootInstance</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwrappedclass</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getWrappedClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getWrappedClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwrappedinstance</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.getWrappedInstance</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.getWrappedInstance</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Growarrayifnecessary</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.growArrayIfNecessary</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.growArrayIfNecessary</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Growcollectionifnecessary</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.growCollectionIfNecessary</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.growCollectionIfNecessary</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isreadableproperty</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.isReadableProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.isReadableProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iswritableproperty</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.isWritableProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.isWritableProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Newnestedpropertyaccessor</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.newNestedPropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.newNestedPropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Newvalue</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.newValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.newValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Processkeyedproperty</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.processKeyedProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.processKeyedProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Processlocalproperty</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.processLocalProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.processLocalProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Resolvepropertypath</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.resolvePropertyPath</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.resolvePropertyPath</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setdefaultvalue</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.setDefaultValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.setDefaultValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setpropertyvalue</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.setPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.setPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setwrappedinstance</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.setWrappedInstance</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.setWrappedInstance</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tostring</strong></td>
+                <td>Entities in AbstractNestablePropertyAccessor.toString</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractNestablePropertyAccessor.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Abstractpropertyaccessor</strong></td>
+                <td>Entities in AbstractPropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getautogrowcollectionlimit</strong></td>
+                <td>Entities in AbstractPropertyAccessor.getAutoGrowCollectionLimit</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.getAutoGrowCollectionLimit</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getmaxnestedpathdepth</strong></td>
+                <td>Entities in AbstractPropertyAccessor.getMaxNestedPathDepth</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.getMaxNestedPathDepth</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertytype2</strong></td>
+                <td>Entities in AbstractPropertyAccessor.getPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.getPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvalue2</strong></td>
+                <td>Entities in AbstractPropertyAccessor.getPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.getPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isautogrownestedpaths</strong></td>
+                <td>Entities in AbstractPropertyAccessor.isAutoGrowNestedPaths</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.isAutoGrowNestedPaths</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isextractoldvalueforeditor</strong></td>
+                <td>Entities in AbstractPropertyAccessor.isExtractOldValueForEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.isExtractOldValueForEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setautogrowcollectionlimit</strong></td>
+                <td>Entities in AbstractPropertyAccessor.setAutoGrowCollectionLimit</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.setAutoGrowCollectionLimit</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setautogrownestedpaths</strong></td>
+                <td>Entities in AbstractPropertyAccessor.setAutoGrowNestedPaths</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.setAutoGrowNestedPaths</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setextractoldvalueforeditor</strong></td>
+                <td>Entities in AbstractPropertyAccessor.setExtractOldValueForEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.setExtractOldValueForEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setmaxnestedpathdepth</strong></td>
+                <td>Entities in AbstractPropertyAccessor.setMaxNestedPathDepth</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.setMaxNestedPathDepth</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setpropertyvalue2</strong></td>
+                <td>Entities in AbstractPropertyAccessor.setPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.setPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setpropertyvalues</strong></td>
+                <td>Entities in AbstractPropertyAccessor.setPropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.AbstractPropertyAccessor.setPropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beaninfofactory</strong></td>
+                <td>Entities in BeanInfoFactory</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanInfoFactory</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeaninfo</strong></td>
+                <td>Entities in BeanInfoFactory.getBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanInfoFactory.getBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beaninstantiationexception</strong></td>
+                <td>Entities in BeanInstantiationException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanInstantiationException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beaninstantiationexception2</strong></td>
+                <td>Entities in BeanInstantiationException.BeanInstantiationException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanInstantiationException.BeanInstantiationException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeanclass</strong></td>
+                <td>Entities in BeanInstantiationException.getBeanClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanInstantiationException.getBeanClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getconstructingmethod</strong></td>
+                <td>Entities in BeanInstantiationException.getConstructingMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanInstantiationException.getConstructingMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getconstructor</strong></td>
+                <td>Entities in BeanInstantiationException.getConstructor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanInstantiationException.getConstructor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanmetadataattribute</strong></td>
+                <td>Entities in BeanMetadataAttribute</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanmetadataattribute2</strong></td>
+                <td>Entities in BeanMetadataAttribute.BeanMetadataAttribute</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.BeanMetadataAttribute</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Equals</strong></td>
+                <td>Entities in BeanMetadataAttribute.equals</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.equals</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getname</strong></td>
+                <td>Entities in BeanMetadataAttribute.getName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.getName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getsource</strong></td>
+                <td>Entities in BeanMetadataAttribute.getSource</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.getSource</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getvalue</strong></td>
+                <td>Entities in BeanMetadataAttribute.getValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.getValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hashcode</strong></td>
+                <td>Entities in BeanMetadataAttribute.hashCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.hashCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setsource</strong></td>
+                <td>Entities in BeanMetadataAttribute.setSource</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.setSource</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tostring2</strong></td>
+                <td>Entities in BeanMetadataAttribute.toString</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttribute.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanmetadataattributeaccessor</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor, org.springframework.beans.factory.support.AutowireCandidateQualifier.AutowireCandidateQualifier, org.springframework.beans.factory.support.AutowireCandidateQualifier.getTypeName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Addmetadataattribute</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor.addMetadataAttribute</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor.addMetadataAttribute</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getattribute</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor.getAttribute</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor.getAttribute</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getmetadataattribute</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor.getMetadataAttribute</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor.getMetadataAttribute</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getsource2</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor.getSource</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor.getSource</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Removeattribute</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor.removeAttribute</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor.removeAttribute</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setattribute</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor.setAttribute</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor.setAttribute</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setsource2</strong></td>
+                <td>Entities in BeanMetadataAttributeAccessor.setSource</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataAttributeAccessor.setSource</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanmetadataelement</strong></td>
+                <td>Entities in BeanMetadataElement</td>
+                <td>40</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataElement, org.springframework.beans.factory.config.BeanReference.getBeanName, org.springframework.beans.factory.config.TypedStringValue.TypedStringValue, org.springframework.beans.factory.config.TypedStringValue.compareTo, org.springframework.beans.factory.config.TypedStringValue.equals, org.springframework.beans.factory.config.TypedStringValue.getSource, org.springframework.beans.factory.config.TypedStringValue.getSpecifiedTypeName, org.springframework.beans.factory.config.TypedStringValue.getTargetType, ... (+32 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getsource3</strong></td>
+                <td>Entities in BeanMetadataElement.getSource</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanMetadataElement.getSource</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanutils</strong></td>
+                <td>Entities in BeanUtils</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Copyproperties</strong></td>
+                <td>Entities in BeanUtils.copyProperties</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.copyProperties</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Finddeclaredmethod</strong></td>
+                <td>Entities in BeanUtils.findDeclaredMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findDeclaredMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Finddeclaredmethodwithminimalparameters</strong></td>
+                <td>Entities in BeanUtils.findDeclaredMethodWithMinimalParameters</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findDeclaredMethodWithMinimalParameters</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findeditorbyconvention</strong></td>
+                <td>Entities in BeanUtils.findEditorByConvention</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findEditorByConvention</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findmethod</strong></td>
+                <td>Entities in BeanUtils.findMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findmethodwithminimalparameters</strong></td>
+                <td>Entities in BeanUtils.findMethodWithMinimalParameters</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findMethodWithMinimalParameters</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findprimaryconstructor</strong></td>
+                <td>Entities in BeanUtils.findPrimaryConstructor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findPrimaryConstructor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findpropertyformethod</strong></td>
+                <td>Entities in BeanUtils.findPropertyForMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findPropertyForMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findpropertytype</strong></td>
+                <td>Entities in BeanUtils.findPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.findPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getparameternames</strong></td>
+                <td>Entities in BeanUtils.getParameterNames</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.getParameterNames</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptor</strong></td>
+                <td>Entities in BeanUtils.getPropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.getPropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptors</strong></td>
+                <td>Entities in BeanUtils.getPropertyDescriptors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.getPropertyDescriptors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getresolvableconstructor</strong></td>
+                <td>Entities in BeanUtils.getResolvableConstructor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.getResolvableConstructor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwritemethodparameter</strong></td>
+                <td>Entities in BeanUtils.getWriteMethodParameter</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.getWriteMethodParameter</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hasuniquewritemethod</strong></td>
+                <td>Entities in BeanUtils.hasUniqueWriteMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.hasUniqueWriteMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Instantiate</strong></td>
+                <td>Entities in BeanUtils.instantiate</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.instantiate</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Instantiateclass</strong></td>
+                <td>Entities in BeanUtils.instantiateClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.instantiateClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isassignable</strong></td>
+                <td>Entities in BeanUtils.isAssignable</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.isAssignable</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Issimpleproperty</strong></td>
+                <td>Entities in BeanUtils.isSimpleProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.isSimpleProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Issimplevaluetype</strong></td>
+                <td>Entities in BeanUtils.isSimpleValueType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.isSimpleValueType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Resolvesignature</strong></td>
+                <td>Entities in BeanUtils.resolveSignature</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtils.resolveSignature</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanutilsruntimehints</strong></td>
+                <td>Entities in BeanUtilsRuntimeHints</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtilsRuntimeHints</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Registerhints</strong></td>
+                <td>Entities in BeanUtilsRuntimeHints.registerHints</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanUtilsRuntimeHints.registerHints</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanwrapper</strong></td>
+                <td>Entities in BeanWrapper</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapper</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getautogrowcollectionlimit2</strong></td>
+                <td>Entities in BeanWrapper.getAutoGrowCollectionLimit</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapper.getAutoGrowCollectionLimit</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptor2</strong></td>
+                <td>Entities in BeanWrapper.getPropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapper.getPropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptors2</strong></td>
+                <td>Entities in BeanWrapper.getPropertyDescriptors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapper.getPropertyDescriptors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwrappedclass2</strong></td>
+                <td>Entities in BeanWrapper.getWrappedClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapper.getWrappedClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwrappedinstance2</strong></td>
+                <td>Entities in BeanWrapper.getWrappedInstance</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapper.getWrappedInstance</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setautogrowcollectionlimit2</strong></td>
+                <td>Entities in BeanWrapper.setAutoGrowCollectionLimit</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapper.setAutoGrowCollectionLimit</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanwrapperimpl</strong></td>
+                <td>Entities in BeanWrapperImpl</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beanwrapperimpl2</strong></td>
+                <td>Entities in BeanWrapperImpl.BeanWrapperImpl</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.BeanWrapperImpl</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Convertforproperty2</strong></td>
+                <td>Entities in BeanWrapperImpl.convertForProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.convertForProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Createnotwritablepropertyexception2</strong></td>
+                <td>Entities in BeanWrapperImpl.createNotWritablePropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.createNotWritablePropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getcachedintrospectionresults</strong></td>
+                <td>Entities in BeanWrapperImpl.getCachedIntrospectionResults</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.getCachedIntrospectionResults</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getlocalpropertyhandler2</strong></td>
+                <td>Entities in BeanWrapperImpl.getLocalPropertyHandler</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.getLocalPropertyHandler</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptor3</strong></td>
+                <td>Entities in BeanWrapperImpl.getPropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.getPropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptors3</strong></td>
+                <td>Entities in BeanWrapperImpl.getPropertyDescriptors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.getPropertyDescriptors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Newnestedpropertyaccessor2</strong></td>
+                <td>Entities in BeanWrapperImpl.newNestedPropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.newNestedPropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setbeaninstance</strong></td>
+                <td>Entities in BeanWrapperImpl.setBeanInstance</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.setBeanInstance</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setintrospectionclass</strong></td>
+                <td>Entities in BeanWrapperImpl.setIntrospectionClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.setIntrospectionClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setwrappedinstance2</strong></td>
+                <td>Entities in BeanWrapperImpl.setWrappedInstance</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeanWrapperImpl.setWrappedInstance</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beansexception</strong></td>
+                <td>Entities in BeansException</td>
+                <td>70</td>
+                
+                <td class="entity-list">org.springframework.beans.BeansException, org.springframework.beans.factory.BeanFactory.containsBean, org.springframework.beans.factory.BeanFactory.getAliases, org.springframework.beans.factory.BeanFactory.getBean, org.springframework.beans.factory.BeanFactory.getBeanProvider, org.springframework.beans.factory.BeanFactory.getType, org.springframework.beans.factory.BeanFactory.isPrototype, org.springframework.beans.factory.BeanFactory.isSingleton, ... (+62 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Beansexception2</strong></td>
+                <td>Entities in BeansException.BeansException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.BeansException.BeansException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Cachedintrospectionresults</strong></td>
+                <td>Entities in CachedIntrospectionResults</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Cachedintrospectionresults2</strong></td>
+                <td>Entities in CachedIntrospectionResults.CachedIntrospectionResults</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.CachedIntrospectionResults</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Acceptclassloader</strong></td>
+                <td>Entities in CachedIntrospectionResults.acceptClassLoader</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.acceptClassLoader</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Buildgenerictypeawarepropertydescriptor</strong></td>
+                <td>Entities in CachedIntrospectionResults.buildGenericTypeAwarePropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.buildGenericTypeAwarePropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Clearclassloader</strong></td>
+                <td>Entities in CachedIntrospectionResults.clearClassLoader</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.clearClassLoader</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Forclass</strong></td>
+                <td>Entities in CachedIntrospectionResults.forClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.forClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeanclass2</strong></td>
+                <td>Entities in CachedIntrospectionResults.getBeanClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.getBeanClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeaninfo2</strong></td>
+                <td>Entities in CachedIntrospectionResults.getBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.getBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptor4</strong></td>
+                <td>Entities in CachedIntrospectionResults.getPropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.getPropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptors4</strong></td>
+                <td>Entities in CachedIntrospectionResults.getPropertyDescriptors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.getPropertyDescriptors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Introspectinterfaces</strong></td>
+                <td>Entities in CachedIntrospectionResults.introspectInterfaces</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.introspectInterfaces</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Introspectplainaccessors</strong></td>
+                <td>Entities in CachedIntrospectionResults.introspectPlainAccessors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.introspectPlainAccessors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isclassloaderaccepted</strong></td>
+                <td>Entities in CachedIntrospectionResults.isClassLoaderAccepted</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.isClassLoaderAccepted</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isinvalidreadonlypropertytype</strong></td>
+                <td>Entities in CachedIntrospectionResults.isInvalidReadOnlyPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.isInvalidReadOnlyPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isplainaccessor</strong></td>
+                <td>Entities in CachedIntrospectionResults.isPlainAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.isPlainAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isunderneathclassloader</strong></td>
+                <td>Entities in CachedIntrospectionResults.isUnderneathClassLoader</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.CachedIntrospectionResults.isUnderneathClassLoader</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Configurablepropertyaccessor</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getautogrowcollectionlimit3</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.getAutoGrowCollectionLimit</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.getAutoGrowCollectionLimit</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getconversionservice</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.getConversionService</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.getConversionService</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getmaxnestedpathdepth2</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.getMaxNestedPathDepth</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.getMaxNestedPathDepth</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isautogrownestedpaths2</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.isAutoGrowNestedPaths</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.isAutoGrowNestedPaths</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isextractoldvalueforeditor2</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.isExtractOldValueForEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.isExtractOldValueForEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setautogrowcollectionlimit3</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.setAutoGrowCollectionLimit</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.setAutoGrowCollectionLimit</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setautogrownestedpaths2</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.setAutoGrowNestedPaths</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.setAutoGrowNestedPaths</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setconversionservice</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.setConversionService</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.setConversionService</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setextractoldvalueforeditor2</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.setExtractOldValueForEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.setExtractOldValueForEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setmaxnestedpathdepth2</strong></td>
+                <td>Entities in ConfigurablePropertyAccessor.setMaxNestedPathDepth</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConfigurablePropertyAccessor.setMaxNestedPathDepth</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Conversionnotsupportedexception</strong></td>
+                <td>Entities in ConversionNotSupportedException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConversionNotSupportedException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Conversionnotsupportedexception2</strong></td>
+                <td>Entities in ConversionNotSupportedException.ConversionNotSupportedException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ConversionNotSupportedException.ConversionNotSupportedException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Directfieldaccessor</strong></td>
+                <td>Entities in DirectFieldAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.DirectFieldAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Directfieldaccessor2</strong></td>
+                <td>Entities in DirectFieldAccessor.DirectFieldAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.DirectFieldAccessor.DirectFieldAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Createnotwritablepropertyexception3</strong></td>
+                <td>Entities in DirectFieldAccessor.createNotWritablePropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.DirectFieldAccessor.createNotWritablePropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getlocalpropertyhandler3</strong></td>
+                <td>Entities in DirectFieldAccessor.getLocalPropertyHandler</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.DirectFieldAccessor.getLocalPropertyHandler</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Newnestedpropertyaccessor3</strong></td>
+                <td>Entities in DirectFieldAccessor.newNestedPropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.DirectFieldAccessor.newNestedPropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Extendedbeaninfo</strong></td>
+                <td>Entities in ExtendedBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Extendedbeaninfo2</strong></td>
+                <td>Entities in ExtendedBeanInfo.ExtendedBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.ExtendedBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findcandidatewritemethods</strong></td>
+                <td>Entities in ExtendedBeanInfo.findCandidateWriteMethods</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.findCandidateWriteMethods</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findexistingpropertydescriptor</strong></td>
+                <td>Entities in ExtendedBeanInfo.findExistingPropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.findExistingPropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getadditionalbeaninfo</strong></td>
+                <td>Entities in ExtendedBeanInfo.getAdditionalBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getAdditionalBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeandescriptor</strong></td>
+                <td>Entities in ExtendedBeanInfo.getBeanDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getBeanDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getdefaulteventindex</strong></td>
+                <td>Entities in ExtendedBeanInfo.getDefaultEventIndex</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getDefaultEventIndex</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getdefaultpropertyindex</strong></td>
+                <td>Entities in ExtendedBeanInfo.getDefaultPropertyIndex</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getDefaultPropertyIndex</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Geteventsetdescriptors</strong></td>
+                <td>Entities in ExtendedBeanInfo.getEventSetDescriptors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getEventSetDescriptors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Geticon</strong></td>
+                <td>Entities in ExtendedBeanInfo.getIcon</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getIcon</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getmethoddescriptors</strong></td>
+                <td>Entities in ExtendedBeanInfo.getMethodDescriptors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getMethodDescriptors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertydescriptors5</strong></td>
+                <td>Entities in ExtendedBeanInfo.getPropertyDescriptors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.getPropertyDescriptors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Handlecandidatewritemethod</strong></td>
+                <td>Entities in ExtendedBeanInfo.handleCandidateWriteMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.handleCandidateWriteMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iscandidatewritemethod</strong></td>
+                <td>Entities in ExtendedBeanInfo.isCandidateWriteMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.isCandidateWriteMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertynamefor</strong></td>
+                <td>Entities in ExtendedBeanInfo.propertyNameFor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfo.propertyNameFor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Extendedbeaninfofactory</strong></td>
+                <td>Entities in ExtendedBeanInfoFactory</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfoFactory</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeaninfo3</strong></td>
+                <td>Entities in ExtendedBeanInfoFactory.getBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfoFactory.getBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Supports</strong></td>
+                <td>Entities in ExtendedBeanInfoFactory.supports</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.ExtendedBeanInfoFactory.supports</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fatalbeanexception</strong></td>
+                <td>Entities in FatalBeanException</td>
+                <td>22</td>
+                
+                <td class="entity-list">org.springframework.beans.FatalBeanException, org.springframework.beans.factory.BeanCreationException.BeanCreationException, org.springframework.beans.factory.BeanCreationException.addRelatedCause, org.springframework.beans.factory.BeanCreationException.contains, org.springframework.beans.factory.BeanCreationException.getBeanName, org.springframework.beans.factory.BeanCreationException.getRelatedCauses, org.springframework.beans.factory.BeanCreationException.getResourceDescription, org.springframework.beans.factory.BeanCreationException.printStackTrace, ... (+14 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fatalbeanexception2</strong></td>
+                <td>Entities in FatalBeanException.FatalBeanException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.FatalBeanException.FatalBeanException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Generictypeawarepropertydescriptor</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Generictypeawarepropertydescriptor2</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.GenericTypeAwarePropertyDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.GenericTypeAwarePropertyDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Equals2</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.equals</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.equals</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeanclass3</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getBeanClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getBeanClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyeditorclass</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getPropertyEditorClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getPropertyEditorClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertytype3</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getreadmethod</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getReadMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getReadMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getreadmethodtype</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getReadMethodType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getReadMethodType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Gettypedescriptor</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getTypeDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getTypeDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getuniquewritemethodfallback</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getUniqueWriteMethodFallback</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getUniqueWriteMethodFallback</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwritemethod</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getWriteMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getWriteMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwritemethodfallback</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getWriteMethodFallback</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getWriteMethodFallback</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwritemethodforactualaccess</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getWriteMethodForActualAccess</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getWriteMethodForActualAccess</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwritemethodparameter2</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getWriteMethodParameter</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getWriteMethodParameter</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getwritemethodtype</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.getWriteMethodType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.getWriteMethodType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hasuniquewritemethod2</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.hasUniqueWriteMethod</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.hasUniqueWriteMethod</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hashcode2</strong></td>
+                <td>Entities in GenericTypeAwarePropertyDescriptor.hashCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.GenericTypeAwarePropertyDescriptor.hashCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Invalidpropertyexception</strong></td>
+                <td>Entities in InvalidPropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Invalidpropertyexception2</strong></td>
+                <td>Entities in InvalidPropertyException.InvalidPropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyException.InvalidPropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeanclass4</strong></td>
+                <td>Entities in InvalidPropertyException.getBeanClass</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyException.getBeanClass</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyname</strong></td>
+                <td>Entities in InvalidPropertyException.getPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyException.getPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Invalidpropertypathexception</strong></td>
+                <td>Entities in InvalidPropertyPathException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyPathException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Invalidpropertypathexception2</strong></td>
+                <td>Entities in InvalidPropertyPathException.InvalidPropertyPathException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyPathException.InvalidPropertyPathException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Geterrorcode</strong></td>
+                <td>Entities in InvalidPropertyPathException.getErrorCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyPathException.getErrorCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertypath</strong></td>
+                <td>Entities in InvalidPropertyPathException.getPropertyPath</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.InvalidPropertyPathException.getPropertyPath</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Mergeable</strong></td>
+                <td>Entities in Mergeable</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.Mergeable</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ismergeenabled</strong></td>
+                <td>Entities in Mergeable.isMergeEnabled</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.Mergeable.isMergeEnabled</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Merge</strong></td>
+                <td>Entities in Mergeable.merge</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.Mergeable.merge</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Methodinvocationexception</strong></td>
+                <td>Entities in MethodInvocationException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MethodInvocationException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Methodinvocationexception2</strong></td>
+                <td>Entities in MethodInvocationException.MethodInvocationException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MethodInvocationException.MethodInvocationException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Geterrorcode2</strong></td>
+                <td>Entities in MethodInvocationException.getErrorCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MethodInvocationException.getErrorCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Mutablepropertyvalues</strong></td>
+                <td>Entities in MutablePropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Mutablepropertyvalues2</strong></td>
+                <td>Entities in MutablePropertyValues.MutablePropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.MutablePropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Add</strong></td>
+                <td>Entities in MutablePropertyValues.add</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.add</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Addpropertyvalue</strong></td>
+                <td>Entities in MutablePropertyValues.addPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.addPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Addpropertyvalues</strong></td>
+                <td>Entities in MutablePropertyValues.addPropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.addPropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Changessince</strong></td>
+                <td>Entities in MutablePropertyValues.changesSince</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.changesSince</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Clearprocessedproperty</strong></td>
+                <td>Entities in MutablePropertyValues.clearProcessedProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.clearProcessedProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Contains</strong></td>
+                <td>Entities in MutablePropertyValues.contains</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.contains</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Equals3</strong></td>
+                <td>Entities in MutablePropertyValues.equals</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.equals</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Get</strong></td>
+                <td>Entities in MutablePropertyValues.get</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.get</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvalue3</strong></td>
+                <td>Entities in MutablePropertyValues.getPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.getPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvaluelist</strong></td>
+                <td>Entities in MutablePropertyValues.getPropertyValueList</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.getPropertyValueList</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvalues</strong></td>
+                <td>Entities in MutablePropertyValues.getPropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.getPropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hashcode3</strong></td>
+                <td>Entities in MutablePropertyValues.hashCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.hashCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isconverted</strong></td>
+                <td>Entities in MutablePropertyValues.isConverted</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.isConverted</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isempty</strong></td>
+                <td>Entities in MutablePropertyValues.isEmpty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.isEmpty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iterator</strong></td>
+                <td>Entities in MutablePropertyValues.iterator</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.iterator</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Mergeifrequired</strong></td>
+                <td>Entities in MutablePropertyValues.mergeIfRequired</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.mergeIfRequired</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Registerprocessedproperty</strong></td>
+                <td>Entities in MutablePropertyValues.registerProcessedProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.registerProcessedProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Removepropertyvalue</strong></td>
+                <td>Entities in MutablePropertyValues.removePropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.removePropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setconverted</strong></td>
+                <td>Entities in MutablePropertyValues.setConverted</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.setConverted</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setpropertyvalueat</strong></td>
+                <td>Entities in MutablePropertyValues.setPropertyValueAt</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.setPropertyValueAt</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Size</strong></td>
+                <td>Entities in MutablePropertyValues.size</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.size</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Spliterator</strong></td>
+                <td>Entities in MutablePropertyValues.spliterator</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.spliterator</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Stream</strong></td>
+                <td>Entities in MutablePropertyValues.stream</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.stream</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tostring3</strong></td>
+                <td>Entities in MutablePropertyValues.toString</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.MutablePropertyValues.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Notreadablepropertyexception</strong></td>
+                <td>Entities in NotReadablePropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.NotReadablePropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Notreadablepropertyexception2</strong></td>
+                <td>Entities in NotReadablePropertyException.NotReadablePropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.NotReadablePropertyException.NotReadablePropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Notwritablepropertyexception</strong></td>
+                <td>Entities in NotWritablePropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.NotWritablePropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Notwritablepropertyexception2</strong></td>
+                <td>Entities in NotWritablePropertyException.NotWritablePropertyException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.NotWritablePropertyException.NotWritablePropertyException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpossiblematches</strong></td>
+                <td>Entities in NotWritablePropertyException.getPossibleMatches</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.NotWritablePropertyException.getPossibleMatches</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Nullvalueinnestedpathexception</strong></td>
+                <td>Entities in NullValueInNestedPathException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.NullValueInNestedPathException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Nullvalueinnestedpathexception2</strong></td>
+                <td>Entities in NullValueInNestedPathException.NullValueInNestedPathException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.NullValueInNestedPathException.NullValueInNestedPathException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyaccessexception</strong></td>
+                <td>Entities in PropertyAccessException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyaccessexception2</strong></td>
+                <td>Entities in PropertyAccessException.PropertyAccessException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessException.PropertyAccessException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Geterrorcode3</strong></td>
+                <td>Entities in PropertyAccessException.getErrorCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessException.getErrorCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertychangeevent</strong></td>
+                <td>Entities in PropertyAccessException.getPropertyChangeEvent</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessException.getPropertyChangeEvent</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyname2</strong></td>
+                <td>Entities in PropertyAccessException.getPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessException.getPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getvalue2</strong></td>
+                <td>Entities in PropertyAccessException.getValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessException.getValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyaccessor</strong></td>
+                <td>Entities in PropertyAccessor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertytype4</strong></td>
+                <td>Entities in PropertyAccessor.getPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor.getPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertytypedescriptor2</strong></td>
+                <td>Entities in PropertyAccessor.getPropertyTypeDescriptor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor.getPropertyTypeDescriptor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvalue4</strong></td>
+                <td>Entities in PropertyAccessor.getPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor.getPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isreadableproperty2</strong></td>
+                <td>Entities in PropertyAccessor.isReadableProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor.isReadableProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iswritableproperty2</strong></td>
+                <td>Entities in PropertyAccessor.isWritableProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor.isWritableProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setpropertyvalue3</strong></td>
+                <td>Entities in PropertyAccessor.setPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor.setPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setpropertyvalues2</strong></td>
+                <td>Entities in PropertyAccessor.setPropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessor.setPropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyaccessorfactory</strong></td>
+                <td>Entities in PropertyAccessorFactory</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorFactory</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyaccessorfactory2</strong></td>
+                <td>Entities in PropertyAccessorFactory.PropertyAccessorFactory</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorFactory.PropertyAccessorFactory</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Forbeanpropertyaccess</strong></td>
+                <td>Entities in PropertyAccessorFactory.forBeanPropertyAccess</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorFactory.forBeanPropertyAccess</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fordirectfieldaccess</strong></td>
+                <td>Entities in PropertyAccessorFactory.forDirectFieldAccess</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorFactory.forDirectFieldAccess</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyaccessorutils</strong></td>
+                <td>Entities in PropertyAccessorUtils</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Canonicalpropertyname</strong></td>
+                <td>Entities in PropertyAccessorUtils.canonicalPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.canonicalPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Canonicalpropertynames</strong></td>
+                <td>Entities in PropertyAccessorUtils.canonicalPropertyNames</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.canonicalPropertyNames</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getfirstnestedpropertyseparatorindex</strong></td>
+                <td>Entities in PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getlastnestedpropertyseparatorindex</strong></td>
+                <td>Entities in PropertyAccessorUtils.getLastNestedPropertySeparatorIndex</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.getLastNestedPropertySeparatorIndex</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getnestedpropertyseparatorindex</strong></td>
+                <td>Entities in PropertyAccessorUtils.getNestedPropertySeparatorIndex</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.getNestedPropertySeparatorIndex</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyname3</strong></td>
+                <td>Entities in PropertyAccessorUtils.getPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.getPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isnestedorindexedproperty</strong></td>
+                <td>Entities in PropertyAccessorUtils.isNestedOrIndexedProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.isNestedOrIndexedProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Matchesproperty</strong></td>
+                <td>Entities in PropertyAccessorUtils.matchesProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyAccessorUtils.matchesProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertybatchupdateexception</strong></td>
+                <td>Entities in PropertyBatchUpdateException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertybatchupdateexception2</strong></td>
+                <td>Entities in PropertyBatchUpdateException.PropertyBatchUpdateException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.PropertyBatchUpdateException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Contains2</strong></td>
+                <td>Entities in PropertyBatchUpdateException.contains</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.contains</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getexceptioncount</strong></td>
+                <td>Entities in PropertyBatchUpdateException.getExceptionCount</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.getExceptionCount</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getmessage</strong></td>
+                <td>Entities in PropertyBatchUpdateException.getMessage</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.getMessage</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyaccessexception</strong></td>
+                <td>Entities in PropertyBatchUpdateException.getPropertyAccessException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.getPropertyAccessException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyaccessexceptions</strong></td>
+                <td>Entities in PropertyBatchUpdateException.getPropertyAccessExceptions</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.getPropertyAccessExceptions</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Printstacktrace</strong></td>
+                <td>Entities in PropertyBatchUpdateException.printStackTrace</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.printStackTrace</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tostring4</strong></td>
+                <td>Entities in PropertyBatchUpdateException.toString</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyBatchUpdateException.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertydescriptorutils</strong></td>
+                <td>Entities in PropertyDescriptorUtils</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyDescriptorUtils</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Copynonmethodproperties</strong></td>
+                <td>Entities in PropertyDescriptorUtils.copyNonMethodProperties</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyDescriptorUtils.copyNonMethodProperties</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Determinebasicproperties</strong></td>
+                <td>Entities in PropertyDescriptorUtils.determineBasicProperties</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyDescriptorUtils.determineBasicProperties</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Equals4</strong></td>
+                <td>Entities in PropertyDescriptorUtils.equals</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyDescriptorUtils.equals</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findindexedpropertytype</strong></td>
+                <td>Entities in PropertyDescriptorUtils.findIndexedPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyDescriptorUtils.findIndexedPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findpropertytype2</strong></td>
+                <td>Entities in PropertyDescriptorUtils.findPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyDescriptorUtils.findPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyeditorregistrar</strong></td>
+                <td>Entities in PropertyEditorRegistrar</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrar</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Overridesdefaulteditors</strong></td>
+                <td>Entities in PropertyEditorRegistrar.overridesDefaultEditors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrar.overridesDefaultEditors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Registercustomeditors</strong></td>
+                <td>Entities in PropertyEditorRegistrar.registerCustomEditors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrar.registerCustomEditors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyeditorregistry</strong></td>
+                <td>Entities in PropertyEditorRegistry</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistry</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findcustomeditor</strong></td>
+                <td>Entities in PropertyEditorRegistry.findCustomEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistry.findCustomEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Registercustomeditor</strong></td>
+                <td>Entities in PropertyEditorRegistry.registerCustomEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistry.registerCustomEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyeditorregistrysupport</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Actualpropertynameof</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.actualPropertyNameOf</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.actualPropertyNameOf</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Addstrippedpropertypaths</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.addStrippedPropertyPaths</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.addStrippedPropertyPaths</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Copycustomeditorsto</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.copyCustomEditorsTo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.copyCustomEditorsTo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Copydefaulteditorsto</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.copyDefaultEditorsTo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.copyDefaultEditorsTo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Createdefaulteditors</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.createDefaultEditors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.createDefaultEditors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Findcustomeditor2</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.findCustomEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.findCustomEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getconversionservice2</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.getConversionService</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.getConversionService</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getcustomeditor</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.getCustomEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.getCustomEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getdefaulteditor</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.getDefaultEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.getDefaultEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertytype5</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.getPropertyType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.getPropertyType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Guesspropertytypefromeditors</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.guessPropertyTypeFromEditors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.guessPropertyTypeFromEditors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hascustomeditorforelement</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.hasCustomEditorForElement</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.hasCustomEditorForElement</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Matchesproperty2</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.matchesProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.matchesProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Overridedefaulteditor</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.overrideDefaultEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.overrideDefaultEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Registercustomeditor2</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.registerCustomEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.registerCustomEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Registerdefaulteditors</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.registerDefaultEditors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.registerDefaultEditors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setconversionservice2</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.setConversionService</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.setConversionService</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setdefaulteditorregistrar</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.setDefaultEditorRegistrar</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.setDefaultEditorRegistrar</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Useconfigvalueeditors</strong></td>
+                <td>Entities in PropertyEditorRegistrySupport.useConfigValueEditors</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyEditorRegistrySupport.useConfigValueEditors</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertymatches</strong></td>
+                <td>Entities in PropertyMatches</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertymatches2</strong></td>
+                <td>Entities in PropertyMatches.PropertyMatches</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.PropertyMatches</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Appendhintmessage</strong></td>
+                <td>Entities in PropertyMatches.appendHintMessage</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.appendHintMessage</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Builderrormessage</strong></td>
+                <td>Entities in PropertyMatches.buildErrorMessage</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.buildErrorMessage</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Calculatestringdistance</strong></td>
+                <td>Entities in PropertyMatches.calculateStringDistance</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.calculateStringDistance</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Forfield</strong></td>
+                <td>Entities in PropertyMatches.forField</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.forField</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Forproperty</strong></td>
+                <td>Entities in PropertyMatches.forProperty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.forProperty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpossiblematches2</strong></td>
+                <td>Entities in PropertyMatches.getPossibleMatches</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.getPossibleMatches</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyname4</strong></td>
+                <td>Entities in PropertyMatches.getPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyMatches.getPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertypath</strong></td>
+                <td>Entities in PropertyPath</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertypath2</strong></td>
+                <td>Entities in PropertyPath.PropertyPath</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.PropertyPath</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Canonicalname</strong></td>
+                <td>Entities in PropertyPath.canonicalName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.canonicalName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Canonicalnameororiginal</strong></td>
+                <td>Entities in PropertyPath.canonicalNameOrOriginal</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.canonicalNameOrOriginal</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Equals5</strong></td>
+                <td>Entities in PropertyPath.equals</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.equals</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hashcode4</strong></td>
+                <td>Entities in PropertyPath.hashCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.hashCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Parse</strong></td>
+                <td>Entities in PropertyPath.parse</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.parse</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Segments</strong></td>
+                <td>Entities in PropertyPath.segments</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.segments</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Subpath</strong></td>
+                <td>Entities in PropertyPath.subPath</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.subPath</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tostring5</strong></td>
+                <td>Entities in PropertyPath.toString</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyPath.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyvalue</strong></td>
+                <td>Entities in PropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyvalue2</strong></td>
+                <td>Entities in PropertyValue.PropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.PropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Equals6</strong></td>
+                <td>Entities in PropertyValue.equals</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.equals</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getconvertedvalue</strong></td>
+                <td>Entities in PropertyValue.getConvertedValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.getConvertedValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getname2</strong></td>
+                <td>Entities in PropertyValue.getName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.getName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getoriginalpropertyvalue</strong></td>
+                <td>Entities in PropertyValue.getOriginalPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.getOriginalPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getvalue3</strong></td>
+                <td>Entities in PropertyValue.getValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.getValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hashcode5</strong></td>
+                <td>Entities in PropertyValue.hashCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.hashCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isconverted2</strong></td>
+                <td>Entities in PropertyValue.isConverted</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.isConverted</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isoptional</strong></td>
+                <td>Entities in PropertyValue.isOptional</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.isOptional</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setconvertedvalue</strong></td>
+                <td>Entities in PropertyValue.setConvertedValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.setConvertedValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setoptional</strong></td>
+                <td>Entities in PropertyValue.setOptional</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.setOptional</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tostring6</strong></td>
+                <td>Entities in PropertyValue.toString</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValue.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyvalues</strong></td>
+                <td>Entities in PropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Changessince2</strong></td>
+                <td>Entities in PropertyValues.changesSince</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.changesSince</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Contains3</strong></td>
+                <td>Entities in PropertyValues.contains</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.contains</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvalue5</strong></td>
+                <td>Entities in PropertyValues.getPropertyValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.getPropertyValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyvalues2</strong></td>
+                <td>Entities in PropertyValues.getPropertyValues</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.getPropertyValues</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Isempty2</strong></td>
+                <td>Entities in PropertyValues.isEmpty</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.isEmpty</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iterator2</strong></td>
+                <td>Entities in PropertyValues.iterator</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.iterator</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Spliterator2</strong></td>
+                <td>Entities in PropertyValues.spliterator</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.spliterator</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Stream2</strong></td>
+                <td>Entities in PropertyValues.stream</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValues.stream</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyvalueseditor</strong></td>
+                <td>Entities in PropertyValuesEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValuesEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setastext</strong></td>
+                <td>Entities in PropertyValuesEditor.setAsText</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.PropertyValuesEditor.setAsText</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Simplebeaninfofactory</strong></td>
+                <td>Entities in SimpleBeanInfoFactory</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.SimpleBeanInfoFactory</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeaninfo4</strong></td>
+                <td>Entities in SimpleBeanInfoFactory.getBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.SimpleBeanInfoFactory.getBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getorder</strong></td>
+                <td>Entities in SimpleBeanInfoFactory.getOrder</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.SimpleBeanInfoFactory.getOrder</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Simpletypeconverter</strong></td>
+                <td>Entities in SimpleTypeConverter</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.SimpleTypeConverter</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Simpletypeconverter2</strong></td>
+                <td>Entities in SimpleTypeConverter.SimpleTypeConverter</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.SimpleTypeConverter.SimpleTypeConverter</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Standardbeaninfofactory</strong></td>
+                <td>Entities in StandardBeanInfoFactory</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.StandardBeanInfoFactory</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getbeaninfo5</strong></td>
+                <td>Entities in StandardBeanInfoFactory.getBeanInfo</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.StandardBeanInfoFactory.getBeanInfo</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getorder2</strong></td>
+                <td>Entities in StandardBeanInfoFactory.getOrder</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.StandardBeanInfoFactory.getOrder</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Typeconverter</strong></td>
+                <td>Entities in TypeConverter</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverter</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Convertifnecessary2</strong></td>
+                <td>Entities in TypeConverter.convertIfNecessary</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverter.convertIfNecessary</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Typeconverterdelegate</strong></td>
+                <td>Entities in TypeConverterDelegate</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Typeconverterdelegate2</strong></td>
+                <td>Entities in TypeConverterDelegate.TypeConverterDelegate</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.TypeConverterDelegate</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Attempttoconvertstringtoenum</strong></td>
+                <td>Entities in TypeConverterDelegate.attemptToConvertStringToEnum</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.attemptToConvertStringToEnum</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Buildindexedpropertyname</strong></td>
+                <td>Entities in TypeConverterDelegate.buildIndexedPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.buildIndexedPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Buildkeyedpropertyname</strong></td>
+                <td>Entities in TypeConverterDelegate.buildKeyedPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.buildKeyedPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Cancreatecopy</strong></td>
+                <td>Entities in TypeConverterDelegate.canCreateCopy</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.canCreateCopy</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Convertifnecessary3</strong></td>
+                <td>Entities in TypeConverterDelegate.convertIfNecessary</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.convertIfNecessary</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Converttotypedarray</strong></td>
+                <td>Entities in TypeConverterDelegate.convertToTypedArray</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.convertToTypedArray</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Converttotypedcollection</strong></td>
+                <td>Entities in TypeConverterDelegate.convertToTypedCollection</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.convertToTypedCollection</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Converttotypedmap</strong></td>
+                <td>Entities in TypeConverterDelegate.convertToTypedMap</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.convertToTypedMap</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Doconverttextvalue</strong></td>
+                <td>Entities in TypeConverterDelegate.doConvertTextValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.doConvertTextValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Doconvertvalue</strong></td>
+                <td>Entities in TypeConverterDelegate.doConvertValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.doConvertValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Finddefaulteditor</strong></td>
+                <td>Entities in TypeConverterDelegate.findDefaultEditor</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterDelegate.findDefaultEditor</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Typeconvertersupport</strong></td>
+                <td>Entities in TypeConverterSupport</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterSupport</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Convertifnecessary4</strong></td>
+                <td>Entities in TypeConverterSupport.convertIfNecessary</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeConverterSupport.convertIfNecessary</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Typemismatchexception</strong></td>
+                <td>Entities in TypeMismatchException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeMismatchException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Typemismatchexception2</strong></td>
+                <td>Entities in TypeMismatchException.TypeMismatchException</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeMismatchException.TypeMismatchException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Geterrorcode4</strong></td>
+                <td>Entities in TypeMismatchException.getErrorCode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeMismatchException.getErrorCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getpropertyname5</strong></td>
+                <td>Entities in TypeMismatchException.getPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeMismatchException.getPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getrequiredtype</strong></td>
+                <td>Entities in TypeMismatchException.getRequiredType</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeMismatchException.getRequiredType</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Getvalue4</strong></td>
+                <td>Entities in TypeMismatchException.getValue</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeMismatchException.getValue</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Initpropertyname</strong></td>
+                <td>Entities in TypeMismatchException.initPropertyName</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.springframework.beans.TypeMismatchException.initPropertyName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Factory</strong></td>
+                <td>Entities in factory</td>
+                <td>168</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.Aware, org.springframework.beans.factory.BeanClassLoaderAware, org.springframework.beans.factory.BeanClassLoaderAware.setBeanClassLoader, org.springframework.beans.factory.BeanCreationException, org.springframework.beans.factory.BeanCreationNotAllowedException, org.springframework.beans.factory.BeanCreationNotAllowedException.BeanCreationNotAllowedException, org.springframework.beans.factory.BeanCurrentlyInCreationException, org.springframework.beans.factory.BeanCurrentlyInCreationException.BeanCurrentlyInCreationException, ... (+160 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Annotation</strong></td>
+                <td>Entities in factory.annotation</td>
+                <td>89</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.annotation.AnnotatedBeanDefinition, org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition, org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor, org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredAnnotationBeanPostProcessor, org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.buildAutowiringMetadata, org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods, org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineBeanType, org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors, ... (+81 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Aot</strong></td>
+                <td>Entities in factory.aot</td>
+                <td>177</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.aot.AotBeanProcessingException, org.springframework.beans.factory.aot.AotException, org.springframework.beans.factory.aot.AotException.AotException, org.springframework.beans.factory.aot.AotProcessingException, org.springframework.beans.factory.aot.AotProcessingException.AotProcessingException, org.springframework.beans.factory.aot.AotServices, org.springframework.beans.factory.aot.AotServices.AotServices, org.springframework.beans.factory.aot.AotServices.asList, ... (+169 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Config</strong></td>
+                <td>Entities in factory.config</td>
+                <td>434</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.annotation.AnnotatedBeanDefinition.getFactoryMethodMetadata, org.springframework.beans.factory.annotation.AnnotatedBeanDefinition.getMetadata, org.springframework.beans.factory.annotation.Autowire, org.springframework.beans.factory.aot.BeanFactoryInitializationAotProcessor.processAheadOfTime, org.springframework.beans.factory.config.AbstractFactoryBean, org.springframework.beans.factory.config.AbstractFactoryBean.afterPropertiesSet, org.springframework.beans.factory.config.AbstractFactoryBean.createInstance, org.springframework.beans.factory.config.AbstractFactoryBean.destroy, ... (+426 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Groovy</strong></td>
+                <td>Entities in factory.groovy</td>
+                <td>39</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader, org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader.GroovyBeanDefinitionReader, org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader.addDeferredProperty, org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader.applyPropertyToBeanDefinition, org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader.bean, org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader.beans, org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader.createDynamicElementReader, org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader.finalizeDeferredProperties, ... (+31 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Parsing</strong></td>
+                <td>Entities in factory.parsing</td>
+                <td>107</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.parsing.AbstractComponentDefinition, org.springframework.beans.factory.parsing.BeanComponentDefinition, org.springframework.beans.factory.parsing.BeanComponentDefinition.BeanComponentDefinition, org.springframework.beans.factory.parsing.BeanComponentDefinition.equals, org.springframework.beans.factory.parsing.BeanComponentDefinition.getBeanDefinitions, org.springframework.beans.factory.parsing.BeanComponentDefinition.getBeanReferences, org.springframework.beans.factory.parsing.BeanComponentDefinition.getDescription, org.springframework.beans.factory.parsing.BeanComponentDefinition.getInnerBeanDefinitions, ... (+99 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Serviceloader</strong></td>
+                <td>Entities in factory.serviceloader</td>
+                <td>9</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.serviceloader.AbstractServiceLoaderBasedFactoryBean, org.springframework.beans.factory.serviceloader.AbstractServiceLoaderBasedFactoryBean.createInstance, org.springframework.beans.factory.serviceloader.AbstractServiceLoaderBasedFactoryBean.getObjectToExpose, org.springframework.beans.factory.serviceloader.AbstractServiceLoaderBasedFactoryBean.getServiceType, org.springframework.beans.factory.serviceloader.AbstractServiceLoaderBasedFactoryBean.setBeanClassLoader, org.springframework.beans.factory.serviceloader.AbstractServiceLoaderBasedFactoryBean.setServiceType, org.springframework.beans.factory.serviceloader.ServiceFactoryBean, org.springframework.beans.factory.serviceloader.ServiceListFactoryBean, ... (+1 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Support</strong></td>
+                <td>Entities in factory.support</td>
+                <td>748</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition.AnnotatedGenericBeanDefinition, org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition.getFactoryMethodMetadata, org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition.getMetadata, org.springframework.beans.factory.aot.AotBeanProcessingException.AotBeanProcessingException, org.springframework.beans.factory.aot.AotBeanProcessingException.createErrorMessage, org.springframework.beans.factory.aot.AotBeanProcessingException.getBeanDefinition, org.springframework.beans.factory.aot.BeanRegistrationCode.addInstancePostProcessor, org.springframework.beans.factory.aot.BeanRegistrationCode.getClassName, ... (+740 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Wiring</strong></td>
+                <td>Entities in factory.wiring</td>
+                <td>16</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.annotation.AnnotationBeanWiringInfoResolver, org.springframework.beans.factory.annotation.AnnotationBeanWiringInfoResolver.buildWiringInfo, org.springframework.beans.factory.annotation.AnnotationBeanWiringInfoResolver.getDefaultBeanName, org.springframework.beans.factory.annotation.AnnotationBeanWiringInfoResolver.resolveWiringInfo, org.springframework.beans.factory.wiring.BeanConfigurerSupport, org.springframework.beans.factory.wiring.BeanConfigurerSupport.afterPropertiesSet, org.springframework.beans.factory.wiring.BeanConfigurerSupport.configureBean, org.springframework.beans.factory.wiring.BeanConfigurerSupport.createDefaultBeanWiringInfoResolver, ... (+8 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Xml</strong></td>
+                <td>Entities in factory.xml</td>
+                <td>171</td>
+                
+                <td class="entity-list">org.springframework.beans.factory.xml.AbstractBeanDefinitionParser, org.springframework.beans.factory.xml.AbstractBeanDefinitionParser.parse, org.springframework.beans.factory.xml.AbstractBeanDefinitionParser.parseInternal, org.springframework.beans.factory.xml.AbstractBeanDefinitionParser.postProcessComponentDefinition, org.springframework.beans.factory.xml.AbstractBeanDefinitionParser.registerBeanDefinition, org.springframework.beans.factory.xml.AbstractBeanDefinitionParser.resolveId, org.springframework.beans.factory.xml.AbstractBeanDefinitionParser.shouldFireEvents, org.springframework.beans.factory.xml.AbstractBeanDefinitionParser.shouldGenerateId, ... (+163 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Propertyeditors</strong></td>
+                <td>Entities in propertyeditors</td>
+                <td>114</td>
+                
+                <td class="entity-list">org.springframework.beans.propertyeditors.ByteArrayPropertyEditor, org.springframework.beans.propertyeditors.ByteArrayPropertyEditor.getAsText, org.springframework.beans.propertyeditors.ByteArrayPropertyEditor.setAsText, org.springframework.beans.propertyeditors.CharArrayPropertyEditor, org.springframework.beans.propertyeditors.CharArrayPropertyEditor.getAsText, org.springframework.beans.propertyeditors.CharArrayPropertyEditor.setAsText, org.springframework.beans.propertyeditors.CharacterEditor, org.springframework.beans.propertyeditors.CharacterEditor.CharacterEditor, ... (+106 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Support2</strong></td>
+                <td>Entities in support</td>
+                <td>61</td>
+                
+                <td class="entity-list">org.springframework.beans.support.ArgumentConvertingMethodInvoker, org.springframework.beans.support.ArgumentConvertingMethodInvoker.doFindMatchingMethod, org.springframework.beans.support.ArgumentConvertingMethodInvoker.findMatchingMethod, org.springframework.beans.support.ArgumentConvertingMethodInvoker.getDefaultTypeConverter, org.springframework.beans.support.ArgumentConvertingMethodInvoker.getTypeConverter, org.springframework.beans.support.ArgumentConvertingMethodInvoker.registerCustomEditor, org.springframework.beans.support.ArgumentConvertingMethodInvoker.setTypeConverter, org.springframework.beans.support.MutableSortDefinition, ... (+53 more)</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (15)</h2>
+    
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 3 components: Config <-> Factory <-> Support</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Config, Factory, Support</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Annotation contains 89 entities but only 1 internal dependencies (0.01 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Annotation into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Annotation</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Aot contains 177 entities but only 10 internal dependencies (0.06 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Aot into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Aot</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Groovy contains 39 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Groovy into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Groovy</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Parsing contains 107 entities but only 23 internal dependencies (0.21 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Parsing into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Parsing</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Support contains 748 entities but only 87 internal dependencies (0.12 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Support into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Support</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Xml contains 171 entities but only 11 internal dependencies (0.06 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Xml into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Xml</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Propertyeditors contains 114 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Propertyeditors into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Propertyeditors</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Support2 contains 61 entities but only 1 internal dependencies (0.02 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Support2 into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Support2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Exception' pattern is scattered across 35 components: Aot, Beaninstantiationexception, Beaninstantiationexception2, Beansexception, Beansexception2, Config, Conversionnotsupportedexception, Conversionnotsupportedexception2, Createnotwritablepropertyexception, Createnotwritablepropertyexception2, Createnotwritablepropertyexception3, Factory, Fatalbeanexception, Fatalbeanexception2, Getpropertyaccessexception, Invalidpropertyexception, Invalidpropertyexception2, Invalidpropertypathexception, Invalidpropertypathexception2, Methodinvocationexception, Methodinvocationexception2, Notreadablepropertyexception, Notreadablepropertyexception2, Notwritablepropertyexception, Notwritablepropertyexception2, Nullvalueinnestedpathexception, Nullvalueinnestedpathexception2, Parsing, Propertyaccessexception, Propertyaccessexception2, Propertybatchupdateexception, Propertybatchupdateexception2, Support, Typemismatchexception, Typemismatchexception2</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Exception'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Aot, Beaninstantiationexception, Beaninstantiationexception2, Beansexception, Beansexception2, Config, Conversionnotsupportedexception, Conversionnotsupportedexception2, Createnotwritablepropertyexception, Createnotwritablepropertyexception2, Createnotwritablepropertyexception3, Factory, Fatalbeanexception, Fatalbeanexception2, Getpropertyaccessexception, Invalidpropertyexception, Invalidpropertyexception2, Invalidpropertypathexception, Invalidpropertypathexception2, Methodinvocationexception, Methodinvocationexception2, Notreadablepropertyexception, Notreadablepropertyexception2, Notwritablepropertyexception, Notwritablepropertyexception2, Nullvalueinnestedpathexception, Nullvalueinnestedpathexception2, Parsing, Propertyaccessexception, Propertyaccessexception2, Propertybatchupdateexception, Propertybatchupdateexception2, Support, Typemismatchexception, Typemismatchexception2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Factory' pattern is scattered across 14 components: Annotation, Aot, Beaninfofactory, Beansexception, Config, Extendedbeaninfofactory, Factory, Propertyaccessorfactory, Propertyaccessorfactory2, Simplebeaninfofactory, Standardbeaninfofactory, Support, Wiring, Xml</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Factory'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Annotation, Aot, Beaninfofactory, Beansexception, Config, Extendedbeaninfofactory, Factory, Propertyaccessorfactory, Propertyaccessorfactory2, Simplebeaninfofactory, Standardbeaninfofactory, Support, Wiring, Xml</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Handler' pattern is scattered across 5 components: Getlocalpropertyhandler, Getlocalpropertyhandler2, Getlocalpropertyhandler3, Getpropertyhandler, Xml</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Handler'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Getlocalpropertyhandler, Getlocalpropertyhandler2, Getlocalpropertyhandler3, Getpropertyhandler, Xml</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Provider' pattern is scattered across 3 components: Beansexception, Factory, Support</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Provider'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Beansexception, Factory, Support</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Service' pattern is scattered across 6 components: Config, Getconversionservice, Getconversionservice2, Setconversionservice, Setconversionservice2, Support</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Service'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Config, Getconversionservice, Getconversionservice2, Setconversionservice, Setconversionservice2, Support</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Utils' pattern is scattered across 6 components: Annotation, Beanutils, Factory, Propertyaccessorutils, Propertydescriptorutils, Support</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Annotation, Beanutils, Factory, Propertyaccessorutils, Propertydescriptorutils, Support</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.support</code></td>
+                    <td>925</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.config</code></td>
+                    <td>483</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans</code></td>
+                    <td>455</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.aot</code></td>
+                    <td>234</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.xml</code></td>
+                    <td>231</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory</code></td>
+                    <td>215</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.propertyeditors</code></td>
+                    <td>137</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.parsing</code></td>
+                    <td>128</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.annotation</code></td>
+                    <td>108</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.support</code></td>
+                    <td>68</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.groovy</code></td>
+                    <td>44</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.wiring</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.beans.factory.serviceloader</code></td>
+                    <td>15</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+{
+  "targets": {
+    "commons-lang": {
+      "sha": "29624cdb50ecd794207d561345b2fc9ca3a9d326",
+      "entities": 2820,
+      "edges": 5291,
+      "components": 57,
+      "smells": 22,
+      "smell_types": {
+        "Dependency Cycle": 1,
+        "Concern Overload": 17,
+        "Scattered Parasitic Functionality": 4
+      },
+      "seconds": 0.6
+    },
+    "commons-io": {
+      "sha": "2c6bf8dea065e96651661d5e277e35b2f343d879",
+      "entities": 2072,
+      "edges": 4656,
+      "components": 43,
+      "smells": 13,
+      "smell_types": {
+        "Dependency Cycle": 2,
+        "Concern Overload": 9,
+        "Scattered Parasitic Functionality": 2
+      },
+      "seconds": 0.1
+    },
+    "commons-collections": {
+      "sha": "a350e2c73bf61230afad1bf6f3dc770b2ddb36ee",
+      "entities": 3578,
+      "edges": 13013,
+      "components": 62,
+      "smells": 21,
+      "smell_types": {
+        "Dependency Cycle": 4,
+        "Concern Overload": 15,
+        "Scattered Parasitic Functionality": 2
+      },
+      "seconds": 0.6
+    },
+    "spring-core": {
+      "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
+      "entities": 5391,
+      "edges": 13955,
+      "components": 6,
+      "smells": 11,
+      "smell_types": {
+        "Dependency Cycle": 1,
+        "Scattered Parasitic Functionality": 6,
+        "Link/Upstream Overload": 4
+      },
+      "seconds": 1.0
+    },
+    "spring-beans": {
+      "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
+      "entities": 2643,
+      "edges": 17098,
+      "components": 391,
+      "smells": 15,
+      "smell_types": {
+        "Dependency Cycle": 1,
+        "Concern Overload": 8,
+        "Scattered Parasitic Functionality": 6
+      },
+      "seconds": 0.6
+    },
+    "spring-context": {
+      "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
+      "entities": 3545,
+      "edges": 8782,
+      "components": 12,
+      "smells": 11,
+      "smell_types": {
+        "Dependency Cycle": 1,
+        "Concern Overload": 1,
+        "Scattered Parasitic Functionality": 8,
+        "Link/Upstream Overload": 1
+      },
+      "seconds": 0.7
+    },
+    "spring-web": {
+      "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
+      "entities": 5679,
+      "edges": 19118,
+      "components": 19,
+      "smells": 17,
+      "smell_types": {
+        "Dependency Cycle": 1,
+        "Concern Overload": 5,
+        "Scattered Parasitic Functionality": 9,
+        "Link/Upstream Overload": 2
+      },
+      "seconds": 1.1
+    },
+    "kafka": {
+      "sha": "800676c2e366bac8f32625697c67b68db5a817a1",
+      "entities": 31450,
+      "edges": 399273,
+      "components": 7,
+      "smells": 11,
+      "smell_types": {
+        "Dependency Cycle": 1,
+        "Concern Overload": 2,
+        "Scattered Parasitic Functionality": 6,
+        "Link/Upstream Overload": 2
+      },
+      "seconds": 11.6
+    }
+  }
+}

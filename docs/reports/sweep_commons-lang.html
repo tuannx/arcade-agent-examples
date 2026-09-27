@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: commons-lang (smell sweep) (commons-lang)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (22)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">commons-lang (smell sweep) &mdash; version commons-lang &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">2820</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">5291</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">57</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">22</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Annotationutils["Annotationutils\n(11 entities)"]
+    Appendablejoiner["Appendablejoiner\n(10 entities)"]
+    Archutils["Archutils\n(15 entities)"]
+    Arrayfill["Arrayfill\n(1 entities)"]
+    Arraysorter["Arraysorter\n(3 entities)"]
+    Arrayutils["Arrayutils\n(69 entities)"]
+    Bitfield["Bitfield\n(20 entities)"]
+    Booleanutils["Booleanutils\n(17 entities)"]
+    Cachedrandombits["Cachedrandombits\n(3 entities)"]
+    Charencoding["Charencoding\n(3 entities)"]
+    Charrange["Charrange\n(18 entities)"]
+    Charsequenceutils["Charsequenceutils\n(9 entities)"]
+    Charset["Charset\n(9 entities)"]
+    Charutils["Charutils\n(26 entities)"]
+    Charsets["Charsets\n(3 entities)"]
+    Classloaderutils["Classloaderutils\n(6 entities)"]
+    Classpathutils["Classpathutils\n(6 entities)"]
+    Classutils["Classutils\n(49 entities)"]
+    Conversion["Conversion\n(41 entities)"]
+    Doublerange["Doublerange\n(4 entities)"]
+    Functions["Functions\n(21 entities)"]
+    Integerrange["Integerrange\n(5 entities)"]
+    Javaversion["Javaversion\n(1 entities)"]
+    Localeutils["Localeutils\n(74 entities)"]
+    Longrange["Longrange\n(5 entities)"]
+    Notimplementedexception["Notimplementedexception\n(3 entities)"]
+    Numberrange["Numberrange\n(2 entities)"]
+    Objectutils["Objectutils\n(59 entities)"]
+    Randomstringutils["Randomstringutils\n(21 entities)"]
+    Range["Range\n(28 entities)"]
+    Regexutils["Regexutils\n(11 entities)"]
+    Runtimeenvironment["Runtimeenvironment\n(5 entities)"]
+    Serializableobject["Serializableobject\n(1 entities)"]
+    Serializationexception["Serializationexception\n(2 entities)"]
+    Serializationutils["Serializationutils\n(36 entities)"]
+    Stringescapeutils["Stringescapeutils\n(1 entities)"]
+    Stringutils["Stringutils\n(195 entities)"]
+    Strings["Strings\n(25 entities)"]
+    Systemproperties["Systemproperties\n(7 entities)"]
+    Systemutils["Systemutils\n(23 entities)"]
+    Threadutils["Threadutils\n(16 entities)"]
+    Validate["Validate\n(48 entities)"]
+    Arch["Arch\n(12 entities)"]
+    Builder["Builder\n(264 entities)"]
+    Compare["Compare\n(3 entities)"]
+    Concurrent["Concurrent\n(120 entities)"]
+    Event["Event\n(17 entities)"]
+    Exception["Exception\n(107 entities)"]
+    Function["Function\n(479 entities)"]
+    Math["Math\n(87 entities)"]
+    Mutable["Mutable\n(156 entities)"]
+    Reflect["Reflect\n(91 entities)"]
+    Stream["Stream\n(44 entities)"]
+    Text["Text\n(236 entities)"]
+    Time["Time\n(208 entities)"]
+    Tuple["Tuple\n(83 entities)"]
+    Util["Util\n(1 entities)"]
+    Annotationutils --> Builder
+    Annotationutils --> Exception
+    Appendablejoiner --> Exception
+    Appendablejoiner --> Function
+    Archutils --> Arch
+    Archutils --> Stream
+    Arrayfill --> Function
+    Arrayutils --> Builder
+    Arrayutils --> Function
+    Arrayutils --> Mutable
+    Arrayutils --> Stream
+    Booleanutils --> Math
+    Builder --> Arraysorter
+    Builder --> Arrayutils
+    Builder --> Classutils
+    Builder --> Function
+    Builder --> Mutable
+    Builder --> Objectutils
+    Builder --> Reflect
+    Builder --> Stream
+    Builder --> Stringescapeutils
+    Builder --> Strings
+    Builder --> Stringutils
+    Builder --> Systemproperties
+    Builder --> Tuple
+    Builder --> Validate
+    Concurrent --> Builder
+    Concurrent --> Exception
+    Concurrent --> Function
+    Concurrent --> Validate
+    Event --> Arrayutils
+    Event --> Exception
+    Event --> Function
+    Event --> Objectutils
+    Event --> Reflect
+    Event --> Serializationutils
+    Event --> Validate
+    Exception --> Arrayutils
+    Exception --> Classutils
+    Exception --> Reflect
+    Exception --> Strings
+    Exception --> Stringutils
+    Exception --> Tuple
+    Exception --> Util
+    Function --> Exception
+    Function --> Stream
+    Functions --> Exception
+    Functions --> Function
+    Javaversion --> Math
+    Math --> Stringutils
+    Math --> Validate
+    Mutable --> Booleanutils
+    Objectutils --> Exception
+    Objectutils --> Function
+    Objectutils --> Mutable
+    Objectutils --> Stream
+    Objectutils --> Text
+    Objectutils --> Time
+    Reflect --> Appendablejoiner
+    Reflect --> Arrayutils
+    Reflect --> Builder
+    Reflect --> Classutils
+    Reflect --> Javaversion
+    Reflect --> Objectutils
+    Reflect --> Stream
+    Reflect --> Stringutils
+    Reflect --> Systemutils
+    Reflect --> Validate
+    Stream --> Arrayutils
+    Stream --> Function
+    Stream --> Stringutils
+    Stringescapeutils --> Text
+    Strings --> Builder
+    Strings --> Function
+    Stringutils --> Function
+    Stringutils --> Stream
+    Systemproperties --> Function
+    Text --> Arrayfill
+    Text --> Arraysorter
+    Text --> Arrayutils
+    Text --> Builder
+    Text --> Charutils
+    Text --> Localeutils
+    Text --> Objectutils
+    Text --> Strings
+    Text --> Stringutils
+    Text --> Validate
+    Threadutils --> Function
+    Threadutils --> Time
+    Time --> Arraysorter
+    Time --> Charutils
+    Time --> Classutils
+    Time --> Exception
+    Time --> Function
+    Time --> Javaversion
+    Time --> Localeutils
+    Time --> Longrange
+    Time --> Math
+    Time --> Objectutils
+    Time --> Serializationutils
+    Time --> Strings
+    Time --> Stringutils
+    Time --> Systemproperties
+    Time --> Systemutils
+    Time --> Tuple
+    Time --> Validate
+    Tuple --> Builder
+    Tuple --> Function
+    Util --> Arrayutils
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.apache.commons.lang3') with dependency-affinity facade refinement (631 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Annotationutils</strong></td>
+                <td>Entities in AnnotationUtils</td>
+                <td>11</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.AnnotationUtils, org.apache.commons.lang3.AnnotationUtils.AnnotationUtils, org.apache.commons.lang3.AnnotationUtils.annotationArrayMemberEquals, org.apache.commons.lang3.AnnotationUtils.arrayMemberEquals, org.apache.commons.lang3.AnnotationUtils.arrayMemberHash, org.apache.commons.lang3.AnnotationUtils.equals, org.apache.commons.lang3.AnnotationUtils.hashCode, org.apache.commons.lang3.AnnotationUtils.hashMember, ... (+3 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Appendablejoiner</strong></td>
+                <td>Entities in AppendableJoiner</td>
+                <td>10</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.AppendableJoiner, org.apache.commons.lang3.AppendableJoiner.AppendableJoiner, org.apache.commons.lang3.AppendableJoiner.builder, org.apache.commons.lang3.AppendableJoiner.join, org.apache.commons.lang3.AppendableJoiner.joinA, org.apache.commons.lang3.AppendableJoiner.joinArray, org.apache.commons.lang3.AppendableJoiner.joinI, org.apache.commons.lang3.AppendableJoiner.joinIterable, ... (+2 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Archutils</strong></td>
+                <td>Entities in ArchUtils</td>
+                <td>15</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ArchUtils, org.apache.commons.lang3.ArchUtils.ArchUtils, org.apache.commons.lang3.ArchUtils.addProcessor, org.apache.commons.lang3.ArchUtils.addProcessors, org.apache.commons.lang3.ArchUtils.getProcessor, org.apache.commons.lang3.ArchUtils.init, org.apache.commons.lang3.ArchUtils.init_Aarch_64Bit, org.apache.commons.lang3.ArchUtils.init_IA64_32Bit, ... (+7 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Arrayfill</strong></td>
+                <td>Entities in ArrayFill</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ArrayFill</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Arraysorter</strong></td>
+                <td>Entities in ArraySorter</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ArraySorter, org.apache.commons.lang3.ArraySorter.ArraySorter, org.apache.commons.lang3.ArraySorter.sort</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Arrayutils</strong></td>
+                <td>Entities in ArrayUtils</td>
+                <td>69</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ArrayUtils, org.apache.commons.lang3.ArrayUtils.ArrayUtils, org.apache.commons.lang3.ArrayUtils.add, org.apache.commons.lang3.ArrayUtils.addAll, org.apache.commons.lang3.ArrayUtils.addExact, org.apache.commons.lang3.ArrayUtils.addFirst, org.apache.commons.lang3.ArrayUtils.arraycopy, org.apache.commons.lang3.ArrayUtils.clone, ... (+61 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bitfield</strong></td>
+                <td>Entities in BitField</td>
+                <td>20</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.BitField, org.apache.commons.lang3.BitField.BitField, org.apache.commons.lang3.BitField.clear, org.apache.commons.lang3.BitField.clearByte, org.apache.commons.lang3.BitField.clearShort, org.apache.commons.lang3.BitField.getRawValue, org.apache.commons.lang3.BitField.getShortRawValue, org.apache.commons.lang3.BitField.getShortValue, ... (+12 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Booleanutils</strong></td>
+                <td>Entities in BooleanUtils</td>
+                <td>17</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.BooleanUtils, org.apache.commons.lang3.mutable.MutableBoolean.MutableBoolean, org.apache.commons.lang3.mutable.MutableBoolean.booleanValue, org.apache.commons.lang3.mutable.MutableBoolean.compareTo, org.apache.commons.lang3.mutable.MutableBoolean.equals, org.apache.commons.lang3.mutable.MutableBoolean.getValue, org.apache.commons.lang3.mutable.MutableBoolean.hashCode, org.apache.commons.lang3.mutable.MutableBoolean.isFalse, ... (+9 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Cachedrandombits</strong></td>
+                <td>Entities in CachedRandomBits</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.CachedRandomBits, org.apache.commons.lang3.CachedRandomBits.CachedRandomBits, org.apache.commons.lang3.CachedRandomBits.nextBits</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charencoding</strong></td>
+                <td>Entities in CharEncoding</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.CharEncoding, org.apache.commons.lang3.CharEncoding.CharEncoding, org.apache.commons.lang3.CharEncoding.isSupported</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charrange</strong></td>
+                <td>Entities in CharRange</td>
+                <td>18</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.CharRange, org.apache.commons.lang3.CharRange.CharRange, org.apache.commons.lang3.CharRange.contains, org.apache.commons.lang3.CharRange.equals, org.apache.commons.lang3.CharRange.getEnd, org.apache.commons.lang3.CharRange.getStart, org.apache.commons.lang3.CharRange.hashCode, org.apache.commons.lang3.CharRange.is, ... (+10 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charsequenceutils</strong></td>
+                <td>Entities in CharSequenceUtils</td>
+                <td>9</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.CharSequenceUtils, org.apache.commons.lang3.CharSequenceUtils.CharSequenceUtils, org.apache.commons.lang3.CharSequenceUtils.checkLaterThan1, org.apache.commons.lang3.CharSequenceUtils.equalsIgnoreCase, org.apache.commons.lang3.CharSequenceUtils.indexOf, org.apache.commons.lang3.CharSequenceUtils.lastIndexOf, org.apache.commons.lang3.CharSequenceUtils.regionMatches, org.apache.commons.lang3.CharSequenceUtils.subSequence, ... (+1 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charset</strong></td>
+                <td>Entities in CharSet</td>
+                <td>9</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.CharSet, org.apache.commons.lang3.CharSet.CharSet, org.apache.commons.lang3.CharSet.add, org.apache.commons.lang3.CharSet.contains, org.apache.commons.lang3.CharSet.equals, org.apache.commons.lang3.CharSet.getCharRanges, org.apache.commons.lang3.CharSet.getInstance, org.apache.commons.lang3.CharSet.hashCode, ... (+1 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charutils</strong></td>
+                <td>Entities in CharUtils</td>
+                <td>26</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.CharUtils, org.apache.commons.lang3.CharUtils.CharUtils, org.apache.commons.lang3.CharUtils.compare, org.apache.commons.lang3.CharUtils.isAscii, org.apache.commons.lang3.CharUtils.isAsciiAlpha, org.apache.commons.lang3.CharUtils.isAsciiAlphaLower, org.apache.commons.lang3.CharUtils.isAsciiAlphaUpper, org.apache.commons.lang3.CharUtils.isAsciiAlphanumeric, ... (+18 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charsets</strong></td>
+                <td>Entities in Charsets</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.Charsets, org.apache.commons.lang3.Charsets.toCharset, org.apache.commons.lang3.Charsets.toCharsetName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Classloaderutils</strong></td>
+                <td>Entities in ClassLoaderUtils</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ClassLoaderUtils, org.apache.commons.lang3.ClassLoaderUtils.ClassLoaderUtils, org.apache.commons.lang3.ClassLoaderUtils.getSystemURLs, org.apache.commons.lang3.ClassLoaderUtils.getThreadURLs, org.apache.commons.lang3.ClassLoaderUtils.getURLs, org.apache.commons.lang3.ClassLoaderUtils.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Classpathutils</strong></td>
+                <td>Entities in ClassPathUtils</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ClassPathUtils, org.apache.commons.lang3.ClassPathUtils.ClassPathUtils, org.apache.commons.lang3.ClassPathUtils.packageToPath, org.apache.commons.lang3.ClassPathUtils.pathToPackage, org.apache.commons.lang3.ClassPathUtils.toFullyQualifiedName, org.apache.commons.lang3.ClassPathUtils.toFullyQualifiedPath</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Classutils</strong></td>
+                <td>Entities in ClassUtils</td>
+                <td>49</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ClassUtils, org.apache.commons.lang3.ClassUtils.ClassUtils, org.apache.commons.lang3.ClassUtils.comparator, org.apache.commons.lang3.ClassUtils.convertClassNamesToClasses, org.apache.commons.lang3.ClassUtils.convertClassesToClassNames, org.apache.commons.lang3.ClassUtils.getAbbreviatedName, org.apache.commons.lang3.ClassUtils.getAllInterfaces, org.apache.commons.lang3.ClassUtils.getAllSuperclasses, ... (+41 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Conversion</strong></td>
+                <td>Entities in Conversion</td>
+                <td>41</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.Conversion, org.apache.commons.lang3.Conversion.Conversion, org.apache.commons.lang3.Conversion.binaryBeMsb0ToHexDigit, org.apache.commons.lang3.Conversion.binaryToByte, org.apache.commons.lang3.Conversion.binaryToHexDigit, org.apache.commons.lang3.Conversion.binaryToHexDigitMsb0_4bits, org.apache.commons.lang3.Conversion.binaryToInt, org.apache.commons.lang3.Conversion.binaryToLong, ... (+33 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Doublerange</strong></td>
+                <td>Entities in DoubleRange</td>
+                <td>4</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.DoubleRange, org.apache.commons.lang3.DoubleRange.DoubleRange, org.apache.commons.lang3.DoubleRange.fit, org.apache.commons.lang3.DoubleRange.of</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Functions</strong></td>
+                <td>Entities in Functions</td>
+                <td>21</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.Functions, org.apache.commons.lang3.Functions.Functions, org.apache.commons.lang3.Functions.accept, org.apache.commons.lang3.Functions.apply, org.apache.commons.lang3.Functions.asBiConsumer, org.apache.commons.lang3.Functions.asBiFunction, org.apache.commons.lang3.Functions.asBiPredicate, org.apache.commons.lang3.Functions.asCallable, ... (+13 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Integerrange</strong></td>
+                <td>Entities in IntegerRange</td>
+                <td>5</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.IntegerRange, org.apache.commons.lang3.IntegerRange.IntegerRange, org.apache.commons.lang3.IntegerRange.fit, org.apache.commons.lang3.IntegerRange.of, org.apache.commons.lang3.IntegerRange.toIntStream</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Javaversion</strong></td>
+                <td>Entities in JavaVersion</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.JavaVersion</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Localeutils</strong></td>
+                <td>Entities in LocaleUtils</td>
+                <td>74</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.LocaleUtils, org.apache.commons.lang3.LocaleUtils.LocaleUtils, org.apache.commons.lang3.LocaleUtils.availableLocaleList, org.apache.commons.lang3.LocaleUtils.availableLocaleSet, org.apache.commons.lang3.LocaleUtils.countriesByLanguage, org.apache.commons.lang3.LocaleUtils.getCcToLocalesMap, org.apache.commons.lang3.LocaleUtils.getLcToLocalesMap, org.apache.commons.lang3.LocaleUtils.hasCountry, ... (+66 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Longrange</strong></td>
+                <td>Entities in LongRange</td>
+                <td>5</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.LongRange, org.apache.commons.lang3.LongRange.LongRange, org.apache.commons.lang3.LongRange.fit, org.apache.commons.lang3.LongRange.of, org.apache.commons.lang3.LongRange.toLongStream</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Notimplementedexception</strong></td>
+                <td>Entities in NotImplementedException</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.NotImplementedException, org.apache.commons.lang3.NotImplementedException.NotImplementedException, org.apache.commons.lang3.NotImplementedException.getCode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Numberrange</strong></td>
+                <td>Entities in NumberRange</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.NumberRange, org.apache.commons.lang3.NumberRange.NumberRange</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Objectutils</strong></td>
+                <td>Entities in ObjectUtils</td>
+                <td>59</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ObjectUtils, org.apache.commons.lang3.ObjectUtils.CONST, org.apache.commons.lang3.ObjectUtils.CONST_BYTE, org.apache.commons.lang3.ObjectUtils.CONST_SHORT, org.apache.commons.lang3.ObjectUtils.ObjectUtils, org.apache.commons.lang3.ObjectUtils.allNotNull, org.apache.commons.lang3.ObjectUtils.allNull, org.apache.commons.lang3.ObjectUtils.anyNotNull, ... (+51 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Randomstringutils</strong></td>
+                <td>Entities in RandomStringUtils</td>
+                <td>21</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.RandomStringUtils, org.apache.commons.lang3.RandomStringUtils.RandomStringUtils, org.apache.commons.lang3.RandomStringUtils.insecure, org.apache.commons.lang3.RandomStringUtils.next, org.apache.commons.lang3.RandomStringUtils.nextAlphabetic, org.apache.commons.lang3.RandomStringUtils.nextAlphanumeric, org.apache.commons.lang3.RandomStringUtils.nextAscii, org.apache.commons.lang3.RandomStringUtils.nextGraph, ... (+13 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Range</strong></td>
+                <td>Entities in Range</td>
+                <td>28</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.Range, org.apache.commons.lang3.Range.Range, org.apache.commons.lang3.Range.between, org.apache.commons.lang3.Range.contains, org.apache.commons.lang3.Range.containsRange, org.apache.commons.lang3.Range.elementCompareTo, org.apache.commons.lang3.Range.equals, org.apache.commons.lang3.Range.fit, ... (+20 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Regexutils</strong></td>
+                <td>Entities in RegExUtils</td>
+                <td>11</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.RegExUtils, org.apache.commons.lang3.RegExUtils.RegExUtils, org.apache.commons.lang3.RegExUtils.dotAll, org.apache.commons.lang3.RegExUtils.dotAllMatcher, org.apache.commons.lang3.RegExUtils.removeAll, org.apache.commons.lang3.RegExUtils.removeFirst, org.apache.commons.lang3.RegExUtils.removePattern, org.apache.commons.lang3.RegExUtils.replaceAll, ... (+3 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Runtimeenvironment</strong></td>
+                <td>Entities in RuntimeEnvironment</td>
+                <td>5</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.RuntimeEnvironment, org.apache.commons.lang3.RuntimeEnvironment.RuntimeEnvironment, org.apache.commons.lang3.RuntimeEnvironment.fileExists, org.apache.commons.lang3.RuntimeEnvironment.inContainer, org.apache.commons.lang3.RuntimeEnvironment.readFile</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Serializableobject</strong></td>
+                <td>Entities in SerializableObject</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.SerializableObject</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Serializationexception</strong></td>
+                <td>Entities in SerializationException</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.SerializationException, org.apache.commons.lang3.SerializationException.SerializationException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Serializationutils</strong></td>
+                <td>Entities in SerializationUtils</td>
+                <td>36</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.SerializationUtils, org.apache.commons.lang3.SerializationUtils.SerializationUtils, org.apache.commons.lang3.SerializationUtils.clone, org.apache.commons.lang3.SerializationUtils.deserialize, org.apache.commons.lang3.SerializationUtils.requireNonNull, org.apache.commons.lang3.SerializationUtils.roundtrip, org.apache.commons.lang3.SerializationUtils.serialize, org.apache.commons.lang3.util.FluentBitSet, ... (+28 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Stringescapeutils</strong></td>
+                <td>Entities in StringEscapeUtils</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.StringEscapeUtils</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Stringutils</strong></td>
+                <td>Entities in StringUtils</td>
+                <td>195</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.StringUtils, org.apache.commons.lang3.StringUtils.StringUtils, org.apache.commons.lang3.StringUtils.abbreviate, org.apache.commons.lang3.StringUtils.abbreviateMiddle, org.apache.commons.lang3.StringUtils.appendIfMissing, org.apache.commons.lang3.StringUtils.appendIfMissingIgnoreCase, org.apache.commons.lang3.StringUtils.capacity, org.apache.commons.lang3.StringUtils.capitalize, ... (+187 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Strings</strong></td>
+                <td>Entities in Strings</td>
+                <td>25</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.Strings, org.apache.commons.lang3.Strings.Strings, org.apache.commons.lang3.Strings.appendIfMissing, org.apache.commons.lang3.Strings.builder, org.apache.commons.lang3.Strings.compare, org.apache.commons.lang3.Strings.contains, org.apache.commons.lang3.Strings.containsAny, org.apache.commons.lang3.Strings.endsWith, ... (+17 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Systemproperties</strong></td>
+                <td>Entities in SystemProperties</td>
+                <td>7</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.SystemProperties, org.apache.commons.lang3.text.StrLookup, org.apache.commons.lang3.text.StrLookup.StrLookup, org.apache.commons.lang3.text.StrLookup.lookup, org.apache.commons.lang3.text.StrLookup.mapLookup, org.apache.commons.lang3.text.StrLookup.noneLookup, org.apache.commons.lang3.text.StrLookup.systemPropertiesLookup</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Systemutils</strong></td>
+                <td>Entities in SystemUtils</td>
+                <td>23</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.SystemUtils, org.apache.commons.lang3.SystemUtils.SystemUtils, org.apache.commons.lang3.SystemUtils.getEnvironmentVariable, org.apache.commons.lang3.SystemUtils.getHostName, org.apache.commons.lang3.SystemUtils.getJavaHome, org.apache.commons.lang3.SystemUtils.getJavaHomePath, org.apache.commons.lang3.SystemUtils.getJavaIoTmpDir, org.apache.commons.lang3.SystemUtils.getJavaIoTmpDirPath, ... (+15 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Threadutils</strong></td>
+                <td>Entities in ThreadUtils</td>
+                <td>16</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ThreadUtils, org.apache.commons.lang3.ThreadUtils.ThreadUtils, org.apache.commons.lang3.ThreadUtils.findThreadById, org.apache.commons.lang3.ThreadUtils.findThreadGroups, org.apache.commons.lang3.ThreadUtils.findThreadGroupsByName, org.apache.commons.lang3.ThreadUtils.findThreads, org.apache.commons.lang3.ThreadUtils.findThreadsByName, org.apache.commons.lang3.ThreadUtils.getAllThreadGroups, ... (+8 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Validate</strong></td>
+                <td>Entities in Validate</td>
+                <td>48</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.Validate, org.apache.commons.lang3.Validate.Validate, org.apache.commons.lang3.Validate.exclusiveBetween, org.apache.commons.lang3.Validate.finite, org.apache.commons.lang3.Validate.getMessage, org.apache.commons.lang3.Validate.inclusiveBetween, org.apache.commons.lang3.Validate.isAssignableFrom, org.apache.commons.lang3.Validate.isInstanceOf, ... (+40 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Arch</strong></td>
+                <td>Entities in arch</td>
+                <td>12</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.arch.Processor, org.apache.commons.lang3.arch.Processor.Processor, org.apache.commons.lang3.arch.Processor.getArch, org.apache.commons.lang3.arch.Processor.getType, org.apache.commons.lang3.arch.Processor.is32Bit, org.apache.commons.lang3.arch.Processor.is64Bit, org.apache.commons.lang3.arch.Processor.isAarch64, org.apache.commons.lang3.arch.Processor.isIA64, ... (+4 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Builder</strong></td>
+                <td>Entities in builder</td>
+                <td>264</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.builder.AbstractReflection, org.apache.commons.lang3.builder.AbstractReflection.AbstractReflection, org.apache.commons.lang3.builder.AbstractReflection.getForceAccessible, org.apache.commons.lang3.builder.AbstractReflection.isForceAccessible, org.apache.commons.lang3.builder.AbstractReflection.isRegistered, org.apache.commons.lang3.builder.AbstractReflection.register, org.apache.commons.lang3.builder.AbstractReflection.setAccessible, org.apache.commons.lang3.builder.AbstractReflection.setAccessibleTrue, ... (+256 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Compare</strong></td>
+                <td>Entities in compare</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.compare.ObjectToStringComparator, org.apache.commons.lang3.compare.ObjectToStringComparator.ObjectToStringComparator, org.apache.commons.lang3.compare.ObjectToStringComparator.compare</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Concurrent</strong></td>
+                <td>Entities in concurrent</td>
+                <td>120</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.concurrent.AbstractCircuitBreaker, org.apache.commons.lang3.concurrent.AbstractCircuitBreaker.AbstractCircuitBreaker, org.apache.commons.lang3.concurrent.AbstractCircuitBreaker.addChangeListener, org.apache.commons.lang3.concurrent.AbstractCircuitBreaker.changeState, org.apache.commons.lang3.concurrent.AbstractCircuitBreaker.checkState, org.apache.commons.lang3.concurrent.AbstractCircuitBreaker.close, org.apache.commons.lang3.concurrent.AbstractCircuitBreaker.incrementAndCheckState, org.apache.commons.lang3.concurrent.AbstractCircuitBreaker.isClosed, ... (+112 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Event</strong></td>
+                <td>Entities in event</td>
+                <td>17</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.event.EventListenerSupport, org.apache.commons.lang3.event.EventListenerSupport.EventListenerSupport, org.apache.commons.lang3.event.EventListenerSupport.addListener, org.apache.commons.lang3.event.EventListenerSupport.create, org.apache.commons.lang3.event.EventListenerSupport.createInvocationHandler, org.apache.commons.lang3.event.EventListenerSupport.createProxy, org.apache.commons.lang3.event.EventListenerSupport.fire, org.apache.commons.lang3.event.EventListenerSupport.getListenerCount, ... (+9 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Exception</strong></td>
+                <td>Entities in exception</td>
+                <td>107</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.RandomUtils, org.apache.commons.lang3.RandomUtils.RandomUtils, org.apache.commons.lang3.RandomUtils.insecure, org.apache.commons.lang3.RandomUtils.nextBoolean, org.apache.commons.lang3.RandomUtils.nextBytes, org.apache.commons.lang3.RandomUtils.nextDouble, org.apache.commons.lang3.RandomUtils.nextFloat, org.apache.commons.lang3.RandomUtils.nextInt, ... (+99 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Function</strong></td>
+                <td>Entities in function</td>
+                <td>479</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.ArrayFill.ArrayFill, org.apache.commons.lang3.ArrayFill.clear, org.apache.commons.lang3.ArrayFill.fill, org.apache.commons.lang3.AutoCloseables, org.apache.commons.lang3.AutoCloseables.AutoCloseables, org.apache.commons.lang3.AutoCloseables.close, org.apache.commons.lang3.AutoCloseables.closeQuietly, org.apache.commons.lang3.AutoCloseables.closeQuietlySuppress, ... (+471 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Math</strong></td>
+                <td>Entities in math</td>
+                <td>87</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.BooleanUtils.BooleanUtils, org.apache.commons.lang3.BooleanUtils.and, org.apache.commons.lang3.BooleanUtils.booleanValues, org.apache.commons.lang3.BooleanUtils.compare, org.apache.commons.lang3.BooleanUtils.forEach, org.apache.commons.lang3.BooleanUtils.isFalse, org.apache.commons.lang3.BooleanUtils.isNotFalse, org.apache.commons.lang3.BooleanUtils.isNotTrue, ... (+79 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Mutable</strong></td>
+                <td>Entities in mutable</td>
+                <td>156</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.mutable.Mutable, org.apache.commons.lang3.mutable.Mutable.get, org.apache.commons.lang3.mutable.Mutable.getValue, org.apache.commons.lang3.mutable.Mutable.setValue, org.apache.commons.lang3.mutable.MutableBoolean, org.apache.commons.lang3.mutable.MutableByte, org.apache.commons.lang3.mutable.MutableByte.MutableByte, org.apache.commons.lang3.mutable.MutableByte.add, ... (+148 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Reflect</strong></td>
+                <td>Entities in reflect</td>
+                <td>91</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.reflect.AccessibleObjects, org.apache.commons.lang3.reflect.AccessibleObjects.isAccessible, org.apache.commons.lang3.reflect.AccessibleObjects.setAccessible, org.apache.commons.lang3.reflect.ConstructorUtils, org.apache.commons.lang3.reflect.ConstructorUtils.ConstructorUtils, org.apache.commons.lang3.reflect.ConstructorUtils.getAccessibleConstructor, org.apache.commons.lang3.reflect.ConstructorUtils.getMatchingAccessibleConstructor, org.apache.commons.lang3.reflect.ConstructorUtils.invokeConstructor, ... (+83 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Stream</strong></td>
+                <td>Entities in stream</td>
+                <td>44</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.CharSetUtils, org.apache.commons.lang3.CharSetUtils.CharSetUtils, org.apache.commons.lang3.CharSetUtils.containsAny, org.apache.commons.lang3.CharSetUtils.count, org.apache.commons.lang3.CharSetUtils.deepEmpty, org.apache.commons.lang3.CharSetUtils.delete, org.apache.commons.lang3.CharSetUtils.isEmpty, org.apache.commons.lang3.CharSetUtils.keep, ... (+36 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Text</strong></td>
+                <td>Entities in text</td>
+                <td>236</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.StringEscapeUtils.StringEscapeUtils, org.apache.commons.lang3.StringEscapeUtils.escapeCsv, org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript, org.apache.commons.lang3.StringEscapeUtils.escapeHtml3, org.apache.commons.lang3.StringEscapeUtils.escapeHtml4, org.apache.commons.lang3.StringEscapeUtils.escapeJava, org.apache.commons.lang3.StringEscapeUtils.escapeJson, org.apache.commons.lang3.StringEscapeUtils.escapeXml, ... (+228 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Time</strong></td>
+                <td>Entities in time</td>
+                <td>208</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.time.CalendarUtils, org.apache.commons.lang3.time.CalendarUtils.CalendarUtils, org.apache.commons.lang3.time.CalendarUtils.getDayOfMonth, org.apache.commons.lang3.time.CalendarUtils.getDayOfYear, org.apache.commons.lang3.time.CalendarUtils.getInstance, org.apache.commons.lang3.time.CalendarUtils.getMonth, org.apache.commons.lang3.time.CalendarUtils.getMonthDisplayNames, org.apache.commons.lang3.time.CalendarUtils.getStandaloneLongMonthNames, ... (+200 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tuple</strong></td>
+                <td>Entities in tuple</td>
+                <td>83</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.exception.ContextedException.ContextedException, org.apache.commons.lang3.exception.ContextedException.addContextValue, org.apache.commons.lang3.exception.ContextedException.getContextEntries, org.apache.commons.lang3.exception.ContextedException.getContextLabels, org.apache.commons.lang3.exception.ContextedException.getContextValues, org.apache.commons.lang3.exception.ContextedException.getFirstContextValue, org.apache.commons.lang3.exception.ContextedException.getFormattedExceptionMessage, org.apache.commons.lang3.exception.ContextedException.getMessage, ... (+75 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Util</strong></td>
+                <td>Entities in util</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.lang3.util.IterableStringTokenizer</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (22)</h2>
+    
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 21 components: Appendablejoiner <-> Arrayfill <-> Arrayutils <-> Booleanutils <-> Builder <-> Exception <-> Function <-> Javaversion <-> Math <-> Mutable <-> Objectutils <-> Reflect <-> Stream <-> Stringescapeutils <-> Strings <-> Stringutils <-> Systemproperties <-> Text <-> Time <-> Tuple <-> Util</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Appendablejoiner, Arrayfill, Arrayutils, Booleanutils, Builder, Exception, Function, Javaversion, Math, Mutable, Objectutils, Reflect, Stream, Stringescapeutils, Strings, Stringutils, Systemproperties, Text, Time, Tuple, Util</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Arrayutils contains 69 entities but only 11 internal dependencies (0.16 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Arrayutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Arrayutils</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Charutils contains 26 entities but only 8 internal dependencies (0.31 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Charutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Charutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Classutils contains 49 entities but only 15 internal dependencies (0.31 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Classutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Classutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Conversion contains 41 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Conversion into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Conversion</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Functions contains 21 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Functions into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Functions</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Randomstringutils contains 21 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Randomstringutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Randomstringutils</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Range contains 28 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Range into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Range</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Stringutils contains 195 entities but only 38 internal dependencies (0.19 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Stringutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Stringutils</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Strings contains 25 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Strings into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Strings</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Systemutils contains 23 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Systemutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Systemutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Builder contains 264 entities but only 21 internal dependencies (0.08 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Builder into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Builder</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Concurrent contains 120 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Concurrent into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Concurrent</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Math contains 87 entities but only 24 internal dependencies (0.28 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Math into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Math</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Mutable contains 156 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Mutable into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Mutable</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Reflect contains 91 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Reflect into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Reflect</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Time contains 208 entities but only 4 internal dependencies (0.02 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Time into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Time</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Tuple contains 83 entities but only 27 internal dependencies (0.33 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Tuple into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Tuple</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Exception' pattern is scattered across 7 components: Concurrent, Exception, Function, Math, Notimplementedexception, Serializationexception, Tuple</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Exception'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Concurrent, Exception, Function, Math, Notimplementedexception, Serializationexception, Tuple</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Factory' pattern is scattered across 3 components: Concurrent, Function, Text</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Factory'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Concurrent, Function, Text</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Handler' pattern is scattered across 3 components: Concurrent, Event, Function</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Handler'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Concurrent, Event, Function</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Utils' pattern is scattered across 27 components: Annotationutils, Archutils, Arrayutils, Booleanutils, Charsequenceutils, Charutils, Classloaderutils, Classpathutils, Classutils, Concurrent, Event, Exception, Localeutils, Math, Objectutils, Randomstringutils, Reflect, Regexutils, Serializationutils, Stream, Stringescapeutils, Stringutils, Systemutils, Text, Threadutils, Time, Validate</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Annotationutils, Archutils, Arrayutils, Booleanutils, Charsequenceutils, Charutils, Classloaderutils, Classpathutils, Classutils, Concurrent, Event, Exception, Localeutils, Math, Objectutils, Randomstringutils, Reflect, Regexutils, Serializationutils, Stream, Stringescapeutils, Stringutils, Systemutils, Text, Threadutils, Time, Validate</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3</code></td>
+                    <td>1673</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.builder</code></td>
+                    <td>495</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.time</code></td>
+                    <td>367</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.text</code></td>
+                    <td>352</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.function</code></td>
+                    <td>265</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.mutable</code></td>
+                    <td>221</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.concurrent</code></td>
+                    <td>209</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.reflect</code></td>
+                    <td>170</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.math</code></td>
+                    <td>120</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.exception</code></td>
+                    <td>104</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.tuple</code></td>
+                    <td>76</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.text.translate</code></td>
+                    <td>68</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.util</code></td>
+                    <td>54</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.stream</code></td>
+                    <td>34</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.event</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.compare</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.arch</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.lang3.concurrent.locks</code></td>
+                    <td>7</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: commons-io (smell sweep) (commons-io)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (13)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">commons-io (smell sweep) &mdash; version commons-io &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">2072</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">4656</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">43</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">13</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Buffers["Buffers\n(11 entities)"]
+    Bytebuffers["Bytebuffers\n(3 entities)"]
+    Byteordermark["Byteordermark\n(11 entities)"]
+    Byteorderparser["Byteorderparser\n(3 entities)"]
+    Charsets["Charsets\n(8 entities)"]
+    Closeableurlconnection["Closeableurlconnection\n(46 entities)"]
+    Copyutils["Copyutils\n(3 entities)"]
+    Directorywalker["Directorywalker\n(14 entities)"]
+    Endianutils["Endianutils\n(36 entities)"]
+    Filecleaner["Filecleaner\n(6 entities)"]
+    Filecleaningtracker["Filecleaningtracker\n(8 entities)"]
+    Filedeletestrategy["Filedeletestrategy\n(6 entities)"]
+    Fileexistsexception["Fileexistsexception\n(2 entities)"]
+    Filesystem["Filesystem\n(1 entities)"]
+    Filesystemutils["Filesystemutils\n(5 entities)"]
+    Fileutils["Fileutils\n(99 entities)"]
+    Filenameutils["Filenameutils\n(46 entities)"]
+    Io["Io\n(2 entities)"]
+    Iocase["Iocase\n(8 entities)"]
+    Ioexceptionlist["Ioexceptionlist\n(42 entities)"]
+    Ioexceptionwithcause["Ioexceptionwithcause\n(2 entities)"]
+    Ioindexedexception["Ioindexedexception\n(4 entities)"]
+    Iorandomaccessfile["Iorandomaccessfile\n(6 entities)"]
+    Ioutils["Ioutils\n(298 entities)"]
+    Lineiterator["Lineiterator\n(9 entities)"]
+    Randomaccessfilemode["Randomaccessfilemode\n(1 entities)"]
+    Randomaccessfiles["Randomaccessfiles\n(1 entities)"]
+    Standardlineseparator["Standardlineseparator\n(1 entities)"]
+    Streamiterator["Streamiterator\n(6 entities)"]
+    Taggedioexception["Taggedioexception\n(22 entities)"]
+    Threadmonitor["Threadmonitor\n(5 entities)"]
+    Threadutils["Threadutils\n(15 entities)"]
+    Uncheckedioexceptions["Uncheckedioexceptions\n(4 entities)"]
+    Channels["Channels\n(83 entities)"]
+    Charset["Charset\n(6 entities)"]
+    Comparator["Comparator\n(24 entities)"]
+    File["File\n(210 entities)"]
+    Filefilter["Filefilter\n(165 entities)"]
+    Function["Function\n(321 entities)"]
+    Input["Input\n(307 entities)"]
+    Monitor["Monitor\n(64 entities)"]
+    Output["Output\n(145 entities)"]
+    Serialization["Serialization\n(13 entities)"]
+    Channels --> Buffers
+    Channels --> Input
+    Channels --> Ioutils
+    Channels --> Output
+    Comparator --> Filenameutils
+    Comparator --> Iocase
+    Directorywalker --> File
+    Directorywalker --> Filefilter
+    File --> Charsets
+    File --> Filefilter
+    File --> Filenameutils
+    File --> Filesystem
+    File --> Fileutils
+    File --> Function
+    File --> Iorandomaccessfile
+    File --> Ioutils
+    File --> Randomaccessfilemode
+    File --> Randomaccessfiles
+    File --> Threadutils
+    Filefilter --> File
+    Filefilter --> Filenameutils
+    Filefilter --> Fileutils
+    Filefilter --> Function
+    Filefilter --> Iocase
+    Filefilter --> Ioutils
+    Filefilter --> Randomaccessfilemode
+    Filefilter --> Randomaccessfiles
+    Filenameutils --> Serialization
+    Fileutils --> Comparator
+    Fileutils --> File
+    Fileutils --> Filefilter
+    Fileutils --> Function
+    Function --> Ioexceptionlist
+    Function --> Ioindexedexception
+    Input --> Byteordermark
+    Input --> Charset
+    Input --> Charsets
+    Input --> Endianutils
+    Input --> File
+    Input --> Filesystem
+    Input --> Function
+    Input --> Ioutils
+    Input --> Output
+    Input --> Standardlineseparator
+    Input --> Taggedioexception
+    Input --> Threadutils
+    Iocase --> Comparator
+    Ioutils --> Channels
+    Ioutils --> Function
+    Ioutils --> Input
+    Ioutils --> Output
+    Monitor --> Comparator
+    Monitor --> File
+    Monitor --> Filefilter
+    Monitor --> Fileutils
+    Monitor --> Iocase
+    Output --> Charset
+    Output --> Charsets
+    Output --> File
+    Output --> Fileutils
+    Output --> Function
+    Output --> Input
+    Output --> Ioexceptionlist
+    Output --> Ioindexedexception
+    Output --> Ioutils
+    Output --> Taggedioexception
+    Randomaccessfilemode --> Function
+    Randomaccessfiles --> Channels
+    Taggedioexception --> Ioexceptionwithcause
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.apache.commons.io') with dependency-affinity facade refinement (547 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Buffers</strong></td>
+                <td>Entities in Buffers</td>
+                <td>11</td>
+                
+                <td class="entity-list">org.apache.commons.io.Buffers, org.apache.commons.io.Buffers.Buffers, org.apache.commons.io.Buffers.clear, org.apache.commons.io.Buffers.clearBuffer, org.apache.commons.io.Buffers.clearDirect, org.apache.commons.io.Buffers.clearWritable, org.apache.commons.io.Buffers.getClearBufferSize, org.apache.commons.io.input.ByteBufferCleaner, ... (+3 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bytebuffers</strong></td>
+                <td>Entities in ByteBuffers</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.io.ByteBuffers, org.apache.commons.io.ByteBuffers.ByteBuffers, org.apache.commons.io.ByteBuffers.littleEndian</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Byteordermark</strong></td>
+                <td>Entities in ByteOrderMark</td>
+                <td>11</td>
+                
+                <td class="entity-list">org.apache.commons.io.ByteOrderMark, org.apache.commons.io.ByteOrderMark.ByteOrderMark, org.apache.commons.io.ByteOrderMark.equals, org.apache.commons.io.ByteOrderMark.get, org.apache.commons.io.ByteOrderMark.getBytes, org.apache.commons.io.ByteOrderMark.getCharsetName, org.apache.commons.io.ByteOrderMark.getRawBytes, org.apache.commons.io.ByteOrderMark.hashCode, ... (+3 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Byteorderparser</strong></td>
+                <td>Entities in ByteOrderParser</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.io.ByteOrderParser, org.apache.commons.io.ByteOrderParser.ByteOrderParser, org.apache.commons.io.ByteOrderParser.parseByteOrder</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charsets</strong></td>
+                <td>Entities in Charsets</td>
+                <td>8</td>
+                
+                <td class="entity-list">org.apache.commons.io.Charsets, org.apache.commons.io.Charsets.Charsets, org.apache.commons.io.Charsets.isAlias, org.apache.commons.io.Charsets.isUTF8, org.apache.commons.io.Charsets.isUTF8Alias, org.apache.commons.io.Charsets.requiredCharsets, org.apache.commons.io.Charsets.toCharset, org.apache.commons.io.Charsets.toCharsetDefault</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Closeableurlconnection</strong></td>
+                <td>Entities in CloseableURLConnection</td>
+                <td>46</td>
+                
+                <td class="entity-list">org.apache.commons.io.CloseableURLConnection, org.apache.commons.io.CloseableURLConnection.CloseableURLConnection, org.apache.commons.io.CloseableURLConnection.addRequestProperty, org.apache.commons.io.CloseableURLConnection.close, org.apache.commons.io.CloseableURLConnection.connect, org.apache.commons.io.CloseableURLConnection.equals, org.apache.commons.io.CloseableURLConnection.getAllowUserInteraction, org.apache.commons.io.CloseableURLConnection.getConnectTimeout, ... (+38 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Copyutils</strong></td>
+                <td>Entities in CopyUtils</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.io.CopyUtils, org.apache.commons.io.CopyUtils.CopyUtils, org.apache.commons.io.CopyUtils.copy</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Directorywalker</strong></td>
+                <td>Entities in DirectoryWalker</td>
+                <td>14</td>
+                
+                <td class="entity-list">org.apache.commons.io.DirectoryWalker, org.apache.commons.io.DirectoryWalker.DirectoryWalker, org.apache.commons.io.DirectoryWalker.checkIfCancelled, org.apache.commons.io.DirectoryWalker.filterDirectoryContents, org.apache.commons.io.DirectoryWalker.handleCancelled, org.apache.commons.io.DirectoryWalker.handleDirectory, org.apache.commons.io.DirectoryWalker.handleDirectoryEnd, org.apache.commons.io.DirectoryWalker.handleDirectoryStart, ... (+6 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Endianutils</strong></td>
+                <td>Entities in EndianUtils</td>
+                <td>36</td>
+                
+                <td class="entity-list">org.apache.commons.io.EndianUtils, org.apache.commons.io.EndianUtils.EndianUtils, org.apache.commons.io.EndianUtils.read, org.apache.commons.io.EndianUtils.readSwappedDouble, org.apache.commons.io.EndianUtils.readSwappedFloat, org.apache.commons.io.EndianUtils.readSwappedInteger, org.apache.commons.io.EndianUtils.readSwappedLong, org.apache.commons.io.EndianUtils.readSwappedShort, ... (+28 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Filecleaner</strong></td>
+                <td>Entities in FileCleaner</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.io.FileCleaner, org.apache.commons.io.FileCleaner.FileCleaner, org.apache.commons.io.FileCleaner.exitWhenFinished, org.apache.commons.io.FileCleaner.getInstance, org.apache.commons.io.FileCleaner.getTrackCount, org.apache.commons.io.FileCleaner.track</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Filecleaningtracker</strong></td>
+                <td>Entities in FileCleaningTracker</td>
+                <td>8</td>
+                
+                <td class="entity-list">org.apache.commons.io.FileCleaningTracker, org.apache.commons.io.FileCleaningTracker.FileCleaningTracker, org.apache.commons.io.FileCleaningTracker.addTracker, org.apache.commons.io.FileCleaningTracker.exitWhenFinished, org.apache.commons.io.FileCleaningTracker.exitWhenFinishedTest, org.apache.commons.io.FileCleaningTracker.getDeleteFailures, org.apache.commons.io.FileCleaningTracker.getTrackCount, org.apache.commons.io.FileCleaningTracker.track</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Filedeletestrategy</strong></td>
+                <td>Entities in FileDeleteStrategy</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.io.FileDeleteStrategy, org.apache.commons.io.FileDeleteStrategy.FileDeleteStrategy, org.apache.commons.io.FileDeleteStrategy.delete, org.apache.commons.io.FileDeleteStrategy.deleteQuietly, org.apache.commons.io.FileDeleteStrategy.doDelete, org.apache.commons.io.FileDeleteStrategy.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fileexistsexception</strong></td>
+                <td>Entities in FileExistsException</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.io.FileExistsException, org.apache.commons.io.FileExistsException.FileExistsException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Filesystem</strong></td>
+                <td>Entities in FileSystem</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.io.FileSystem</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Filesystemutils</strong></td>
+                <td>Entities in FileSystemUtils</td>
+                <td>5</td>
+                
+                <td class="entity-list">org.apache.commons.io.FileSystemUtils, org.apache.commons.io.FileSystemUtils.FileSystemUtils, org.apache.commons.io.FileSystemUtils.freeSpace, org.apache.commons.io.FileSystemUtils.freeSpaceKb, org.apache.commons.io.FileSystemUtils.getFreeSpace</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fileutils</strong></td>
+                <td>Entities in FileUtils</td>
+                <td>99</td>
+                
+                <td class="entity-list">org.apache.commons.io.FileUtils, org.apache.commons.io.FileUtils.FileUtils, org.apache.commons.io.FileUtils.byteCountToDisplaySize, org.apache.commons.io.FileUtils.checkExists, org.apache.commons.io.FileUtils.checkFileExists, org.apache.commons.io.FileUtils.checkIsFile, org.apache.commons.io.FileUtils.checksum, org.apache.commons.io.FileUtils.checksumCRC32, ... (+91 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Filenameutils</strong></td>
+                <td>Entities in FilenameUtils</td>
+                <td>46</td>
+                
+                <td class="entity-list">org.apache.commons.io.FilenameUtils, org.apache.commons.io.FilenameUtils.FilenameUtils, org.apache.commons.io.FilenameUtils.concat, org.apache.commons.io.FilenameUtils.directoryContains, org.apache.commons.io.FilenameUtils.doGetFullPath, org.apache.commons.io.FilenameUtils.doGetPath, org.apache.commons.io.FilenameUtils.doNormalize, org.apache.commons.io.FilenameUtils.equals, ... (+38 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Io</strong></td>
+                <td>Entities in IO</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.io.IO, org.apache.commons.io.IO.clear</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iocase</strong></td>
+                <td>Entities in IOCase</td>
+                <td>8</td>
+                
+                <td class="entity-list">org.apache.commons.io.IOCase, org.apache.commons.io.comparator.NameFileComparator.NameFileComparator, org.apache.commons.io.comparator.NameFileComparator.compare, org.apache.commons.io.comparator.NameFileComparator.toString, org.apache.commons.io.comparator.PathFileComparator, org.apache.commons.io.comparator.PathFileComparator.PathFileComparator, org.apache.commons.io.comparator.PathFileComparator.compare, org.apache.commons.io.comparator.PathFileComparator.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ioexceptionlist</strong></td>
+                <td>Entities in IOExceptionList</td>
+                <td>42</td>
+                
+                <td class="entity-list">org.apache.commons.io.IOExceptionList, org.apache.commons.io.IOExceptionList.IOExceptionList, org.apache.commons.io.IOExceptionList.checkEmpty, org.apache.commons.io.IOExceptionList.getCause, org.apache.commons.io.IOExceptionList.getCauseList, org.apache.commons.io.IOExceptionList.isEmpty, org.apache.commons.io.IOExceptionList.iterator, org.apache.commons.io.IOExceptionList.size, ... (+34 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ioexceptionwithcause</strong></td>
+                <td>Entities in IOExceptionWithCause</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.io.IOExceptionWithCause, org.apache.commons.io.IOExceptionWithCause.IOExceptionWithCause</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ioindexedexception</strong></td>
+                <td>Entities in IOIndexedException</td>
+                <td>4</td>
+                
+                <td class="entity-list">org.apache.commons.io.IOIndexedException, org.apache.commons.io.IOIndexedException.IOIndexedException, org.apache.commons.io.IOIndexedException.getIndex, org.apache.commons.io.IOIndexedException.toMessage</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iorandomaccessfile</strong></td>
+                <td>Entities in IORandomAccessFile</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.io.IORandomAccessFile, org.apache.commons.io.IORandomAccessFile.IORandomAccessFile, org.apache.commons.io.IORandomAccessFile.clear, org.apache.commons.io.IORandomAccessFile.getFile, org.apache.commons.io.IORandomAccessFile.getMode, org.apache.commons.io.IORandomAccessFile.toString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ioutils</strong></td>
+                <td>Entities in IOUtils</td>
+                <td>298</td>
+                
+                <td class="entity-list">org.apache.commons.io.IOUtils, org.apache.commons.io.IOUtils.IOUtils, org.apache.commons.io.IOUtils.buffer, org.apache.commons.io.IOUtils.byteArray, org.apache.commons.io.IOUtils.charArray, org.apache.commons.io.IOUtils.checkFromIndexSize, org.apache.commons.io.IOUtils.checkFromToIndex, org.apache.commons.io.IOUtils.clear, ... (+290 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Lineiterator</strong></td>
+                <td>Entities in LineIterator</td>
+                <td>9</td>
+                
+                <td class="entity-list">org.apache.commons.io.LineIterator, org.apache.commons.io.LineIterator.LineIterator, org.apache.commons.io.LineIterator.close, org.apache.commons.io.LineIterator.closeQuietly, org.apache.commons.io.LineIterator.hasNext, org.apache.commons.io.LineIterator.isValidLine, org.apache.commons.io.LineIterator.next, org.apache.commons.io.LineIterator.nextLine, ... (+1 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Randomaccessfilemode</strong></td>
+                <td>Entities in RandomAccessFileMode</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.io.RandomAccessFileMode</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Randomaccessfiles</strong></td>
+                <td>Entities in RandomAccessFiles</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.io.RandomAccessFiles</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Standardlineseparator</strong></td>
+                <td>Entities in StandardLineSeparator</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.io.StandardLineSeparator</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Streamiterator</strong></td>
+                <td>Entities in StreamIterator</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.io.StreamIterator, org.apache.commons.io.StreamIterator.StreamIterator, org.apache.commons.io.StreamIterator.close, org.apache.commons.io.StreamIterator.hasNext, org.apache.commons.io.StreamIterator.iterator, org.apache.commons.io.StreamIterator.next</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Taggedioexception</strong></td>
+                <td>Entities in TaggedIOException</td>
+                <td>22</td>
+                
+                <td class="entity-list">org.apache.commons.io.TaggedIOException, org.apache.commons.io.TaggedIOException.TaggedIOException, org.apache.commons.io.TaggedIOException.getCause, org.apache.commons.io.TaggedIOException.getTag, org.apache.commons.io.TaggedIOException.isTaggedWith, org.apache.commons.io.TaggedIOException.throwCauseIfTaggedWith, org.apache.commons.io.input.TaggedInputStream.TaggedInputStream, org.apache.commons.io.input.TaggedInputStream.handleIOException, ... (+14 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Threadmonitor</strong></td>
+                <td>Entities in ThreadMonitor</td>
+                <td>5</td>
+                
+                <td class="entity-list">org.apache.commons.io.ThreadMonitor, org.apache.commons.io.ThreadMonitor.ThreadMonitor, org.apache.commons.io.ThreadMonitor.run, org.apache.commons.io.ThreadMonitor.start, org.apache.commons.io.ThreadMonitor.stop</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Threadutils</strong></td>
+                <td>Entities in ThreadUtils</td>
+                <td>15</td>
+                
+                <td class="entity-list">org.apache.commons.io.ThreadUtils, org.apache.commons.io.ThreadUtils.ThreadUtils, org.apache.commons.io.ThreadUtils.getNanosOfMilli, org.apache.commons.io.ThreadUtils.sleep, org.apache.commons.io.monitor.FileAlterationMonitor, org.apache.commons.io.monitor.FileAlterationMonitor.FileAlterationMonitor, org.apache.commons.io.monitor.FileAlterationMonitor.addObserver, org.apache.commons.io.monitor.FileAlterationMonitor.checkAndNotify, ... (+7 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Uncheckedioexceptions</strong></td>
+                <td>Entities in UncheckedIOExceptions</td>
+                <td>4</td>
+                
+                <td class="entity-list">org.apache.commons.io.UncheckedIOExceptions, org.apache.commons.io.UncheckedIOExceptions.UncheckedIOExceptions, org.apache.commons.io.UncheckedIOExceptions.create, org.apache.commons.io.UncheckedIOExceptions.wrap</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Channels</strong></td>
+                <td>Entities in channels</td>
+                <td>83</td>
+                
+                <td class="entity-list">org.apache.commons.io.RandomAccessFiles.RandomAccessFiles, org.apache.commons.io.RandomAccessFiles.contentEquals, org.apache.commons.io.RandomAccessFiles.length, org.apache.commons.io.RandomAccessFiles.read, org.apache.commons.io.RandomAccessFiles.reset, org.apache.commons.io.channels.ByteArraySeekableByteChannel, org.apache.commons.io.channels.ByteArraySeekableByteChannel.ByteArraySeekableByteChannel, org.apache.commons.io.channels.ByteArraySeekableByteChannel.array, ... (+75 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Charset</strong></td>
+                <td>Entities in charset</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.io.charset.CharsetDecoders, org.apache.commons.io.charset.CharsetDecoders.CharsetDecoders, org.apache.commons.io.charset.CharsetDecoders.toCharsetDecoder, org.apache.commons.io.charset.CharsetEncoders, org.apache.commons.io.charset.CharsetEncoders.CharsetEncoders, org.apache.commons.io.charset.CharsetEncoders.toCharsetEncoder</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Comparator</strong></td>
+                <td>Entities in comparator</td>
+                <td>24</td>
+                
+                <td class="entity-list">org.apache.commons.io.comparator.AbstractFileComparator, org.apache.commons.io.comparator.AbstractFileComparator.sort, org.apache.commons.io.comparator.AbstractFileComparator.toString, org.apache.commons.io.comparator.CompositeFileComparator, org.apache.commons.io.comparator.CompositeFileComparator.CompositeFileComparator, org.apache.commons.io.comparator.CompositeFileComparator.compare, org.apache.commons.io.comparator.CompositeFileComparator.emptyArray, org.apache.commons.io.comparator.CompositeFileComparator.toString, ... (+16 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>File</strong></td>
+                <td>Entities in file</td>
+                <td>210</td>
+                
+                <td class="entity-list">org.apache.commons.io.file.AccumulatorPathVisitor, org.apache.commons.io.file.CleaningPathVisitor, org.apache.commons.io.file.CleaningPathVisitor.CleaningPathVisitor, org.apache.commons.io.file.CleaningPathVisitor.accept, org.apache.commons.io.file.CleaningPathVisitor.equals, org.apache.commons.io.file.CleaningPathVisitor.hashCode, org.apache.commons.io.file.CleaningPathVisitor.preVisitDirectory, org.apache.commons.io.file.CleaningPathVisitor.visitFile, ... (+202 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Filefilter</strong></td>
+                <td>Entities in filefilter</td>
+                <td>165</td>
+                
+                <td class="entity-list">org.apache.commons.io.filefilter.AbstractFileFilter, org.apache.commons.io.filefilter.AbstractFileFilter.AbstractFileFilter, org.apache.commons.io.filefilter.AbstractFileFilter.accept, org.apache.commons.io.filefilter.AbstractFileFilter.append, org.apache.commons.io.filefilter.AbstractFileFilter.get, org.apache.commons.io.filefilter.AbstractFileFilter.handle, org.apache.commons.io.filefilter.AbstractFileFilter.isDirectory, org.apache.commons.io.filefilter.AbstractFileFilter.isFile, ... (+157 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Function</strong></td>
+                <td>Entities in function</td>
+                <td>321</td>
+                
+                <td class="entity-list">org.apache.commons.io.file.AccumulatorPathVisitor.AccumulatorPathVisitor, org.apache.commons.io.file.AccumulatorPathVisitor.add, org.apache.commons.io.file.AccumulatorPathVisitor.builder, org.apache.commons.io.file.AccumulatorPathVisitor.equals, org.apache.commons.io.file.AccumulatorPathVisitor.getDirList, org.apache.commons.io.file.AccumulatorPathVisitor.getFileList, org.apache.commons.io.file.AccumulatorPathVisitor.hashCode, org.apache.commons.io.file.AccumulatorPathVisitor.relativizeDirectories, ... (+313 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Input</strong></td>
+                <td>Entities in input</td>
+                <td>307</td>
+                
+                <td class="entity-list">org.apache.commons.io.input.AbstractCharacterFilterReader, org.apache.commons.io.input.AbstractCharacterFilterReader.AbstractCharacterFilterReader, org.apache.commons.io.input.AbstractCharacterFilterReader.filter, org.apache.commons.io.input.AbstractCharacterFilterReader.read, org.apache.commons.io.input.AbstractInputStream, org.apache.commons.io.input.AbstractInputStream.AbstractInputStream, org.apache.commons.io.input.AbstractInputStream.checkOpen, org.apache.commons.io.input.AbstractInputStream.close, ... (+299 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Monitor</strong></td>
+                <td>Entities in monitor</td>
+                <td>64</td>
+                
+                <td class="entity-list">org.apache.commons.io.monitor.FileAlterationListener, org.apache.commons.io.monitor.FileAlterationListener.onDirectoryChange, org.apache.commons.io.monitor.FileAlterationListener.onDirectoryCreate, org.apache.commons.io.monitor.FileAlterationListener.onDirectoryDelete, org.apache.commons.io.monitor.FileAlterationListener.onFileChange, org.apache.commons.io.monitor.FileAlterationListener.onFileCreate, org.apache.commons.io.monitor.FileAlterationListener.onFileDelete, org.apache.commons.io.monitor.FileAlterationListener.onStart, ... (+56 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Output</strong></td>
+                <td>Entities in output</td>
+                <td>145</td>
+                
+                <td class="entity-list">org.apache.commons.io.HexDump, org.apache.commons.io.HexDump.HexDump, org.apache.commons.io.HexDump.dump, org.apache.commons.io.output.AbstractByteArrayOutputStream, org.apache.commons.io.output.AbstractByteArrayOutputStream.AbstractByteArrayOutputStream, org.apache.commons.io.output.AbstractByteArrayOutputStream.asThis, org.apache.commons.io.output.AbstractByteArrayOutputStream.close, org.apache.commons.io.output.AbstractByteArrayOutputStream.needNewBuffer, ... (+137 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Serialization</strong></td>
+                <td>Entities in serialization</td>
+                <td>13</td>
+                
+                <td class="entity-list">org.apache.commons.io.serialization.ClassNameMatcher, org.apache.commons.io.serialization.ClassNameMatcher.matches, org.apache.commons.io.serialization.FullClassNameMatcher, org.apache.commons.io.serialization.FullClassNameMatcher.FullClassNameMatcher, org.apache.commons.io.serialization.FullClassNameMatcher.matches, org.apache.commons.io.serialization.ObjectStreamClassPredicate, org.apache.commons.io.serialization.ObjectStreamClassPredicate.ObjectStreamClassPredicate, org.apache.commons.io.serialization.ObjectStreamClassPredicate.accept, ... (+5 more)</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (13)</h2>
+    
+    
+    <div class="smell low">
+        <div class="smell-header">
+            <span class="badge low">low</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 2 components: Comparator <-> Iocase</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Comparator, Iocase</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 8 components: Channels <-> File <-> Filefilter <-> Fileutils <-> Input <-> Ioutils <-> Output <-> Randomaccessfiles</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Channels, File, Filefilter, Fileutils, Input, Ioutils, Output, Randomaccessfiles</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Closeableurlconnection contains 46 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Closeableurlconnection into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Closeableurlconnection</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Fileutils contains 99 entities but only 7 internal dependencies (0.07 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Fileutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Fileutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Filenameutils contains 46 entities but only 3 internal dependencies (0.07 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Filenameutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Filenameutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Channels contains 83 entities but only 5 internal dependencies (0.06 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Channels into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Channels</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Comparator contains 24 entities but only 6 internal dependencies (0.25 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Comparator into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Comparator</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Filefilter contains 165 entities but only 30 internal dependencies (0.18 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Filefilter into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Filefilter</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Input contains 307 entities but only 43 internal dependencies (0.14 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Input into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Input</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Monitor contains 64 entities but only 1 internal dependencies (0.02 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Monitor into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Monitor</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Output contains 145 entities but only 15 internal dependencies (0.10 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Output into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Output</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Exception' pattern is scattered across 5 components: Fileexistsexception, Input, Ioindexedexception, Ioutils, Taggedioexception</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Exception'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Fileexistsexception, Input, Ioindexedexception, Ioutils, Taggedioexception</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Utils' pattern is scattered across 9 components: Copyutils, Endianutils, File, Filefilter, Filenameutils, Filesystemutils, Fileutils, Ioutils, Threadutils</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Copyutils, Endianutils, File, Filefilter, Filenameutils, Filesystemutils, Fileutils, Ioutils, Threadutils</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.input</code></td>
+                    <td>684</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io</code></td>
+                    <td>659</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.output</code></td>
+                    <td>410</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.filefilter</code></td>
+                    <td>290</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.file</code></td>
+                    <td>273</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.function</code></td>
+                    <td>254</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.monitor</code></td>
+                    <td>104</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.channels</code></td>
+                    <td>96</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.comparator</code></td>
+                    <td>44</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.serialization</code></td>
+                    <td>42</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.input.buffer</code></td>
+                    <td>27</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.file.attribute</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.charset</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.io.file.spi</code></td>
+                    <td>7</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>

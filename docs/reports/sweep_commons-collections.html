@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: commons-collections (smell sweep) (commons-collections)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (21)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">commons-collections (smell sweep) &mdash; version commons-collections &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">3578</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">13013</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">62</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">21</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Arraystack["Arraystack\n(7 entities)"]
+    Arrayutils["Arrayutils\n(4 entities)"]
+    Bag["Bag\n(10 entities)"]
+    Bidimap["Bidimap\n(16 entities)"]
+    Boundedcollection["Boundedcollection\n(23 entities)"]
+    Boundedmap["Boundedmap\n(3 entities)"]
+    Closure["Closure\n(16 entities)"]
+    Collectionutils["Collectionutils\n(50 entities)"]
+    Comparatorutils["Comparatorutils\n(9 entities)"]
+    Equator["Equator\n(6 entities)"]
+    Factory["Factory\n(7 entities)"]
+    Fluentiterable["Fluentiterable\n(5 entities)"]
+    Functorexception["Functorexception\n(2 entities)"]
+    Get["Get\n(10 entities)"]
+    Iterableget["Iterableget\n(2 entities)"]
+    Iterablemap["Iterablemap\n(1 entities)"]
+    Iterablesortedmap["Iterablesortedmap\n(1 entities)"]
+    Iterableutils["Iterableutils\n(38 entities)"]
+    Iteratorutils["Iteratorutils\n(51 entities)"]
+    Keyvalue["Keyvalue\n(51 entities)"]
+    Listutils["Listutils\n(25 entities)"]
+    Listvaluedmap["Listvaluedmap\n(3 entities)"]
+    Mapiterator["Mapiterator\n(22 entities)"]
+    Multimap["Multimap\n(8 entities)"]
+    Multimaputils["Multimaputils\n(15 entities)"]
+    Multiset["Multiset\n(14 entities)"]
+    Multivaluedmap["Multivaluedmap\n(19 entities)"]
+    Orderedbidimap["Orderedbidimap\n(2 entities)"]
+    Orderediterator["Orderediterator\n(5 entities)"]
+    Orderedmap["Orderedmap\n(6 entities)"]
+    Orderedmapiterator["Orderedmapiterator\n(16 entities)"]
+    Predicate["Predicate\n(231 entities)"]
+    Put["Put\n(4 entities)"]
+    Resettableiterator["Resettableiterator\n(48 entities)"]
+    Resettablelistiterator["Resettablelistiterator\n(57 entities)"]
+    Setutils["Setutils\n(1 entities)"]
+    Setvaluedmap["Setvaluedmap\n(3 entities)"]
+    Sortedbag["Sortedbag\n(4 entities)"]
+    Sortedbidimap["Sortedbidimap\n(12 entities)"]
+    Sortedmultiset["Sortedmultiset\n(23 entities)"]
+    Splitmaputils["Splitmaputils\n(4 entities)"]
+    Transformer["Transformer\n(98 entities)"]
+    Trie["Trie\n(26 entities)"]
+    Unmodifiable["Unmodifiable\n(20 entities)"]
+    Bag2["Bag2\n(163 entities)"]
+    Bidimap2["Bidimap2\n(168 entities)"]
+    Bloomfilter["Bloomfilter\n(169 entities)"]
+    Collection["Collection\n(114 entities)"]
+    Comparators["Comparators\n(56 entities)"]
+    Functors["Functors\n(212 entities)"]
+    Iterators["Iterators\n(245 entities)"]
+    Keyvalue2["Keyvalue2\n(24 entities)"]
+    List["List\n(234 entities)"]
+    Map["Map\n(543 entities)"]
+    Multimap2["Multimap2\n(114 entities)"]
+    Multiset2["Multiset2\n(163 entities)"]
+    Properties["Properties\n(43 entities)"]
+    Queue["Queue\n(42 entities)"]
+    Sequence["Sequence\n(36 entities)"]
+    Set["Set\n(155 entities)"]
+    Splitmap["Splitmap\n(28 entities)"]
+    Trie2["Trie2\n(91 entities)"]
+    Bag2 --> Bag
+    Bag2 --> Collection
+    Bag2 --> Collectionutils
+    Bag2 --> Iterators
+    Bag2 --> Multiset
+    Bag2 --> Multiset2
+    Bag2 --> Predicate
+    Bag2 --> Set
+    Bag2 --> Sortedbag
+    Bag2 --> Sortedmultiset
+    Bag2 --> Transformer
+    Bag2 --> Unmodifiable
+    Bidimap2 --> Bidimap
+    Bidimap2 --> Collection
+    Bidimap2 --> Iterators
+    Bidimap2 --> Keyvalue
+    Bidimap2 --> Keyvalue2
+    Bidimap2 --> Map
+    Bidimap2 --> Mapiterator
+    Bidimap2 --> Orderedbidimap
+    Bidimap2 --> Orderediterator
+    Bidimap2 --> Orderedmap
+    Bidimap2 --> Orderedmapiterator
+    Bidimap2 --> Predicate
+    Bidimap2 --> Resettableiterator
+    Bidimap2 --> Set
+    Bidimap2 --> Sortedbidimap
+    Bidimap2 --> Unmodifiable
+    Bloomfilter --> Predicate
+    Collection --> Bag
+    Collection --> Bag2
+    Collection --> Boundedcollection
+    Collection --> Collectionutils
+    Collection --> Functors
+    Collection --> Iterableutils
+    Collection --> Iterators
+    Collection --> List
+    Collection --> Map
+    Collection --> Multimap
+    Collection --> Multiset
+    Collection --> Multiset2
+    Collection --> Predicate
+    Collection --> Queue
+    Collection --> Set
+    Collection --> Transformer
+    Collection --> Unmodifiable
+    Collectionutils --> Collection
+    Collectionutils --> Functors
+    Collectionutils --> Iterators
+    Collectionutils --> Multiset2
+    Comparators --> Comparatorutils
+    Comparators --> Transformer
+    Comparatorutils --> Comparators
+    Equator --> Map
+    Fluentiterable --> Iterators
+    Functors --> Closure
+    Functors --> Equator
+    Functors --> Factory
+    Functors --> Functorexception
+    Functors --> Predicate
+    Functors --> Transformer
+    Iterableutils --> Functors
+    Iterableutils --> Iterators
+    Iterators --> Comparators
+    Iterators --> Fluentiterable
+    Iterators --> Functors
+    Iterators --> Iteratorutils
+    Iterators --> List
+    Iterators --> Mapiterator
+    Iterators --> Orderediterator
+    Iterators --> Orderedmapiterator
+    Iterators --> Predicate
+    Iterators --> Resettableiterator
+    Iterators --> Resettablelistiterator
+    Iterators --> Transformer
+    Iterators --> Unmodifiable
+    Iteratorutils --> Functors
+    Iteratorutils --> Iterators
+    Keyvalue2 --> Keyvalue
+    Keyvalue2 --> Unmodifiable
+    List --> Boundedcollection
+    List --> Collection
+    List --> Collectionutils
+    List --> Factory
+    List --> Iterators
+    List --> Listutils
+    List --> Orderediterator
+    List --> Predicate
+    List --> Set
+    List --> Transformer
+    List --> Unmodifiable
+    Listutils --> Functors
+    Listutils --> List
+    Listutils --> Multiset2
+    Listutils --> Sequence
+    Map --> Boundedmap
+    Map --> Collection
+    Map --> Collectionutils
+    Map --> Factory
+    Map --> Functorexception
+    Map --> Functors
+    Map --> Iterablemap
+    Map --> Iterablesortedmap
+    Map --> Iterators
+    Map --> Keyvalue
+    Map --> Keyvalue2
+    Map --> List
+    Map --> Mapiterator
+    Map --> Multimap
+    Map --> Multivaluedmap
+    Map --> Orderediterator
+    Map --> Orderedmap
+    Map --> Orderedmapiterator
+    Map --> Predicate
+    Map --> Resettableiterator
+    Map --> Set
+    Map --> Transformer
+    Map --> Unmodifiable
+    Multimap2 --> Collection
+    Multimap2 --> Collectionutils
+    Multimap2 --> Fluentiterable
+    Multimap2 --> Iterableutils
+    Multimap2 --> Iterators
+    Multimap2 --> Iteratorutils
+    Multimap2 --> Keyvalue2
+    Multimap2 --> Listutils
+    Multimap2 --> Listvaluedmap
+    Multimap2 --> Map
+    Multimap2 --> Mapiterator
+    Multimap2 --> Multimaputils
+    Multimap2 --> Multiset
+    Multimap2 --> Multiset2
+    Multimap2 --> Multivaluedmap
+    Multimap2 --> Set
+    Multimap2 --> Setutils
+    Multimap2 --> Setvaluedmap
+    Multimap2 --> Transformer
+    Multimap2 --> Unmodifiable
+    Multimaputils --> Bag2
+    Multimaputils --> Multimap2
+    Multimaputils --> Multiset2
+    Multiset2 --> Collection
+    Multiset2 --> Iterators
+    Multiset2 --> Iteratorutils
+    Multiset2 --> Multiset
+    Multiset2 --> Predicate
+    Multiset2 --> Set
+    Multiset2 --> Sortedmultiset
+    Multiset2 --> Transformer
+    Multiset2 --> Unmodifiable
+    Queue --> Collection
+    Queue --> Iterators
+    Queue --> Predicate
+    Queue --> Transformer
+    Queue --> Unmodifiable
+    Sequence --> Equator
+    Sequence --> Functors
+    Set --> Collection
+    Set --> Collectionutils
+    Set --> Functors
+    Set --> Iterableutils
+    Set --> Iterators
+    Set --> List
+    Set --> Orderediterator
+    Set --> Predicate
+    Set --> Transformer
+    Set --> Unmodifiable
+    Setutils --> Set
+    Splitmap --> Get
+    Splitmap --> Iterableget
+    Splitmap --> Map
+    Splitmap --> Mapiterator
+    Splitmap --> Put
+    Splitmap --> Transformer
+    Splitmaputils --> Collection
+    Splitmaputils --> Iterators
+    Splitmaputils --> Map
+    Splitmaputils --> Set
+    Trie --> Trie2
+    Trie2 --> Iterators
+    Trie2 --> Map
+    Trie2 --> Orderedmapiterator
+    Trie2 --> Trie
+    Trie2 --> Unmodifiable
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.apache.commons.collections4') with dependency-affinity facade refinement (901 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Arraystack</strong></td>
+                <td>Entities in ArrayStack</td>
+                <td>7</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ArrayStack, org.apache.commons.collections4.ArrayStack.ArrayStack, org.apache.commons.collections4.ArrayStack.empty, org.apache.commons.collections4.ArrayStack.peek, org.apache.commons.collections4.ArrayStack.pop, org.apache.commons.collections4.ArrayStack.push, org.apache.commons.collections4.ArrayStack.search</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Arrayutils</strong></td>
+                <td>Entities in ArrayUtils</td>
+                <td>4</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ArrayUtils, org.apache.commons.collections4.ArrayUtils.ArrayUtils, org.apache.commons.collections4.ArrayUtils.contains, org.apache.commons.collections4.ArrayUtils.indexOf</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bag</strong></td>
+                <td>Entities in Bag</td>
+                <td>10</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Bag, org.apache.commons.collections4.Bag.add, org.apache.commons.collections4.Bag.containsAll, org.apache.commons.collections4.Bag.getCount, org.apache.commons.collections4.Bag.iterator, org.apache.commons.collections4.Bag.remove, org.apache.commons.collections4.Bag.removeAll, org.apache.commons.collections4.Bag.retainAll, ... (+2 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bidimap</strong></td>
+                <td>Entities in BidiMap</td>
+                <td>16</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.BidiMap, org.apache.commons.collections4.BidiMap.getKey, org.apache.commons.collections4.BidiMap.inverseBidiMap, org.apache.commons.collections4.BidiMap.put, org.apache.commons.collections4.BidiMap.removeValue, org.apache.commons.collections4.BidiMap.values, org.apache.commons.collections4.bidimap.DualHashBidiMap, org.apache.commons.collections4.bidimap.DualHashBidiMap.DualHashBidiMap, ... (+8 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Boundedcollection</strong></td>
+                <td>Entities in BoundedCollection</td>
+                <td>23</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.BoundedCollection, org.apache.commons.collections4.BoundedCollection.isFull, org.apache.commons.collections4.BoundedCollection.maxSize, org.apache.commons.collections4.queue.CircularFifoQueue, org.apache.commons.collections4.queue.CircularFifoQueue.CircularFifoQueue, org.apache.commons.collections4.queue.CircularFifoQueue.add, org.apache.commons.collections4.queue.CircularFifoQueue.clear, org.apache.commons.collections4.queue.CircularFifoQueue.decrement, ... (+15 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Boundedmap</strong></td>
+                <td>Entities in BoundedMap</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.BoundedMap, org.apache.commons.collections4.BoundedMap.isFull, org.apache.commons.collections4.BoundedMap.maxSize</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Closure</strong></td>
+                <td>Entities in Closure</td>
+                <td>16</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Closure, org.apache.commons.collections4.Closure.accept, org.apache.commons.collections4.Closure.execute, org.apache.commons.collections4.functors.ChainedClosure.ChainedClosure, org.apache.commons.collections4.functors.ChainedClosure.chainedClosure, org.apache.commons.collections4.functors.ChainedClosure.execute, org.apache.commons.collections4.functors.ChainedClosure.getClosures, org.apache.commons.collections4.functors.ForClosure.ForClosure, ... (+8 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Collectionutils</strong></td>
+                <td>Entities in CollectionUtils</td>
+                <td>50</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.CollectionUtils, org.apache.commons.collections4.CollectionUtils.CollectionUtils, org.apache.commons.collections4.CollectionUtils.addAll, org.apache.commons.collections4.CollectionUtils.addIgnoreNull, org.apache.commons.collections4.CollectionUtils.cardinality, org.apache.commons.collections4.CollectionUtils.checkIndexBounds, org.apache.commons.collections4.CollectionUtils.collate, org.apache.commons.collections4.CollectionUtils.collect, ... (+42 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Comparatorutils</strong></td>
+                <td>Entities in ComparatorUtils</td>
+                <td>9</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ComparatorUtils, org.apache.commons.collections4.comparators.NullComparator.NullComparator, org.apache.commons.collections4.comparators.NullComparator.compare, org.apache.commons.collections4.comparators.NullComparator.equals, org.apache.commons.collections4.comparators.NullComparator.hashCode, org.apache.commons.collections4.comparators.ReverseComparator.ReverseComparator, org.apache.commons.collections4.comparators.ReverseComparator.compare, org.apache.commons.collections4.comparators.ReverseComparator.equals, ... (+1 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Equator</strong></td>
+                <td>Entities in Equator</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Equator, org.apache.commons.collections4.functors.DefaultEquator.DefaultEquator, org.apache.commons.collections4.functors.DefaultEquator.defaultEquator, org.apache.commons.collections4.functors.DefaultEquator.equate, org.apache.commons.collections4.functors.DefaultEquator.hash, org.apache.commons.collections4.functors.DefaultEquator.readResolve</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Factory</strong></td>
+                <td>Entities in Factory</td>
+                <td>7</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Factory, org.apache.commons.collections4.Factory.create, org.apache.commons.collections4.Factory.get, org.apache.commons.collections4.functors.ConstantFactory.ConstantFactory, org.apache.commons.collections4.functors.ConstantFactory.constantFactory, org.apache.commons.collections4.functors.ConstantFactory.create, org.apache.commons.collections4.functors.ConstantFactory.getConstant</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fluentiterable</strong></td>
+                <td>Entities in FluentIterable</td>
+                <td>5</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.FluentIterable, org.apache.commons.collections4.iterators.ZippingIterator.ZippingIterator, org.apache.commons.collections4.iterators.ZippingIterator.hasNext, org.apache.commons.collections4.iterators.ZippingIterator.next, org.apache.commons.collections4.iterators.ZippingIterator.remove</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Functorexception</strong></td>
+                <td>Entities in FunctorException</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.FunctorException, org.apache.commons.collections4.FunctorException.FunctorException</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Get</strong></td>
+                <td>Entities in Get</td>
+                <td>10</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Get, org.apache.commons.collections4.Get.containsKey, org.apache.commons.collections4.Get.containsValue, org.apache.commons.collections4.Get.entrySet, org.apache.commons.collections4.Get.get, org.apache.commons.collections4.Get.isEmpty, org.apache.commons.collections4.Get.keySet, org.apache.commons.collections4.Get.remove, ... (+2 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iterableget</strong></td>
+                <td>Entities in IterableGet</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.IterableGet, org.apache.commons.collections4.IterableGet.mapIterator</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iterablemap</strong></td>
+                <td>Entities in IterableMap</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.IterableMap</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iterablesortedmap</strong></td>
+                <td>Entities in IterableSortedMap</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.IterableSortedMap</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iterableutils</strong></td>
+                <td>Entities in IterableUtils</td>
+                <td>38</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.IterableUtils, org.apache.commons.collections4.IterableUtils.IterableUtils, org.apache.commons.collections4.IterableUtils.boundedIterable, org.apache.commons.collections4.IterableUtils.chainedIterable, org.apache.commons.collections4.IterableUtils.checkNotNull, org.apache.commons.collections4.IterableUtils.collatedIterable, org.apache.commons.collections4.IterableUtils.contains, org.apache.commons.collections4.IterableUtils.countMatches, ... (+30 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iteratorutils</strong></td>
+                <td>Entities in IteratorUtils</td>
+                <td>51</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.IteratorUtils, org.apache.commons.collections4.IteratorUtils.IteratorUtils, org.apache.commons.collections4.IteratorUtils.addAll, org.apache.commons.collections4.IteratorUtils.arrayIterator, org.apache.commons.collections4.IteratorUtils.arrayListIterator, org.apache.commons.collections4.IteratorUtils.asEnumeration, org.apache.commons.collections4.IteratorUtils.asIterable, org.apache.commons.collections4.IteratorUtils.asIterator, ... (+43 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Keyvalue</strong></td>
+                <td>Entities in KeyValue</td>
+                <td>51</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.KeyValue, org.apache.commons.collections4.KeyValue.getKey, org.apache.commons.collections4.KeyValue.getValue, org.apache.commons.collections4.keyvalue.AbstractKeyValue, org.apache.commons.collections4.keyvalue.AbstractKeyValue.AbstractKeyValue, org.apache.commons.collections4.keyvalue.AbstractKeyValue.getKey, org.apache.commons.collections4.keyvalue.AbstractKeyValue.getValue, org.apache.commons.collections4.keyvalue.AbstractKeyValue.setKey, ... (+43 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Listutils</strong></td>
+                <td>Entities in ListUtils</td>
+                <td>25</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ListUtils, org.apache.commons.collections4.ListUtils.ListUtils, org.apache.commons.collections4.ListUtils.defaultIfNull, org.apache.commons.collections4.ListUtils.emptyIfNull, org.apache.commons.collections4.ListUtils.fixedSizeList, org.apache.commons.collections4.ListUtils.getFirst, org.apache.commons.collections4.ListUtils.getLast, org.apache.commons.collections4.ListUtils.hashCodeForList, ... (+17 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Listvaluedmap</strong></td>
+                <td>Entities in ListValuedMap</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ListValuedMap, org.apache.commons.collections4.ListValuedMap.get, org.apache.commons.collections4.ListValuedMap.remove</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Mapiterator</strong></td>
+                <td>Entities in MapIterator</td>
+                <td>22</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.MapIterator, org.apache.commons.collections4.MapIterator.getKey, org.apache.commons.collections4.MapIterator.getValue, org.apache.commons.collections4.MapIterator.hasNext, org.apache.commons.collections4.MapIterator.next, org.apache.commons.collections4.MapIterator.remove, org.apache.commons.collections4.MapIterator.setValue, org.apache.commons.collections4.iterators.AbstractMapIteratorDecorator, ... (+14 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Multimap</strong></td>
+                <td>Entities in MultiMap</td>
+                <td>8</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.MultiMap, org.apache.commons.collections4.MultiMap.containsValue, org.apache.commons.collections4.MultiMap.get, org.apache.commons.collections4.MultiMap.put, org.apache.commons.collections4.MultiMap.remove, org.apache.commons.collections4.MultiMap.removeMapping, org.apache.commons.collections4.MultiMap.size, org.apache.commons.collections4.MultiMap.values</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Multimaputils</strong></td>
+                <td>Entities in MultiMapUtils</td>
+                <td>15</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.MultiMapUtils, org.apache.commons.collections4.MultiMapUtils.MultiMapUtils, org.apache.commons.collections4.MultiMapUtils.emptyIfNull, org.apache.commons.collections4.MultiMapUtils.emptyMultiValuedMap, org.apache.commons.collections4.MultiMapUtils.getCollection, org.apache.commons.collections4.MultiMapUtils.getValuesAsBag, org.apache.commons.collections4.MultiMapUtils.getValuesAsList, org.apache.commons.collections4.MultiMapUtils.getValuesAsMultiSet, ... (+7 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Multiset</strong></td>
+                <td>Entities in MultiSet</td>
+                <td>14</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.MultiSet, org.apache.commons.collections4.MultiSet.add, org.apache.commons.collections4.MultiSet.containsAll, org.apache.commons.collections4.MultiSet.entrySet, org.apache.commons.collections4.MultiSet.equals, org.apache.commons.collections4.MultiSet.getCount, org.apache.commons.collections4.MultiSet.hashCode, org.apache.commons.collections4.MultiSet.iterator, ... (+6 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Multivaluedmap</strong></td>
+                <td>Entities in MultiValuedMap</td>
+                <td>19</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.MultiValuedMap, org.apache.commons.collections4.MultiValuedMap.asMap, org.apache.commons.collections4.MultiValuedMap.clear, org.apache.commons.collections4.MultiValuedMap.containsKey, org.apache.commons.collections4.MultiValuedMap.containsMapping, org.apache.commons.collections4.MultiValuedMap.containsValue, org.apache.commons.collections4.MultiValuedMap.entries, org.apache.commons.collections4.MultiValuedMap.get, ... (+11 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Orderedbidimap</strong></td>
+                <td>Entities in OrderedBidiMap</td>
+                <td>2</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.OrderedBidiMap, org.apache.commons.collections4.OrderedBidiMap.inverseBidiMap</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Orderediterator</strong></td>
+                <td>Entities in OrderedIterator</td>
+                <td>5</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.OrderedIterator, org.apache.commons.collections4.OrderedIterator.hasPrevious, org.apache.commons.collections4.OrderedIterator.previous, org.apache.commons.collections4.iterators.EmptyOrderedIterator.EmptyOrderedIterator, org.apache.commons.collections4.iterators.EmptyOrderedIterator.emptyOrderedIterator</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Orderedmap</strong></td>
+                <td>Entities in OrderedMap</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.OrderedMap, org.apache.commons.collections4.OrderedMap.firstKey, org.apache.commons.collections4.OrderedMap.lastKey, org.apache.commons.collections4.OrderedMap.mapIterator, org.apache.commons.collections4.OrderedMap.nextKey, org.apache.commons.collections4.OrderedMap.previousKey</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Orderedmapiterator</strong></td>
+                <td>Entities in OrderedMapIterator</td>
+                <td>16</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.OrderedMapIterator, org.apache.commons.collections4.OrderedMapIterator.hasPrevious, org.apache.commons.collections4.OrderedMapIterator.previous, org.apache.commons.collections4.iterators.AbstractOrderedMapIteratorDecorator, org.apache.commons.collections4.iterators.AbstractOrderedMapIteratorDecorator.AbstractOrderedMapIteratorDecorator, org.apache.commons.collections4.iterators.AbstractOrderedMapIteratorDecorator.getKey, org.apache.commons.collections4.iterators.AbstractOrderedMapIteratorDecorator.getOrderedMapIterator, org.apache.commons.collections4.iterators.AbstractOrderedMapIteratorDecorator.getValue, ... (+8 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Predicate</strong></td>
+                <td>Entities in Predicate</td>
+                <td>231</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Predicate, org.apache.commons.collections4.Predicate.evaluate, org.apache.commons.collections4.Predicate.test, org.apache.commons.collections4.bloomfilter.BloomFilterExtractor.asBloomFilterArray, org.apache.commons.collections4.bloomfilter.BloomFilterExtractor.flatten, org.apache.commons.collections4.bloomfilter.BloomFilterExtractor.fromBloomFilterArray, org.apache.commons.collections4.bloomfilter.BloomFilterExtractor.processBloomFilterPair, org.apache.commons.collections4.bloomfilter.BloomFilterExtractor.processBloomFilters, ... (+223 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Put</strong></td>
+                <td>Entities in Put</td>
+                <td>4</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Put, org.apache.commons.collections4.Put.clear, org.apache.commons.collections4.Put.put, org.apache.commons.collections4.Put.putAll</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Resettableiterator</strong></td>
+                <td>Entities in ResettableIterator</td>
+                <td>48</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ResettableIterator, org.apache.commons.collections4.ResettableIterator.reset, org.apache.commons.collections4.iterators.AbstractEmptyIterator, org.apache.commons.collections4.iterators.AbstractEmptyIterator.AbstractEmptyIterator, org.apache.commons.collections4.iterators.AbstractEmptyIterator.add, org.apache.commons.collections4.iterators.AbstractEmptyIterator.hasNext, org.apache.commons.collections4.iterators.AbstractEmptyIterator.hasPrevious, org.apache.commons.collections4.iterators.AbstractEmptyIterator.next, ... (+40 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Resettablelistiterator</strong></td>
+                <td>Entities in ResettableListIterator</td>
+                <td>57</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ResettableListIterator, org.apache.commons.collections4.iterators.ArrayListIterator.ArrayListIterator, org.apache.commons.collections4.iterators.ArrayListIterator.add, org.apache.commons.collections4.iterators.ArrayListIterator.hasPrevious, org.apache.commons.collections4.iterators.ArrayListIterator.next, org.apache.commons.collections4.iterators.ArrayListIterator.nextIndex, org.apache.commons.collections4.iterators.ArrayListIterator.previous, org.apache.commons.collections4.iterators.ArrayListIterator.previousIndex, ... (+49 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setutils</strong></td>
+                <td>Entities in SetUtils</td>
+                <td>1</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.SetUtils</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Setvaluedmap</strong></td>
+                <td>Entities in SetValuedMap</td>
+                <td>3</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.SetValuedMap, org.apache.commons.collections4.SetValuedMap.get, org.apache.commons.collections4.SetValuedMap.remove</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Sortedbag</strong></td>
+                <td>Entities in SortedBag</td>
+                <td>4</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.SortedBag, org.apache.commons.collections4.SortedBag.comparator, org.apache.commons.collections4.SortedBag.first, org.apache.commons.collections4.SortedBag.last</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Sortedbidimap</strong></td>
+                <td>Entities in SortedBidiMap</td>
+                <td>12</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.SortedBidiMap, org.apache.commons.collections4.SortedBidiMap.inverseBidiMap, org.apache.commons.collections4.SortedBidiMap.valueComparator, org.apache.commons.collections4.bidimap.AbstractSortedBidiMapDecorator, org.apache.commons.collections4.bidimap.AbstractSortedBidiMapDecorator.AbstractSortedBidiMapDecorator, org.apache.commons.collections4.bidimap.AbstractSortedBidiMapDecorator.comparator, org.apache.commons.collections4.bidimap.AbstractSortedBidiMapDecorator.decorated, org.apache.commons.collections4.bidimap.AbstractSortedBidiMapDecorator.headMap, ... (+4 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Sortedmultiset</strong></td>
+                <td>Entities in SortedMultiSet</td>
+                <td>23</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.SortedMultiSet, org.apache.commons.collections4.SortedMultiSet.comparator, org.apache.commons.collections4.SortedMultiSet.first, org.apache.commons.collections4.SortedMultiSet.last, org.apache.commons.collections4.multiset.AbstractSortedMultiSetDecorator.AbstractSortedMultiSetDecorator, org.apache.commons.collections4.multiset.AbstractSortedMultiSetDecorator.comparator, org.apache.commons.collections4.multiset.AbstractSortedMultiSetDecorator.decorated, org.apache.commons.collections4.multiset.AbstractSortedMultiSetDecorator.first, ... (+15 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Splitmaputils</strong></td>
+                <td>Entities in SplitMapUtils</td>
+                <td>4</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.SplitMapUtils, org.apache.commons.collections4.SplitMapUtils.SplitMapUtils, org.apache.commons.collections4.SplitMapUtils.readableMap, org.apache.commons.collections4.SplitMapUtils.writableMap</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Transformer</strong></td>
+                <td>Entities in Transformer</td>
+                <td>98</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Transformer, org.apache.commons.collections4.Transformer.apply, org.apache.commons.collections4.Transformer.transform, org.apache.commons.collections4.collection.TransformedCollection.TransformedCollection, org.apache.commons.collections4.collection.TransformedCollection.add, org.apache.commons.collections4.collection.TransformedCollection.addAll, org.apache.commons.collections4.collection.TransformedCollection.transform, org.apache.commons.collections4.collection.TransformedCollection.transformedCollection, ... (+90 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Trie</strong></td>
+                <td>Entities in Trie</td>
+                <td>26</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Trie, org.apache.commons.collections4.Trie.prefixMap, org.apache.commons.collections4.trie.AbstractBitwiseTrie, org.apache.commons.collections4.trie.AbstractBitwiseTrie.AbstractBitwiseTrie, org.apache.commons.collections4.trie.AbstractBitwiseTrie.bitIndex, org.apache.commons.collections4.trie.AbstractBitwiseTrie.bitsPerElement, org.apache.commons.collections4.trie.AbstractBitwiseTrie.castKey, org.apache.commons.collections4.trie.AbstractBitwiseTrie.compare, ... (+18 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Unmodifiable</strong></td>
+                <td>Entities in Unmodifiable</td>
+                <td>20</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Unmodifiable, org.apache.commons.collections4.iterators.UnmodifiableIterator.UnmodifiableIterator, org.apache.commons.collections4.iterators.UnmodifiableIterator.hasNext, org.apache.commons.collections4.iterators.UnmodifiableIterator.next, org.apache.commons.collections4.iterators.UnmodifiableIterator.remove, org.apache.commons.collections4.iterators.UnmodifiableIterator.unmodifiableIterator, org.apache.commons.collections4.iterators.UnmodifiableIterator.unwrap, org.apache.commons.collections4.iterators.UnmodifiableIterator.wrap, ... (+12 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bag2</strong></td>
+                <td>Entities in bag</td>
+                <td>163</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.BagUtils, org.apache.commons.collections4.BagUtils.BagUtils, org.apache.commons.collections4.BagUtils.collectionBag, org.apache.commons.collections4.BagUtils.emptyBag, org.apache.commons.collections4.BagUtils.emptySortedBag, org.apache.commons.collections4.BagUtils.predicatedBag, org.apache.commons.collections4.BagUtils.predicatedSortedBag, org.apache.commons.collections4.BagUtils.synchronizedBag, ... (+155 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bidimap2</strong></td>
+                <td>Entities in bidimap</td>
+                <td>168</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator, org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator.AbstractBidiMapDecorator, org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator.decorated, org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator.getKey, org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator.inverseBidiMap, org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator.mapIterator, org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator.removeValue, org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator.values, ... (+160 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bloomfilter</strong></td>
+                <td>Entities in bloomfilter</td>
+                <td>169</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter, org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter.ArrayCountingBloomFilter, org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter.add, org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter.asIndexArray, org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter.cardinality, org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter.characteristics, org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter.clear, org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilter.contains, ... (+161 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Collection</strong></td>
+                <td>Entities in collection</td>
+                <td>114</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.collection.AbstractCollectionDecorator, org.apache.commons.collections4.collection.CompositeCollection, org.apache.commons.collections4.collection.CompositeCollection.CompositeCollection, org.apache.commons.collections4.collection.CompositeCollection.add, org.apache.commons.collections4.collection.CompositeCollection.addAll, org.apache.commons.collections4.collection.CompositeCollection.addComposited, org.apache.commons.collections4.collection.CompositeCollection.clear, org.apache.commons.collections4.collection.CompositeCollection.contains, ... (+106 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Comparators</strong></td>
+                <td>Entities in comparators</td>
+                <td>56</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ComparatorUtils.ComparatorUtils, org.apache.commons.collections4.ComparatorUtils.booleanComparator, org.apache.commons.collections4.ComparatorUtils.chainedComparator, org.apache.commons.collections4.ComparatorUtils.max, org.apache.commons.collections4.ComparatorUtils.min, org.apache.commons.collections4.ComparatorUtils.naturalComparator, org.apache.commons.collections4.ComparatorUtils.nullHighComparator, org.apache.commons.collections4.ComparatorUtils.nullLowComparator, ... (+48 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Functors</strong></td>
+                <td>Entities in functors</td>
+                <td>212</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.ClosureUtils, org.apache.commons.collections4.ClosureUtils.ClosureUtils, org.apache.commons.collections4.ClosureUtils.asClosure, org.apache.commons.collections4.ClosureUtils.chainedClosure, org.apache.commons.collections4.ClosureUtils.doWhileClosure, org.apache.commons.collections4.ClosureUtils.exceptionClosure, org.apache.commons.collections4.ClosureUtils.forClosure, org.apache.commons.collections4.ClosureUtils.ifClosure, ... (+204 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Iterators</strong></td>
+                <td>Entities in iterators</td>
+                <td>245</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.EnumerationUtils, org.apache.commons.collections4.EnumerationUtils.EnumerationUtils, org.apache.commons.collections4.EnumerationUtils.asIterable, org.apache.commons.collections4.EnumerationUtils.get, org.apache.commons.collections4.EnumerationUtils.toList, org.apache.commons.collections4.EnumerationUtils.toSet, org.apache.commons.collections4.FluentIterable.FluentIterable, org.apache.commons.collections4.FluentIterable.allMatch, ... (+237 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Keyvalue2</strong></td>
+                <td>Entities in keyvalue</td>
+                <td>24</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.keyvalue.AbstractMapEntry, org.apache.commons.collections4.keyvalue.AbstractMapEntry.AbstractMapEntry, org.apache.commons.collections4.keyvalue.AbstractMapEntry.equals, org.apache.commons.collections4.keyvalue.AbstractMapEntry.hashCode, org.apache.commons.collections4.keyvalue.AbstractMapEntry.setValue, org.apache.commons.collections4.keyvalue.AbstractMapEntryDecorator, org.apache.commons.collections4.keyvalue.DefaultMapEntry, org.apache.commons.collections4.keyvalue.MultiKey, ... (+16 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>List</strong></td>
+                <td>Entities in list</td>
+                <td>234</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.list.AbstractLinkedList, org.apache.commons.collections4.list.AbstractLinkedList.AbstractLinkedList, org.apache.commons.collections4.list.AbstractLinkedList.add, org.apache.commons.collections4.list.AbstractLinkedList.addAll, org.apache.commons.collections4.list.AbstractLinkedList.addFirst, org.apache.commons.collections4.list.AbstractLinkedList.addLast, org.apache.commons.collections4.list.AbstractLinkedList.addNode, org.apache.commons.collections4.list.AbstractLinkedList.addNodeAfter, ... (+226 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Map</strong></td>
+                <td>Entities in map</td>
+                <td>543</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.Equator.equate, org.apache.commons.collections4.Equator.hash, org.apache.commons.collections4.MapUtils, org.apache.commons.collections4.MapUtils.MapUtils, org.apache.commons.collections4.MapUtils.applyDefaultFunction, org.apache.commons.collections4.MapUtils.applyDefaultValue, org.apache.commons.collections4.MapUtils.calculateHashMapCapacity, org.apache.commons.collections4.MapUtils.debugPrint, ... (+535 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Multimap2</strong></td>
+                <td>Entities in multimap</td>
+                <td>114</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.multimap.AbstractListValuedMap, org.apache.commons.collections4.multimap.AbstractListValuedMap.AbstractListValuedMap, org.apache.commons.collections4.multimap.AbstractListValuedMap.createCollection, org.apache.commons.collections4.multimap.AbstractListValuedMap.get, org.apache.commons.collections4.multimap.AbstractListValuedMap.getMap, org.apache.commons.collections4.multimap.AbstractListValuedMap.remove, org.apache.commons.collections4.multimap.AbstractListValuedMap.wrappedCollection, org.apache.commons.collections4.multimap.AbstractMultiValuedMap, ... (+106 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Multiset2</strong></td>
+                <td>Entities in multiset</td>
+                <td>163</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.MultiSetUtils, org.apache.commons.collections4.MultiSetUtils.MultiSetUtils, org.apache.commons.collections4.MultiSetUtils.containsOccurrences, org.apache.commons.collections4.MultiSetUtils.emptyMultiSet, org.apache.commons.collections4.MultiSetUtils.emptySortedMultiSet, org.apache.commons.collections4.MultiSetUtils.predicatedMultiSet, org.apache.commons.collections4.MultiSetUtils.predicatedSortedMultiSet, org.apache.commons.collections4.MultiSetUtils.removeOccurrences, ... (+155 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Properties</strong></td>
+                <td>Entities in properties</td>
+                <td>43</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.properties.AbstractPropertiesFactory, org.apache.commons.collections4.properties.AbstractPropertiesFactory.AbstractPropertiesFactory, org.apache.commons.collections4.properties.AbstractPropertiesFactory.createProperties, org.apache.commons.collections4.properties.AbstractPropertiesFactory.load, org.apache.commons.collections4.properties.OrderedProperties, org.apache.commons.collections4.properties.OrderedProperties.OrderedProperties, org.apache.commons.collections4.properties.OrderedProperties.clear, org.apache.commons.collections4.properties.OrderedProperties.compute, ... (+35 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Queue</strong></td>
+                <td>Entities in queue</td>
+                <td>42</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.QueueUtils, org.apache.commons.collections4.QueueUtils.QueueUtils, org.apache.commons.collections4.QueueUtils.emptyQueue, org.apache.commons.collections4.QueueUtils.predicatedQueue, org.apache.commons.collections4.QueueUtils.synchronizedQueue, org.apache.commons.collections4.QueueUtils.transformingQueue, org.apache.commons.collections4.QueueUtils.unmodifiableQueue, org.apache.commons.collections4.queue.PredicatedQueue, ... (+34 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Sequence</strong></td>
+                <td>Entities in sequence</td>
+                <td>36</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.sequence.CommandVisitor, org.apache.commons.collections4.sequence.CommandVisitor.visitDeleteCommand, org.apache.commons.collections4.sequence.CommandVisitor.visitInsertCommand, org.apache.commons.collections4.sequence.CommandVisitor.visitKeepCommand, org.apache.commons.collections4.sequence.DeleteCommand, org.apache.commons.collections4.sequence.DeleteCommand.DeleteCommand, org.apache.commons.collections4.sequence.DeleteCommand.accept, org.apache.commons.collections4.sequence.EditCommand, ... (+28 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Set</strong></td>
+                <td>Entities in set</td>
+                <td>155</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.SetUtils.SetUtils, org.apache.commons.collections4.SetUtils.difference, org.apache.commons.collections4.SetUtils.disjunction, org.apache.commons.collections4.SetUtils.emptyIfNull, org.apache.commons.collections4.SetUtils.emptySet, org.apache.commons.collections4.SetUtils.emptySortedSet, org.apache.commons.collections4.SetUtils.hashCodeForSet, org.apache.commons.collections4.SetUtils.hashSet, ... (+147 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Splitmap</strong></td>
+                <td>Entities in splitmap</td>
+                <td>28</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator, org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator.AbstractIterableGetMapDecorator, org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator.containsKey, org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator.containsValue, org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator.decorated, org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator.entrySet, org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator.equals, org.apache.commons.collections4.splitmap.AbstractIterableGetMapDecorator.get, ... (+20 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Trie2</strong></td>
+                <td>Entities in trie</td>
+                <td>91</td>
+                
+                <td class="entity-list">org.apache.commons.collections4.TrieUtils, org.apache.commons.collections4.TrieUtils.TrieUtils, org.apache.commons.collections4.TrieUtils.unmodifiableTrie, org.apache.commons.collections4.trie.AbstractPatriciaTrie, org.apache.commons.collections4.trie.AbstractPatriciaTrie.AbstractPatriciaTrie, org.apache.commons.collections4.trie.AbstractPatriciaTrie.addEntry, org.apache.commons.collections4.trie.AbstractPatriciaTrie.ceilingEntry, org.apache.commons.collections4.trie.AbstractPatriciaTrie.clear, ... (+83 more)</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (21)</h2>
+    
+    
+    <div class="smell low">
+        <div class="smell-header">
+            <span class="badge low">low</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 2 components: Comparators <-> Comparatorutils</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Comparators, Comparatorutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 16 components: Bag2 <-> Collection <-> Collectionutils <-> Equator <-> Fluentiterable <-> Functors <-> Iterableutils <-> Iterators <-> Iteratorutils <-> List <-> Listutils <-> Map <-> Multiset2 <-> Queue <-> Sequence <-> Set</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Bag2, Collection, Collectionutils, Equator, Fluentiterable, Functors, Iterableutils, Iterators, Iteratorutils, List, Listutils, Map, Multiset2, Queue, Sequence, Set</p>
+    </div>
+    
+    <div class="smell low">
+        <div class="smell-header">
+            <span class="badge low">low</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 2 components: Multimap2 <-> Multimaputils</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Multimap2, Multimaputils</p>
+    </div>
+    
+    <div class="smell low">
+        <div class="smell-header">
+            <span class="badge low">low</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 2 components: Trie <-> Trie2</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Trie, Trie2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Collectionutils contains 50 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Collectionutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Collectionutils</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Iterableutils contains 38 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Iterableutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Iterableutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Iteratorutils contains 51 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Iteratorutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Iteratorutils</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Listutils contains 25 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Listutils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Listutils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Bidimap2 contains 168 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Bidimap2 into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Bidimap2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Bloomfilter contains 169 entities but only 4 internal dependencies (0.02 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Bloomfilter into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Bloomfilter</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Collection contains 114 entities but only 36 internal dependencies (0.32 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Collection into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Collection</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Iterators contains 245 entities but only 40 internal dependencies (0.16 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Iterators into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Iterators</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Keyvalue2 contains 24 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Keyvalue2 into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Keyvalue2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">List contains 234 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting List into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> List</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Multimap2 contains 114 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Multimap2 into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Multimap2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Properties contains 43 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Properties into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Properties</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Sequence contains 36 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Sequence into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Sequence</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Splitmap contains 28 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Splitmap into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Splitmap</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Trie2 contains 91 entities but only 11 internal dependencies (0.12 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Trie2 into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Trie2</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Factory' pattern is scattered across 3 components: Factory, Functors, Properties</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Factory'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Factory, Functors, Properties</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Utils' pattern is scattered across 20 components: Arrayutils, Bag2, Bloomfilter, Collectionutils, Comparators, Comparatorutils, Functors, Iterableutils, Iterators, Iteratorutils, Listutils, Map, Multimaputils, Multiset2, Predicate, Queue, Set, Setutils, Splitmaputils, Trie2</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Arrayutils, Bag2, Bloomfilter, Collectionutils, Comparators, Comparatorutils, Functors, Iterableutils, Iterators, Iteratorutils, Listutils, Map, Multimaputils, Multiset2, Predicate, Queue, Set, Setutils, Splitmaputils, Trie2</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4</code></td>
+                    <td>711</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.map</code></td>
+                    <td>654</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.iterators</code></td>
+                    <td>431</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.functors</code></td>
+                    <td>297</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.list</code></td>
+                    <td>288</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.bloomfilter</code></td>
+                    <td>263</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.set</code></td>
+                    <td>222</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.bidimap</code></td>
+                    <td>197</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.multiset</code></td>
+                    <td>182</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.bag</code></td>
+                    <td>175</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.multimap</code></td>
+                    <td>141</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.collection</code></td>
+                    <td>133</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.trie</code></td>
+                    <td>106</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.queue</code></td>
+                    <td>78</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.keyvalue</code></td>
+                    <td>69</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.comparators</code></td>
+                    <td>68</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.properties</code></td>
+                    <td>52</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.sequence</code></td>
+                    <td>39</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.splitmap</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.apache.commons.collections4.trie.analyzer</code></td>
+                    <td>8</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>

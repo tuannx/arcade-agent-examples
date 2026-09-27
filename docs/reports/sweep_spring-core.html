@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: spring-core (smell sweep) (spring-core)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (11)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">spring-core (smell sweep) &mdash; version spring-core &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">5391</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">13955</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">6</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">11</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Aot["Aot\n(279 entities)"]
+    Asm["Asm\n(822 entities)"]
+    Cglib["Cglib\n(1030 entities)"]
+    Core["Core\n(1513 entities)"]
+    Objenesis["Objenesis\n(6 entities)"]
+    Util["Util\n(1741 entities)"]
+    Aot --> Asm
+    Aot --> Cglib
+    Aot --> Core
+    Aot --> Util
+    Asm --> Cglib
+    Asm --> Util
+    Cglib --> Asm
+    Core --> Aot
+    Core --> Asm
+    Core --> Cglib
+    Core --> Util
+    Objenesis --> Core
+    Objenesis --> Util
+    Util --> Aot
+    Util --> Asm
+    Util --> Cglib
+    Util --> Core
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.springframework') with dependency-affinity facade refinement (1569 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Aot</strong></td>
+                <td>Entities in aot</td>
+                <td>279</td>
+                
+                <td class="entity-list">org.springframework.aot.AotDetector, org.springframework.aot.AotDetector.useGeneratedArtifacts, org.springframework.aot.generate.AccessControl, org.springframework.aot.generate.AccessControl.AccessControl, org.springframework.aot.generate.AccessControl.forClass, org.springframework.aot.generate.AccessControl.forMember, org.springframework.aot.generate.AccessControl.forResolvableType, org.springframework.aot.generate.AccessControl.getVisibility, ... (+271 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Asm</strong></td>
+                <td>Entities in asm</td>
+                <td>822</td>
+                
+                <td class="entity-list">org.springframework.asm.AnnotationVisitor, org.springframework.asm.AnnotationVisitor.AnnotationVisitor, org.springframework.asm.AnnotationVisitor.getDelegate, org.springframework.asm.AnnotationVisitor.visit, org.springframework.asm.AnnotationVisitor.visitAnnotation, org.springframework.asm.AnnotationVisitor.visitArray, org.springframework.asm.AnnotationVisitor.visitEnd, org.springframework.asm.AnnotationVisitor.visitEnum, ... (+814 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Cglib</strong></td>
+                <td>Entities in cglib</td>
+                <td>1030</td>
+                
+                <td class="entity-list">org.springframework.aot.generate.MethodReference.toCodeBlock, org.springframework.aot.generate.MethodReference.toInvokeCodeBlock, org.springframework.aot.hint.JdkProxyHint.JdkProxyHint, org.springframework.aot.hint.JdkProxyHint.equals, org.springframework.aot.hint.JdkProxyHint.getProxiedInterfaces, org.springframework.aot.hint.JdkProxyHint.getReachableType, org.springframework.aot.hint.JdkProxyHint.hasJavaSerialization, org.springframework.aot.hint.JdkProxyHint.hashCode, ... (+1022 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Core</strong></td>
+                <td>Entities in core</td>
+                <td>1513</td>
+                
+                <td class="entity-list">org.springframework.aot.hint.support.PathMatchingResourcePatternResolverRuntimeHints, org.springframework.aot.hint.support.PathMatchingResourcePatternResolverRuntimeHints.registerHints, org.springframework.aot.nativex.RuntimeHintsWriter, org.springframework.aot.nativex.RuntimeHintsWriter.write, org.springframework.core.AliasRegistry, org.springframework.core.AliasRegistry.getAliases, org.springframework.core.AliasRegistry.isAlias, org.springframework.core.AliasRegistry.registerAlias, ... (+1505 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Objenesis</strong></td>
+                <td>Entities in objenesis</td>
+                <td>6</td>
+                
+                <td class="entity-list">org.springframework.objenesis.SpringObjenesis, org.springframework.objenesis.SpringObjenesis.SpringObjenesis, org.springframework.objenesis.SpringObjenesis.getInstantiatorOf, org.springframework.objenesis.SpringObjenesis.isWorthTrying, org.springframework.objenesis.SpringObjenesis.newInstance, org.springframework.objenesis.SpringObjenesis.newInstantiatorOf</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Util</strong></td>
+                <td>Entities in util</td>
+                <td>1741</td>
+                
+                <td class="entity-list">org.springframework.aot.generate.DefaultGenerationContext.DefaultGenerationContext, org.springframework.aot.generate.DefaultGenerationContext.getGeneratedClasses, org.springframework.aot.generate.DefaultGenerationContext.getGeneratedFiles, org.springframework.aot.generate.DefaultGenerationContext.getGeneratedResources, org.springframework.aot.generate.DefaultGenerationContext.getRuntimeHints, org.springframework.aot.generate.DefaultGenerationContext.withName, org.springframework.aot.generate.DefaultGenerationContext.writeGeneratedContent, org.springframework.aot.generate.DefaultMethodReference.DefaultMethodReference, ... (+1733 more)</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (11)</h2>
+    
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 5 components: Aot <-> Asm <-> Cglib <-> Core <-> Util</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Aot, Asm, Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Exception' pattern is scattered across 5 components: Aot, Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Exception'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Aot, Asm, Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Factory' pattern is scattered across 4 components: Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Factory'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Asm, Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Handler' pattern is scattered across 4 components: Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Handler'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Asm, Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Helper' pattern is scattered across 4 components: Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Helper'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Asm, Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Provider' pattern is scattered across 3 components: Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Provider'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Utils' pattern is scattered across 5 components: Aot, Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Aot, Asm, Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Asm is depended on by 4 other components (80% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Asm into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Asm</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Cglib is depended on by 4 other components (80% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Cglib into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Cglib</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Core is depended on by 3 other components (60% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Core into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Core</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Util is depended on by 4 other components (80% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Util into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Util</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>org.springframework.util</code></td>
+                    <td>967</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.annotation</code></td>
+                    <td>565</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.asm</code></td>
+                    <td>537</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.core</code></td>
+                    <td>449</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core</code></td>
+                    <td>438</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.io.buffer</code></td>
+                    <td>361</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.util.xml</code></td>
+                    <td>323</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.io</code></td>
+                    <td>260</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.convert.support</code></td>
+                    <td>220</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.proxy</code></td>
+                    <td>183</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot.generate</code></td>
+                    <td>174</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot.hint</code></td>
+                    <td>173</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.codec</code></td>
+                    <td>148</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.io.support</code></td>
+                    <td>134</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.transform</code></td>
+                    <td>114</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.type.classreading</code></td>
+                    <td>103</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.transform.impl</code></td>
+                    <td>100</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.type</code></td>
+                    <td>90</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.convert</code></td>
+                    <td>83</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.log</code></td>
+                    <td>78</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.beans</code></td>
+                    <td>77</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.reflect</code></td>
+                    <td>75</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.task</code></td>
+                    <td>62</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.style</code></td>
+                    <td>59</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.retry</code></td>
+                    <td>56</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot.nativex</code></td>
+                    <td>45</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.util.function</code></td>
+                    <td>45</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot.hint.predicate</code></td>
+                    <td>41</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.util</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.type.filter</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.util.backoff</code></td>
+                    <td>32</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.util.comparator</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot.hint.annotation</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.convert.converter</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.retry.support</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot.hint.support</code></td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.task.support</code></td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.util.unit</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.serializer.support</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.util.concurrent</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.metrics.jfr</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.serializer</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.core.metrics</code></td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib.core.internal</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot.nativex.feature</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.objenesis</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.aot</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>org.springframework.cglib</code></td>
+                    <td>1</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>
