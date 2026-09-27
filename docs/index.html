@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>arcade-agent-examples — deterministic architecture demos</title>
+<style>body{font-family:system-ui,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.6}
+.card{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}
+.small{color:#666;font-size:.9em}</style>
+</head><body>
+<h1>arcade-agent-examples</h1>
+<p>Deterministic, reproducible architecture-analysis demos. Every scenario runs with
+<strong>one command</strong> — locally and in CI — and publishes its report here.
+Numbers are re-generated monthly so they never rot.</p>
+
+<div class="card"><h3>synthetic-smells</h3>
+<p>Planted cycle + god module → refactored. <code>changelog_architecture</code> reports
+2 resolved, 0 new, in 0.2s.</p>
+<p><a href="reports/synthetic_before.html">before</a> ·
+<a href="reports/synthetic_after.html">after</a> ·
+<a href="reports/synthetic_summary.json">summary.json</a></p></div>
+
+<div class="card"><h3>adr-autopsy-011</h3>
+<p>Jaeger ADR-011 graded claim-by-claim against PR #8800. Effectiveness <strong>+0.75</strong>.</p>
+<p><a href="reports/adr011_base.html">base</a> ·
+<a href="reports/adr011_head.html">head</a> ·
+<a href="reports/adr011_summary.json">summary.json</a></p></div>
+
+<div class="card"><h3>adr-autopsy-014</h3>
+<p>Jaeger ADR-014 as neutral control: behavioral change, zero structural delta.</p>
+<p><a href="reports/adr014_base.html">base</a> ·
+<a href="reports/adr014_head.html">head</a> ·
+<a href="reports/adr014_summary.json">summary.json</a></p></div>
+
+<div class="card"><h3>smell-sweeps</h3>
+<p>Apache Commons, Spring, Kafka: real codebases, seconds of analysis.
+<span class="small">All targets pinned by git SHA.</span></p>
+<p>
+<a href="reports/sweep_commons-lang.html">commons-lang</a> ·
+<a href="reports/sweep_commons-io.html">commons-io</a> ·
+<a href="reports/sweep_commons-collections.html">commons-collections</a><br>
+<a href="reports/sweep_spring-core.html">spring-core</a> ·
+<a href="reports/sweep_spring-beans.html">spring-beans</a> ·
+<a href="reports/sweep_spring-context.html">spring-context</a> ·
+<a href="reports/sweep_spring-web.html">spring-web</a><br>
+<a href="reports/sweep_kafka.html">kafka</a> ·
+<a href="reports/sweeps_summary.json">summary.json</a></p></div>
+
+<p>Built with <a href="https://github.com/arcade-agent/arcade-agent">arcade-agent</a>.
+Reproduce: <code>pip install "arcade-agent[languages]" && make all</code>.
+Sources: <a href="https://github.com/tuannx/arcade-agent-examples">tuannx/arcade-agent-examples</a>.</p>
+</body></html>

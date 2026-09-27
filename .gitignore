@@ -1,0 +1,5 @@
+.arcade-cache/
+worktrees/
+repos/
+docs/reports/
+__pycache__/
