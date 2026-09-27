@@ -4,7 +4,7 @@ Deterministic, reproducible architecture-analysis demos — the same idea as
 `mvn-perf/mvn-perf-examples`, but for **software architecture** instead of build time.
 
 Every scenario in `scenarios/` runs with **one command**, locally and in CI, and publishes
-its HTML report to GitHub Pages. Numbers are re-generated monthly by CI so they never rot.
+its HTML report to GitHub Pages. Numbers are re-generated monthly so they never rot.
 
 ## Scenarios
 
@@ -22,8 +22,9 @@ pip install "arcade-agent[languages]"
 make all        # runs every scenario, writes reports to docs/reports/
 ```
 
-CI (`.github/workflows/refresh.yml`) runs `make all` on a monthly cron and deploys
-`docs/` to GitHub Pages.
+A monthly scheduled job runs `make all` and commits the refreshed reports in
+`docs/reports/` (GitHub Pages serves `docs/` from `main`).
+To refresh manually: `pip install "arcade-agent[languages]" && make all`.
 
 ## Referencing this repo
 
