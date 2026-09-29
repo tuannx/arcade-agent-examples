@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: cobra (fork corpus) (cobra@adbc8813)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (0)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">cobra (fork corpus) &mdash; version cobra@adbc8813 &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">285</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">538</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">36</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">0</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Default["Default\n(250 entities)"]
+    Genman["Genman\n(1 entities)"]
+    Genmanheader["Genmanheader\n(1 entities)"]
+    Genmantree["Genmantree\n(1 entities)"]
+    Genmantreefromopts["Genmantreefromopts\n(1 entities)"]
+    Genmantreeoptions["Genmantreeoptions\n(1 entities)"]
+    Genmarkdown["Genmarkdown\n(1 entities)"]
+    Genmarkdowncustom["Genmarkdowncustom\n(1 entities)"]
+    Genmarkdowntree["Genmarkdowntree\n(1 entities)"]
+    Genmarkdowntreecustom["Genmarkdowntreecustom\n(1 entities)"]
+    Genrest["Genrest\n(1 entities)"]
+    Genrestcustom["Genrestcustom\n(1 entities)"]
+    Genresttree["Genresttree\n(1 entities)"]
+    Genresttreecustom["Genresttreecustom\n(1 entities)"]
+    Genyaml["Genyaml\n(1 entities)"]
+    Genyamlcustom["Genyamlcustom\n(1 entities)"]
+    Genyamltree["Genyamltree\n(1 entities)"]
+    Genyamltreecustom["Genyamltreecustom\n(1 entities)"]
+    Byname["Byname\n(1 entities)"]
+    Len["Len\n(1 entities)"]
+    Less["Less\n(1 entities)"]
+    Swap["Swap\n(1 entities)"]
+    Cmddoc["Cmddoc\n(1 entities)"]
+    Cmdoption["Cmdoption\n(1 entities)"]
+    Defaultlinkhandler["Defaultlinkhandler\n(1 entities)"]
+    Fillheader["Fillheader\n(1 entities)"]
+    Forcemultiline["Forcemultiline\n(1 entities)"]
+    Genflagresult["Genflagresult\n(1 entities)"]
+    Genman2["Genman2\n(1 entities)"]
+    Hasseealso["Hasseealso\n(1 entities)"]
+    Indentstring["Indentstring\n(1 entities)"]
+    Manpreamble["Manpreamble\n(1 entities)"]
+    Manprintflags["Manprintflags\n(1 entities)"]
+    Manprintoptions["Manprintoptions\n(1 entities)"]
+    Printoptions["Printoptions\n(1 entities)"]
+    Printoptionsrest["Printoptionsrest\n(1 entities)"]
+    Cmddoc --> Cmdoption
+    Fillheader --> Genmanheader
+    Genflagresult --> Cmdoption
+    Genflagresult --> Forcemultiline
+    Genman --> Fillheader
+    Genman --> Genman2
+    Genman --> Genmanheader
+    Genman2 --> Byname
+    Genman2 --> Genmanheader
+    Genman2 --> Hasseealso
+    Genman2 --> Manpreamble
+    Genman2 --> Manprintoptions
+    Genmantree --> Genmanheader
+    Genmantree --> Genmantreefromopts
+    Genmantree --> Genmantreeoptions
+    Genmantreefromopts --> Genman
+    Genmantreefromopts --> Genmanheader
+    Genmantreefromopts --> Genmantreeoptions
+    Genmantreeoptions --> Genmanheader
+    Genmarkdown --> Genmarkdowncustom
+    Genmarkdowncustom --> Byname
+    Genmarkdowncustom --> Hasseealso
+    Genmarkdowncustom --> Printoptions
+    Genmarkdowntree --> Genmarkdowntreecustom
+    Genmarkdowntreecustom --> Genmarkdowncustom
+    Genrest --> Defaultlinkhandler
+    Genrest --> Genrestcustom
+    Genrestcustom --> Byname
+    Genrestcustom --> Hasseealso
+    Genrestcustom --> Indentstring
+    Genrestcustom --> Printoptionsrest
+    Genresttree --> Defaultlinkhandler
+    Genresttree --> Genresttreecustom
+    Genresttreecustom --> Genrestcustom
+    Genyaml --> Genyamlcustom
+    Genyamlcustom --> Byname
+    Genyamlcustom --> Cmddoc
+    Genyamlcustom --> Forcemultiline
+    Genyamlcustom --> Genflagresult
+    Genyamlcustom --> Hasseealso
+    Genyamltree --> Genyamltreecustom
+    Genyamltreecustom --> Genyamlcustom
+    Len --> Byname
+    Less --> Byname
+    Manpreamble --> Genmanheader
+    Manprintoptions --> Manprintflags
+    Swap --> Byname
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=4 after common prefix 'doc').</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Default</strong></td>
+                <td>Entities in (default)</td>
+                <td>250</td>
+                
+                <td class="entity-list">.Command.AddCommand, .Command.AddGroup, .Command.AllChildCommandsHaveGroup, .Command.ArgsLenAtDash, .Command.CalledAs, .Command.CommandPath, .Command.CommandPathPadding, .Command.Commands, ... (+242 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genman</strong></td>
+                <td>Entities in GenMan</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenMan</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmanheader</strong></td>
+                <td>Entities in GenManHeader</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenManHeader</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmantree</strong></td>
+                <td>Entities in GenManTree</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenManTree</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmantreefromopts</strong></td>
+                <td>Entities in GenManTreeFromOpts</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenManTreeFromOpts</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmantreeoptions</strong></td>
+                <td>Entities in GenManTreeOptions</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenManTreeOptions</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmarkdown</strong></td>
+                <td>Entities in GenMarkdown</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenMarkdown</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmarkdowncustom</strong></td>
+                <td>Entities in GenMarkdownCustom</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenMarkdownCustom</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmarkdowntree</strong></td>
+                <td>Entities in GenMarkdownTree</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenMarkdownTree</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genmarkdowntreecustom</strong></td>
+                <td>Entities in GenMarkdownTreeCustom</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenMarkdownTreeCustom</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genrest</strong></td>
+                <td>Entities in GenReST</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenReST</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genrestcustom</strong></td>
+                <td>Entities in GenReSTCustom</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenReSTCustom</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genresttree</strong></td>
+                <td>Entities in GenReSTTree</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenReSTTree</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genresttreecustom</strong></td>
+                <td>Entities in GenReSTTreeCustom</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenReSTTreeCustom</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genyaml</strong></td>
+                <td>Entities in GenYaml</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenYaml</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genyamlcustom</strong></td>
+                <td>Entities in GenYamlCustom</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenYamlCustom</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genyamltree</strong></td>
+                <td>Entities in GenYamlTree</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenYamlTree</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genyamltreecustom</strong></td>
+                <td>Entities in GenYamlTreeCustom</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.GenYamlTreeCustom</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Byname</strong></td>
+                <td>Entities in byName</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.byName</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Len</strong></td>
+                <td>Entities in byName.Len</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.byName.Len</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Less</strong></td>
+                <td>Entities in byName.Less</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.byName.Less</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Swap</strong></td>
+                <td>Entities in byName.Swap</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.byName.Swap</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Cmddoc</strong></td>
+                <td>Entities in cmdDoc</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.cmdDoc</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Cmdoption</strong></td>
+                <td>Entities in cmdOption</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.cmdOption</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Defaultlinkhandler</strong></td>
+                <td>Entities in defaultLinkHandler</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.defaultLinkHandler</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fillheader</strong></td>
+                <td>Entities in fillHeader</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.fillHeader</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Forcemultiline</strong></td>
+                <td>Entities in forceMultiLine</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.forceMultiLine</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genflagresult</strong></td>
+                <td>Entities in genFlagResult</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.genFlagResult</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Genman2</strong></td>
+                <td>Entities in genMan</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.genMan</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Hasseealso</strong></td>
+                <td>Entities in hasSeeAlso</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.hasSeeAlso</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Indentstring</strong></td>
+                <td>Entities in indentString</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.indentString</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Manpreamble</strong></td>
+                <td>Entities in manPreamble</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.manPreamble</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Manprintflags</strong></td>
+                <td>Entities in manPrintFlags</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.manPrintFlags</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Manprintoptions</strong></td>
+                <td>Entities in manPrintOptions</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.manPrintOptions</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Printoptions</strong></td>
+                <td>Entities in printOptions</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.printOptions</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Printoptionsrest</strong></td>
+                <td>Entities in printOptionsReST</td>
+                <td>1</td>
+                
+                <td class="entity-list">doc.printOptionsReST</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (0)</h2>
+    
+    <div class="card">
+        <p>No architectural smells detected. The architecture appears well-structured.</p>
+    </div>
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>(default)</code></td>
+                    <td>250</td>
+                </tr>
+            
+                <tr>
+                    <td><code>doc</code></td>
+                    <td>35</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>

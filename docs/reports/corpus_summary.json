@@ -1,0 +1,44 @@
+{
+  "targets": {
+    "clap": {
+      "fork": "https://github.com/tuannx/clap",
+      "upstream": "https://github.com/clap-rs/clap",
+      "sha": "6cde7384bc47913bdbf456cd2f0e3ebb94cb3557",
+      "language": "rust",
+      "entities": 1872,
+      "edges": 1225,
+      "components": 9,
+      "smells": 1,
+      "smell_types": {
+        "Dependency Cycle": 1
+      },
+      "seconds": 3.5
+    },
+    "cobra": {
+      "fork": "https://github.com/tuannx/cobra",
+      "upstream": "https://github.com/spf13/cobra",
+      "sha": "adbc8813901bba65827259daa8e22ff94ec1f30e",
+      "language": "go",
+      "entities": 285,
+      "edges": 538,
+      "components": 36,
+      "smells": 0,
+      "smell_types": {},
+      "seconds": 0.3
+    },
+    "hiredis": {
+      "fork": "https://github.com/tuannx/hiredis",
+      "upstream": "https://github.com/redis/hiredis",
+      "sha": "058ebcdf36c5b05b759c613564fb958ec363c90f",
+      "language": "c",
+      "entities": 742,
+      "edges": 2041,
+      "components": 3,
+      "smells": 2,
+      "smell_types": {
+        "Concern Overload": 2
+      },
+      "seconds": 1.2
+    }
+  }
+}

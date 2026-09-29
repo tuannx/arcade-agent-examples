@@ -1,9 +1,9 @@
 PY ?= python3
 REPORTS = docs/reports
 
-.PHONY: all synthetic adr011 adr014 sweeps clean
+.PHONY: all synthetic adr011 adr014 sweeps corpus clean
 
-all: synthetic adr011 adr014 sweeps
+all: synthetic adr011 adr014 sweeps corpus
 
 $(REPORTS):
 	mkdir -p $(REPORTS)
@@ -19,6 +19,9 @@ adr014: $(REPORTS)
 
 sweeps: $(REPORTS)
 	$(PY) scenarios/smell-sweeps/run.py --out $(REPORTS)
+
+corpus: $(REPORTS)
+	$(PY) scenarios/fork-corpus/run.py --out $(REPORTS)
 
 clean:
 	rm -rf $(REPORTS)

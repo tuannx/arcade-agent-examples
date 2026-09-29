@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: clap (fork corpus) (clap@6cde7384)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (1)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">clap (fork corpus) &mdash; version clap@6cde7384 &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">1872</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">1225</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">9</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">1</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Default["Default\n(1 entities)"]
+    Clap["Clap\n(187 entities)"]
+    ClapBench["ClapBench\n(39 entities)"]
+    ClapBuilder["ClapBuilder\n(1186 entities)"]
+    ClapComplete["ClapComplete\n(166 entities)"]
+    ClapCompleteNushell["ClapCompleteNushell\n(14 entities)"]
+    ClapDerive["ClapDerive\n(161 entities)"]
+    ClapLex["ClapLex\n(57 entities)"]
+    ClapMangen["ClapMangen\n(61 entities)"]
+    ClapBuilder --> ClapLex
+    ClapComplete --> ClapLex
+    ClapLex --> ClapBuilder
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=1 after common prefix '') with dependency-affinity facade refinement (7 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Default</strong></td>
+                <td>Entities in (default)</td>
+                <td>1</td>
+                
+                <td class="entity-list">clap_bench</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Clap</strong></td>
+                <td>Entities in clap</td>
+                <td>187</td>
+                
+                <td class="entity-list">clap.ReadmeDoctests, clap._cookbook, clap._cookbook.cargo_example, clap._cookbook.cargo_example_derive, clap._cookbook.escaped_positional, clap._cookbook.escaped_positional_derive, clap._cookbook.find, clap._cookbook.git, ... (+179 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>ClapBench</strong></td>
+                <td>Entities in clap_bench</td>
+                <td>39</td>
+                
+                <td class="entity-list">clap_bench.benches.complex.Args, clap_bench.benches.complex.Args.args, clap_bench.benches.complex.Args.fmt, clap_bench.benches.complex.Args.name, clap_bench.benches.complex.build, clap_bench.benches.complex.build_help, clap_bench.benches.complex.main, clap_bench.benches.complex.render_help, ... (+31 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>ClapBuilder</strong></td>
+                <td>Entities in clap_builder</td>
+                <td>1186</td>
+                
+                <td class="entity-list">clap._concepts, clap_builder.Error, clap_builder.ReadmeDoctests, clap_builder.builder, clap_builder.builder.action.ArgAction, clap_builder.builder.action.ArgAction.default_missing_value, clap_builder.builder.action.ArgAction.default_num_args, clap_builder.builder.action.ArgAction.default_value, ... (+1178 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>ClapComplete</strong></td>
+                <td>Entities in clap_complete</td>
+                <td>166</td>
+                
+                <td class="entity-list">clap_complete.ReadmeDoctests, clap_complete.aot, clap_complete.aot.generator.Generator, clap_complete.aot.generator.Generator.file_name, clap_complete.aot.generator.Generator.generate, clap_complete.aot.generator.Generator.try_generate, clap_complete.aot.generator._generate, clap_complete.aot.generator.generate, ... (+158 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>ClapCompleteNushell</strong></td>
+                <td>Entities in clap_complete_nushell</td>
+                <td>14</td>
+                
+                <td class="entity-list">clap_complete_nushell.Nushell, clap_complete_nushell.Nushell.file_name, clap_complete_nushell.Nushell.generate, clap_complete_nushell.Nushell.try_generate, clap_complete_nushell.ReadmeDoctests, clap_complete_nushell.append_argument, clap_complete_nushell.append_value_completion_and_help, clap_complete_nushell.append_value_completion_defs, ... (+6 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>ClapDerive</strong></td>
+                <td>Entities in clap_derive</td>
+                <td>161</td>
+                
+                <td class="entity-list">clap_derive.args, clap_derive.attr.AttrKind, clap_derive.attr.AttrKind.as_str, clap_derive.attr.AttrValue, clap_derive.attr.AttrValue.to_tokens, clap_derive.attr.ClapAttr, clap_derive.attr.ClapAttr.lit_bool_or_abort, clap_derive.attr.ClapAttr.lit_str_or_abort, ... (+153 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>ClapLex</strong></td>
+                <td>Entities in clap_lex</td>
+                <td>57</td>
+                
+                <td class="entity-list">clap_builder.builder.command.Command._do_parse, clap_builder.builder.command.Command.try_get_matches_from_mut, clap_builder.parser.parser.Parser.get_matches_with, clap_builder.parser.parser.Parser.is_new_arg, clap_builder.parser.parser.Parser.parse_short_arg, clap_builder.parser.parser.Parser.parse_subcommand, clap_lex.ArgCursor, clap_lex.ArgCursor.new, ... (+49 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>ClapMangen</strong></td>
+                <td>Entities in clap_mangen</td>
+                <td>61</td>
+                
+                <td class="entity-list">clap_mangen.Man, clap_mangen.Man._render_authors_section, clap_mangen.Man._render_description_section, clap_mangen.Man._render_extra_section, clap_mangen.Man._render_name_section, clap_mangen.Man._render_options_section, clap_mangen.Man._render_subcommands_section, clap_mangen.Man._render_synopsis_section, ... (+53 more)</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (1)</h2>
+    
+    
+    <div class="smell low">
+        <div class="smell-header">
+            <span class="badge low">low</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 2 components: ClapBuilder <-> ClapLex</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> ClapBuilder, ClapLex</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>clap_builder.builder.command</code></td>
+                    <td>239</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.arg</code></td>
+                    <td>142</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.value_parser</code></td>
+                    <td>108</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.matches.arg_matches</code></td>
+                    <td>93</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.item</code></td>
+                    <td>64</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.error</code></td>
+                    <td>59</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.help_template</code></td>
+                    <td>42</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_lex</code></td>
+                    <td>39</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.engine.custom</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_mangen</code></td>
+                    <td>34</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.parser</code></td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.flat_map</code></td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.derive</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_mangen.render</code></td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.arg_matcher</code></td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.matches.matched_arg</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.styling</code></td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.engine.complete</code></td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.styled_str</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.validator</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.mkeymap</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.arg_group</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.range</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.error.format</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.shells.zsh</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.engine.candidate</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.possible_value</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.value_parser.impl_prelude</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.any_value</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.utils.doc_comments.markdown</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap._cookbook</code></td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.usage</code></td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.flat_set</code></td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.utils.ty</code></td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.debug_asserts</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.os_str</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.str</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.git-derive</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.attr</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_lex.ext</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.os_str.inner</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.str.inner</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.shells.shell</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete_nushell</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.derive_ref.hand_subcommand</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.utils.spanned</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.shells.fish</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.complex</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.derive_ref.flatten_hand_args</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.action</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.id</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.shells.bash</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.typed-derive.custom</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.app_settings</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.arg_settings</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.graph</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.derives.args</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.shells.powershell</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.find</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.value_parser.private</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.utils.doc_comments</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.generator</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.generator.utils</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot.shells.elvish</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.git</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.ripgrep</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.dummies</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.04_01_enum</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.ext</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.resettable</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.fmt</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.color</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.derives.subcommand</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.repl-derive</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.empty</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.examples.completion-derive</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.error.context</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.derives.value_enum</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.repl</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.simple</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_04_subcommands_alt</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.typed-derive.implicit</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.error</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.escape</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.utils.error</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.textwrap.wrap_algorithms</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.cargo-example-derive</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.ripgrep.startup</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.rustup</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.simple.startup</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.examples.completion</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.examples.dynamic</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.examples.exhaustive</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.05_01_assert</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.01_quick</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_04_subcommands</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.04_01_enum</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.04_02_validate</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.04_03_relations</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.05_01_assert</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.typed-derive.foreign_crate</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.error.kind</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.derives.parser</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.demo</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.escaped-positional-derive</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.multicall-busybox</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.pacman</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.typed-derive</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.ripgrep.build</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.ripgrep.render_help</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_bench.benches.rustup.startup</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete_nushell.examples.test</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.derive_ref.augment_args</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.derive_ref.augment_subcommands</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.04_02_validate</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.02_app_settings</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.02_apps</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.02_crate</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_01_flag_bool</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_01_flag_count</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_02_option</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_02_option_mult</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_03_positional</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_03_positional_mult</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_05_default_values</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.03_06_optional</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.04_02_parse</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_derive.04_04_custom</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.typed-derive.fn_parser</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.arg_predicate</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.builder.value_hint</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_derive.derives.into_app</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.textwrap.core</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.features.suggestions</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.parser.matches.value_source</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.cargo-example</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.escaped-positional</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.multicall-hostname</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>(default)</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete_nushell.examples.nushell_completion</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete_nushell.examples.sub_subcommands</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_lex.ext.private</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_mangen.examples.man</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.01_quick</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.02_app_settings</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.02_apps</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.02_crate</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_01_flag_bool</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_01_flag_count</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_02_option</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_02_option_mult</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_03_positional</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_03_positional_mult</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_04_subcommands</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_05_default_values</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.03_06_required</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.04_01_possible</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.04_02_parse</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.04_03_relations</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.tutorial_builder.04_04_custom</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.examples.typed-derive.builtin</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap._derive</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap.bin.stdio-fixture</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.help</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.util.str_to_bool</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.textwrap</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_complete.aot</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>clap_builder.output.textwrap.word_separators</code></td>
+                    <td>1</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>
