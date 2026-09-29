@@ -1,6 +1,6 @@
 """Fork corpus: small/medium libraries pinned from tuannx forks.
 
-Deterministic: every target is cloned from the tuannx fork and pinned to a
+Deterministic: every target is cloned from the arcade-agent org fork and pinned to a
 git SHA, checked out in a cached shallow clone before analysis. The summary
 records fork + upstream URLs alongside each SHA so every number is traceable
 to an exact commit.
@@ -20,19 +20,19 @@ DEFAULT_OUT = SCEN.parents[1] / "docs" / "reports"
 
 TARGETS = {
     "clap": {
-        "url": "https://github.com/tuannx/clap.git",
+        "url": "https://github.com/arcade-agent/clap.git",
         "upstream": "https://github.com/clap-rs/clap.git",
         "sha": "6cde7384bc47913bdbf456cd2f0e3ebb94cb3557",
         "language": "rust",
     },
     "cobra": {
-        "url": "https://github.com/tuannx/cobra.git",
+        "url": "https://github.com/arcade-agent/cobra.git",
         "upstream": "https://github.com/spf13/cobra.git",
         "sha": "adbc8813901bba65827259daa8e22ff94ec1f30e",
         "language": "go",
     },
     "hiredis": {
-        "url": "https://github.com/tuannx/hiredis.git",
+        "url": "https://github.com/arcade-agent/hiredis.git",
         "upstream": "https://github.com/redis/hiredis.git",
         "sha": "058ebcdf36c5b05b759c613564fb958ec363c90f",
         "language": "c",

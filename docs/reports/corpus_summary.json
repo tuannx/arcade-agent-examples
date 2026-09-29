@@ -1,7 +1,7 @@
 {
   "targets": {
     "clap": {
-      "fork": "https://github.com/tuannx/clap",
+      "fork": "https://github.com/arcade-agent/clap",
       "upstream": "https://github.com/clap-rs/clap",
       "sha": "6cde7384bc47913bdbf456cd2f0e3ebb94cb3557",
       "language": "rust",
@@ -12,10 +12,10 @@
       "smell_types": {
         "Dependency Cycle": 1
       },
-      "seconds": 3.5
+      "seconds": 0.8
     },
     "cobra": {
-      "fork": "https://github.com/tuannx/cobra",
+      "fork": "https://github.com/arcade-agent/cobra",
       "upstream": "https://github.com/spf13/cobra",
       "sha": "adbc8813901bba65827259daa8e22ff94ec1f30e",
       "language": "go",
@@ -24,10 +24,10 @@
       "components": 36,
       "smells": 0,
       "smell_types": {},
-      "seconds": 0.3
+      "seconds": 0.1
     },
     "hiredis": {
-      "fork": "https://github.com/tuannx/hiredis",
+      "fork": "https://github.com/arcade-agent/hiredis",
       "upstream": "https://github.com/redis/hiredis",
       "sha": "058ebcdf36c5b05b759c613564fb958ec363c90f",
       "language": "c",
@@ -38,7 +38,7 @@
       "smell_types": {
         "Concern Overload": 2
       },
-      "seconds": 1.2
+      "seconds": 0.2
     }
   }
 }
