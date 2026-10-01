@@ -11,7 +11,7 @@
         "Concern Overload": 17,
         "Scattered Parasitic Functionality": 4
       },
-      "seconds": 0.5
+      "seconds": 0.2
     },
     "commons-io": {
       "sha": "2c6bf8dea065e96651661d5e277e35b2f343d879",
@@ -24,7 +24,7 @@
         "Concern Overload": 9,
         "Scattered Parasitic Functionality": 2
       },
-      "seconds": 0.3
+      "seconds": 0.1
     },
     "commons-collections": {
       "sha": "a350e2c73bf61230afad1bf6f3dc770b2ddb36ee",
@@ -37,7 +37,7 @@
         "Concern Overload": 15,
         "Scattered Parasitic Functionality": 2
       },
-      "seconds": 0.5
+      "seconds": 0.2
     },
     "spring-core": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -50,7 +50,7 @@
         "Scattered Parasitic Functionality": 6,
         "Link/Upstream Overload": 4
       },
-      "seconds": 0.9
+      "seconds": 0.3
     },
     "spring-beans": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -63,7 +63,7 @@
         "Concern Overload": 8,
         "Scattered Parasitic Functionality": 6
       },
-      "seconds": 0.5
+      "seconds": 0.3
     },
     "spring-context": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -77,7 +77,7 @@
         "Scattered Parasitic Functionality": 8,
         "Link/Upstream Overload": 1
       },
-      "seconds": 0.7
+      "seconds": 0.2
     },
     "spring-web": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -91,7 +91,7 @@
         "Scattered Parasitic Functionality": 9,
         "Link/Upstream Overload": 2
       },
-      "seconds": 1.0
+      "seconds": 0.3
     },
     "kafka": {
       "sha": "800676c2e366bac8f32625697c67b68db5a817a1",
@@ -105,7 +105,7 @@
         "Scattered Parasitic Functionality": 6,
         "Link/Upstream Overload": 2
       },
-      "seconds": 9.5
+      "seconds": 6.1
     }
   }
 }
