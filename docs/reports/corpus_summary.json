@@ -12,7 +12,7 @@
       "smell_types": {
         "Dependency Cycle": 1
       },
-      "seconds": 0.8
+      "seconds": 1.0
     },
     "cobra": {
       "fork": "https://github.com/arcade-agent/cobra",
