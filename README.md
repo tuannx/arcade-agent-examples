@@ -1,55 +1,48 @@
-# arcade-agent-examples
+# Autoharness for maintainers
 
-Deterministic, reproducible architecture-analysis demos — the same idea as
-`mvn-perf/mvn-perf-examples`, but for **software architecture** instead of build time.
+Run this on your repo first:
 
-Every scenario in `scenarios/` runs with **one command**, locally and in CI, and publishes
-its HTML report to GitHub Pages. Numbers are re-generated monthly so they never rot.
+```yaml
+# .github/workflows/arch-drift.yml
+- uses: arcade-agent/arcade-agent/.github/workflows/analyze.yml@v0
+```
 
-## Scenarios
-
-| Scenario | What it proves | Reproduce |
-|---|---|---|
-| `synthetic-smells` | Planted cycle + god module → refactored → `changelog_architecture` reports 2 resolved, 0 new | `make synthetic` |
-| `adr-autopsy-011` | Jaeger ADR-011 verified claim-by-claim against PR #8800 (effectiveness +0.75) | `make adr011` |
-| `adr-autopsy-014` | Jaeger ADR-014 as neutral control: behavioral ADR → zero structural delta | `make adr014` |
-| `smell-sweeps` | Smell reports for Apache Commons (3 libs), Spring (4 modules), Kafka | `make sweeps` |
-| `fork-corpus` | Full language matrix on pinned arcade-agent org forks: clap (rust), cobra (go), hiredis (c) | `make corpus` |
-
-## Corpus references
-
-Small/medium libraries analyzed by `fork-corpus`, pinned by SHA in
-[`scenarios/fork-corpus/run.py`](scenarios/fork-corpus/run.py). Reports are
-served on GitHub Pages; each report header shows its pinned SHA, and
-`corpus_summary.json` links every report to its exact fork commit.
-
-| Target | Fork | Upstream | Report |
-|---|---|---|---|
-| clap (rust) | [arcade-agent/clap](https://github.com/arcade-agent/clap) | [clap-rs/clap](https://github.com/clap-rs/clap) | [corpus_clap.html](https://tuannx.github.io/arcade-agent-examples/reports/corpus_clap.html) |
-| cobra (go) | [arcade-agent/cobra](https://github.com/arcade-agent/cobra) | [spf13/cobra](https://github.com/spf13/cobra) | [corpus_cobra.html](https://tuannx.github.io/arcade-agent-examples/reports/corpus_cobra.html) |
-| hiredis (c) | [arcade-agent/hiredis](https://github.com/arcade-agent/hiredis) | [redis/hiredis](https://github.com/redis/hiredis) | [corpus_hiredis.html](https://tuannx.github.io/arcade-agent-examples/reports/corpus_hiredis.html) |
-
-Machine-readable index (fork/upstream URLs + SHAs + metrics):
-[`corpus_summary.json`](https://tuannx.github.io/arcade-agent-examples/reports/corpus_summary.json).
-
-## One-command reproduce
+Or locally in 2 minutes:
 
 ```bash
 pip install "arcade-agent[languages]"
-make all        # runs every scenario, writes reports to docs/reports/
+arcade analyze . --report report.html
 ```
 
-A monthly scheduled job runs `make all` and commits the refreshed reports in
-`docs/reports/` (GitHub Pages serves `docs/` from `main`).
-To refresh manually: `pip install "arcade-agent[languages]" && make all`.
+## Latest runs — numbers first
 
-## Referencing this repo
+| Repo | Entities | Time | Latest PR verdict |
+|---|---|---|---|
+| [Django](https://tuannx.github.io/django/) | 10,881 | 6.3s | django/django#18036 — SAFE FEATURE |
+| [React](https://tuannx.github.io/react/) | 7,861 | 8.4s | facebook/react#37187 — SAFE, -19,239 lines |
+| [Vue](https://tuannx.github.io/core/) | 1,630 | 1.4s | vuejs/core#15633 — 5 SHIFTS |
 
-Every report embeds the exact git SHAs analyzed. Cite a scenario like:
+Each number links to a fork Pages with the full report. Report is the product.
 
-> arcade-agent-examples, `adr-autopsy-011`: Jaeger PR #8800 base `11b08c08` → head `8c5ed8c3`,
-> 0 responsibility shifts, 0 new smells. Report: <url>
+## What the harness does daily
 
-## License
+1. Scan upstream PRs: >500 lines, >20 files, >15 comments
+2. Run `changelog_architecture` base vs head in 2-8 minutes
+3. Publish ADHD report to the fork Pages — 5 lines to read
+4. Mention upstream as `facebook/react#37187` in this repo only
+5. Maintainer decides. No bot comments upstream.
 
-MIT — same as [arcade-agent](https://github.com/arcade-agent/arcade-agent).
+## Try a scenario in 1 command
+
+```bash
+make synthetic  # 0.2s, 2 smells → 0
+make all        # all scenarios, reports in docs/reports/
+```
+
+## For maintainers
+
+1. Add the workflow above — 2 minutes, no code change
+2. Next PR gets 1 comment: verdict, 3 numbers, 1 thing to look at
+3. Remove the workflow to opt out. No lock-in.
+
+MIT · [arcade-agent](https://github.com/arcade-agent/arcade-agent)

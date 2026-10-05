@@ -1,66 +1,26 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>arcade-agent-examples — deterministic architecture demos</title>
-<style>body{font-family:system-ui,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.6}
-.card{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}
-.small{color:#666;font-size:.9em}</style>
-</head><body>
-<h1>arcade-agent-examples</h1>
-<p>Deterministic, reproducible architecture-analysis demos. Every scenario runs with
-<strong>one command</strong> — locally and in CI — and publishes its report here.
-Numbers are re-generated monthly so they never rot.</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Autoharness — arcade-agent for maintainers</title><style>*{box-sizing:border-box}body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;margin:0}.wrap{max-width:1000px;margin:0 auto;padding:0 16px}a{color:#58a6ff}code{background:#ffffff14;padding:2px 6px;border-radius:6px}pre{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px;overflow:auto;font-size:13px}</style></head><body><div class="wrap">
+<div style="padding:22px 0"><a href="https://github.com/arcade-agent/arcade-agent" style="background:#1f6feb;color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:800">▶ Try on your repo — 2 minutes</a><pre style="margin-top:12px">- uses: arcade-agent/arcade-agent/.github/workflows/analyze.yml@v0
+# next PR: 1 verdict, 3 numbers, 1 thing to look at</pre></div>
 
-<div class="card"><h3>synthetic-smells</h3>
-<p>Planted cycle + god module → refactored. <code>changelog_architecture</code> reports
-2 resolved, 0 new, in 0.2s.</p>
-<p><a href="reports/synthetic_before.html">before</a> ·
-<a href="reports/synthetic_after.html">after</a> ·
-<a href="reports/synthetic_summary.json">summary.json</a></p></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+<a href="https://tuannx.github.io/django/" style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px;text-decoration:none;color:#fff"><div style="font-weight:800;font-size:18px">Django ↗</div><div style="color:#8b949e;font-size:13px">django/django · fork Pages</div><div style="font-size:24px;font-weight:900;margin-top:8px">10,881 <span style="font-size:13px;color:#8b949e;font-weight:400">entities · 6.3s</span></div><div style="color:#3fb950;font-size:13px;font-weight:700;margin-top:6px">PR #18036 — SAFE FEATURE</div></a>
+<a href="https://tuannx.github.io/react/" style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px;text-decoration:none;color:#fff"><div style="font-weight:800;font-size:18px">React ↗</div><div style="color:#8b949e;font-size:13px">facebook/react · fork Pages</div><div style="font-size:24px;font-weight:900;margin-top:8px">7,861 <span style="font-size:13px;color:#8b949e;font-weight:400">entities · 8.4s</span></div><div style="color:#3fb950;font-size:13px;font-weight:700;margin-top:6px">PR #37187 — SAFE, -19,239 lines</div></a>
+<a href="https://tuannx.github.io/core/" style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px;text-decoration:none;color:#fff"><div style="font-weight:800;font-size:18px">Vue.js ↗</div><div style="color:#8b949e;font-size:13px">vuejs/core · fork Pages</div><div style="font-size:24px;font-weight:900;margin-top:8px">1,630 <span style="font-size:13px;color:#8b949e;font-weight:400">entities · 1.4s</span></div><div style="color:#d29922;font-size:13px;font-weight:700;margin-top:6px">PR #15633 — 5 SHIFTS</div></a>
+</div>
 
-<div class="card"><h3>adr-autopsy-011</h3>
-<p>Jaeger ADR-011 graded claim-by-claim against PR #8800. Effectiveness <strong>+0.75</strong>.</p>
-<p><a href="reports/adr011_base.html">base</a> ·
-<a href="reports/adr011_head.html">head</a> ·
-<a href="reports/adr011_summary.json">summary.json</a></p></div>
+<h2>1. Latest runs</h2>
+<p style="color:#8b949e">Mention format creates the upstream link: facebook/react#37187 · django/django#18036 · vuejs/core#15633. Reports live on each fork Pages.</p>
 
-<div class="card"><h3>adr-autopsy-014</h3>
-<p>Jaeger ADR-014 as neutral control: behavioral change, zero structural delta.</p>
-<p><a href="reports/adr014_base.html">base</a> ·
-<a href="reports/adr014_head.html">head</a> ·
-<a href="reports/adr014_summary.json">summary.json</a></p></div>
+<h2>2. Daily monitor — how it picks PRs</h2>
+<ol style="line-height:1.9"><li>&gt;500 lines changed, &gt;20 files</li><li>&gt;15 comments — debate signal</li><li>Run base vs head, verdict in 2-8 minutes</li><li>Publish here only. No upstream bot.</li></ol>
 
-<div class="card"><h3>smell-sweeps</h3>
-<p>Apache Commons, Spring, Kafka: real codebases, seconds of analysis.
-<span class="small">All targets pinned by git SHA.</span></p>
-<p>
-<a href="reports/sweep_commons-lang.html">commons-lang</a> ·
-<a href="reports/sweep_commons-io.html">commons-io</a> ·
-<a href="reports/sweep_commons-collections.html">commons-collections</a><br>
-<a href="reports/sweep_spring-core.html">spring-core</a> ·
-<a href="reports/sweep_spring-beans.html">spring-beans</a> ·
-<a href="reports/sweep_spring-context.html">spring-context</a> ·
-<a href="reports/sweep_spring-web.html">spring-web</a><br>
-<a href="reports/sweep_kafka.html">kafka</a> ·
-<a href="reports/sweeps_summary.json">summary.json</a></p></div>
+<h2>3. Reproduce — 1 command</h2>
+<pre>pip install "arcade-agent[languages]" && make all
+# reports in docs/reports/</pre>
 
-<div class="card"><h3>fork-corpus</h3>
-<p>Small/medium libraries from pinned arcade-agent org forks: full Rust/Go/C coverage.
-<span class="small">Each report header shows its pinned SHA.</span></p>
-<p>
-<a href="reports/corpus_clap.html">clap</a>
-<span class="small">(<a href="https://github.com/arcade-agent/clap">fork</a> ·
-<a href="https://github.com/clap-rs/clap">upstream</a>)</span> ·
-<a href="reports/corpus_cobra.html">cobra</a>
-<span class="small">(<a href="https://github.com/arcade-agent/cobra">fork</a> ·
-<a href="https://github.com/spf13/cobra">upstream</a>)</span> ·
-<a href="reports/corpus_hiredis.html">hiredis</a>
-<span class="small">(<a href="https://github.com/arcade-agent/hiredis">fork</a> ·
-<a href="https://github.com/redis/hiredis">upstream</a>)</span><br>
-<a href="reports/corpus_summary.json">summary.json</a>
-<span class="small">(fork/upstream URLs + SHAs + metrics)</span></p></div>
+<h2>Scenarios</h2>
+<ol style="line-height:1.9"><li><a href="reports/synthetic_after.html">synthetic-smells</a> — 0.2s, 2 → 0 smells</li><li><a href="reports/adr011_summary.json">adr-autopsy-011</a> — Jaeger PR #8800</li><li><a href="reports/adr014_summary.json">adr-autopsy-014</a> — neutral control</li><li><a href="reports/corpus_summary.json">fork-corpus</a> — clap / cobra / hiredis</li></ol>
 
-<p>Built with <a href="https://github.com/arcade-agent/arcade-agent">arcade-agent</a>.
-Reproduce: <code>pip install "arcade-agent[languages]" && make all</code>.
-Sources: <a href="https://github.com/tuannx/arcade-agent-examples">tuannx/arcade-agent-examples</a>.</p>
-</body></html>
+<div style="background:#161b22;border:1px solid #3fb950;border-radius:12px;padding:14px;margin:18px 0"><b>Next (30s):</b> Click Django card above, check numbers vs PR diff.</div>
+<footer style="color:#8b949e;font-size:12px;padding:16px 0;border-top:1px solid #30363d">Autoharness · arcade-agent-examples · MIT · heuristic recovery, not ground truth</footer>
+</div></body></html>

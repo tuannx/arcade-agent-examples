@@ -1,0 +1,41 @@
+name: pr-monitor
+# Autoharness: scan famous upstream PRs, publish to our Pages only.
+# No upstream comments. Mention happens in our own issue/report.
+
+on:
+  schedule:
+    - cron: "46 13 * * *" # ~08:46 Chicago
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan large / debated PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p docs/monitor
+          echo "# PR monitor — $(date -u +%F)" > docs/monitor/latest.md
+          for repo in django/django facebook/react vuejs/core; do
+            echo "" >> docs/monitor/latest.md
+            echo "## $repo" >> docs/monitor/latest.md
+            gh api "repos/$repo/pulls?state=open&per_page=30&sort=updated" \
+              -q '.[] | select((.additions // 0) + (.deletions // 0) > 500 or (.comments // 0) > 15) | "- \(.html_url) · +\(.additions // 0)/-\(.deletions // 0) · comments \(.comments // 0) · \(.title)"' \
+              >> docs/monitor/latest.md || echo "- scan failed for $repo" >> docs/monitor/latest.md
+            # mention reference (creates cross-ref from this repo only when committed in an issue; file alone is our record)
+            gh api "repos/$repo/pulls?state=open&per_page=5" -q '.[0] | "\($repo)#\(.number)"' >> docs/monitor/mentions.txt || true
+          done
+          cat docs/monitor/latest.md
+      - name: Commit monitor snapshot
+        run: |
+          git config user.name "autoharness"
+          git config user.email "autoharness@users.noreply.github.com"
+          git add docs/monitor/
+          git diff --cached --quiet || git commit -m "monitor: daily PR scan"
+          git push || true
