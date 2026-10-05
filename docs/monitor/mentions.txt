@@ -1,0 +1,16 @@
+django/django#15990
+django/django#17169
+django/django#16381
+django/django#17323
+django/django#17523
+django/django#17808
+facebook/react#30736
+facebook/react#34113
+facebook/react#34842
+facebook/react#33152
+facebook/react#34702
+facebook/react#23208
+facebook/react#35517
+facebook/react#35191
+facebook/react#35562
+vuejs/core#8701
