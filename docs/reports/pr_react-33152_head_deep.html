@@ -1,0 +1,3989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arcade-agent: react PR#33152 head DEEP pkg_depth=2 (head)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f8f9fa;
+            max-width: 1200px; margin: 0 auto; padding: 2rem; padding-top: 4rem;
+        }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #1e293b; padding: 0.6rem 2rem;
+            display: flex; align-items: center; gap: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        nav .nav-title {
+            font-weight: 700; color: #f8fafc; font-size: 0.85rem;
+            white-space: nowrap; margin-right: 0.5rem;
+        }
+        nav a {
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            padding: 0.3rem 0.7rem; border-radius: 4px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        nav a:hover { color: #f8fafc; background: #334155; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; scroll-margin-top: 3.5rem; }
+        h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .stats {
+            display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 140px;
+        }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+        .card {
+            background: white; border-radius: 8px; padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+        }
+        .mermaid { text-align: center; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f1f5f9; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        td { font-size: 0.9rem; }
+        .entity-list { font-family: monospace; font-size: 0.8rem; color: #555; max-width: 500px; }
+        .smell {
+            border-left: 4px solid #ccc; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            background: white; border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .smell.high { border-left-color: #ef4444; }
+        .smell.medium { border-left-color: #f59e0b; }
+        .smell.low { border-left-color: #3b82f6; }
+        .smell-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            border-radius: 99px; text-transform: uppercase;
+        }
+        .badge.high { background: #fef2f2; color: #dc2626; }
+        .badge.medium { background: #fffbeb; color: #d97706; }
+        .badge.low { background: #eff6ff; color: #2563eb; }
+        .smell-detail { margin: 0.5rem 0; font-size: 0.9rem; }
+        .smell-detail strong { display: inline-block; width: 100px; color: #555; }
+        .rationale { background: #f8fafc; padding: 1rem; border-radius: 6px; font-style: italic; color: #555; }
+        .metric-card {
+            display: inline-block; background: white; border-radius: 8px; padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 0.5rem; min-width: 160px;
+        }
+        .metric-card .value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+        .metric-card .name { font-size: 0.8rem; color: #666; }
+        .concern-tag {
+            display: inline-block; background: #e0e7ff; color: #3730a3;
+            font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 99px;
+            margin: 0.15rem; font-weight: 500;
+        }
+        footer { margin-top: 3rem; text-align: center; color: #999; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-title">arcade-agent</span>
+        <a href="#overview">Overview</a>
+        
+        <a href="#diagram">Diagram</a>
+        <a href="#components">Components</a>
+        <a href="#smells">Smells (45)</a>
+        <a href="#dependencies">Dependencies</a>
+    </nav>
+
+    <h1 id="overview">Architecture Report</h1>
+    <p class="subtitle">react PR#33152 head DEEP pkg_depth=2 &mdash; version head &mdash; recovered with pkg</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">7539</div>
+            <div class="label">Entities</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">4491</div>
+            <div class="label">Dependencies</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">85</div>
+            <div class="label">Components</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">45</div>
+            <div class="label">Smells</div>
+        </div>
+    </div>
+
+    
+
+    <h2 id="diagram">Architecture Diagram</h2>
+    <div class="card">
+        <pre class="mermaid">
+graph TD
+    Default["Default\n(6 entities)"]
+    Babel["Babel\n(3 entities)"]
+    Default2["Default2\n(1 entities)"]
+    Apps["Apps\n(47 entities)"]
+    Packages["Packages\n(1287 entities)"]
+    Scripts["Scripts\n(16 entities)"]
+    Fixtures["Fixtures\n(56 entities)"]
+    Art["Art\n(3 entities)"]
+    Attribute_Behavior["Attribute-Behavior\n(12 entities)"]
+    Concurrent["Concurrent\n(3 entities)"]
+    Devtools["Devtools\n(8 entities)"]
+    Dom["Dom\n(189 entities)"]
+    Eslint_V6["Eslint-V6\n(1 entities)"]
+    Eslint_V7["Eslint-V7\n(1 entities)"]
+    Eslint_V8["Eslint-V8\n(1 entities)"]
+    Eslint_V9["Eslint-V9\n(2 entities)"]
+    Expiration["Expiration\n(6 entities)"]
+    Fiber_Debugger["Fiber-Debugger\n(10 entities)"]
+    Fizz["Fizz\n(11 entities)"]
+    Flight["Flight\n(61 entities)"]
+    Flight_Esm["Flight-Esm\n(21 entities)"]
+    Flight_Parcel["Flight-Parcel\n(18 entities)"]
+    Flight_Vite["Flight-Vite\n(67 entities)"]
+    Legacy_Jsx_Runtimes["Legacy-Jsx-Runtimes\n(47 entities)"]
+    Nesting["Nesting\n(14 entities)"]
+    Owner_Stacks["Owner-Stacks\n(4 entities)"]
+    Packaging["Packaging\n(27 entities)"]
+    Ssr["Ssr\n(17 entities)"]
+    Ssr2["Ssr2\n(16 entities)"]
+    Stacks["Stacks\n(21 entities)"]
+    View_Transition["View-Transition\n(12 entities)"]
+    Packages2["Packages2\n(25 entities)"]
+    Dom_Event_Testing_Library["Dom-Event-Testing-Library\n(63 entities)"]
+    Eslint_Plugin_React_Hooks["Eslint-Plugin-React-Hooks\n(151 entities)"]
+    Internal_Test_Utils["Internal-Test-Utils\n(38 entities)"]
+    Jest_React["Jest-React\n(7 entities)"]
+    React["React\n(104 entities)"]
+    React_Art["React-Art\n(112 entities)"]
+    React_Cache["React-Cache\n(9 entities)"]
+    React_Client["React-Client\n(151 entities)"]
+    React_Debug_Tools["React-Debug-Tools\n(43 entities)"]
+    React_Devtools["React-Devtools\n(3 entities)"]
+    React_Devtools_Core["React-Devtools-Core\n(34 entities)"]
+    React_Devtools_Extensions["React-Devtools-Extensions\n(88 entities)"]
+    React_Devtools_Fusebox["React-Devtools-Fusebox\n(5 entities)"]
+    React_Devtools_Inline["React-Devtools-Inline\n(15 entities)"]
+    React_Devtools_Shared["React-Devtools-Shared\n(633 entities)"]
+    React_Devtools_Shell["React-Devtools-Shell\n(146 entities)"]
+    React_Devtools_Timeline["React-Devtools-Timeline\n(283 entities)"]
+    React_Dom["React-Dom\n(124 entities)"]
+    React_Dom_Bindings["React-Dom-Bindings\n(756 entities)"]
+    React_Is["React-Is\n(17 entities)"]
+    React_Markup["React-Markup\n(27 entities)"]
+    React_Native_Renderer["React-Native-Renderer\n(330 entities)"]
+    React_Noop_Renderer["React-Noop-Renderer\n(19 entities)"]
+    React_Reconciler["React-Reconciler\n(882 entities)"]
+    React_Refresh["React-Refresh\n(24 entities)"]
+    React_Server["React-Server\n(457 entities)"]
+    React_Server_Dom_Esm["React-Server-Dom-Esm\n(62 entities)"]
+    React_Server_Dom_Fb["React-Server-Dom-Fb\n(5 entities)"]
+    React_Server_Dom_Parcel["React-Server-Dom-Parcel\n(92 entities)"]
+    React_Server_Dom_Turbopack["React-Server-Dom-Turbopack\n(87 entities)"]
+    React_Server_Dom_Vite["React-Server-Dom-Vite\n(83 entities)"]
+    React_Server_Dom_Webpack["React-Server-Dom-Webpack\n(128 entities)"]
+    React_Suspense_Test_Utils["React-Suspense-Test-Utils\n(1 entities)"]
+    React_Test_Renderer["React-Test-Renderer\n(3 entities)"]
+    Scheduler["Scheduler\n(89 entities)"]
+    Shared["Shared\n(73 entities)"]
+    Use_Subscription["Use-Subscription\n(2 entities)"]
+    Use_Sync_External_Store["Use-Sync-External-Store\n(18 entities)"]
+    Scripts2["Scripts2\n(6 entities)"]
+    Babel2["Babel2\n(6 entities)"]
+    Bench["Bench\n(43 entities)"]
+    Ci["Ci\n(10 entities)"]
+    Devtools2["Devtools2\n(29 entities)"]
+    Error_Codes["Error-Codes\n(4 entities)"]
+    Eslint_Rules["Eslint-Rules\n(15 entities)"]
+    Flags["Flags\n(14 entities)"]
+    Flow["Flow\n(15 entities)"]
+    Jest["Jest\n(53 entities)"]
+    Print_Warnings["Print-Warnings\n(1 entities)"]
+    Release["Release\n(65 entities)"]
+    Rollup["Rollup\n(85 entities)"]
+    Shared2["Shared2\n(10 entities)"]
+    Tasks["Tasks\n(6 entities)"]
+    Apps --> React_Devtools_Shared
+    Dom --> Apps
+    Flight --> React_Dom_Bindings
+    Packages --> React_Art
+    Packages --> React_Devtools_Shared
+    React --> Packages
+    React --> React_Debug_Tools
+    React --> React_Server
+    React --> Use_Sync_External_Store
+    React_Art --> Packages
+    React_Client --> React_Server_Dom_Webpack
+    React_Devtools_Shared --> Packages
+    React_Devtools_Shared --> React_Devtools_Timeline
+    React_Devtools_Shared --> Scheduler
+    React_Devtools_Shell --> React_Reconciler
+    React_Devtools_Shell --> Ssr
+    React_Devtools_Timeline --> React_Devtools_Shared
+    React_Dom_Bindings --> Flight
+    React_Dom_Bindings --> React_Native_Renderer
+    React_Dom_Bindings --> React_Reconciler
+    React_Dom_Bindings --> React_Server
+    React_Markup --> React_Server
+    React_Native_Renderer --> Packages
+    React_Native_Renderer --> React_Dom_Bindings
+    React_Native_Renderer --> React_Reconciler
+    React_Reconciler --> Flight
+    React_Reconciler --> Packages
+    React_Reconciler --> React_Devtools_Shared
+    React_Reconciler --> React_Devtools_Shell
+    React_Reconciler --> React_Dom_Bindings
+    React_Reconciler --> React_Native_Renderer
+    React_Reconciler --> React_Server
+    React_Reconciler --> Scheduler
+    React_Reconciler --> Ssr2
+    React_Server --> React_Dom_Bindings
+    React_Server --> React_Markup
+    React_Server --> React_Reconciler
+    React_Server --> React_Server_Dom_Webpack
+    React_Server_Dom_Webpack --> React_Server
+        </pre>
+    </div>
+
+    
+    <div class="rationale">Package-based grouping (depth=2 after common prefix '') with dependency-affinity facade refinement (144 entities reassigned).</div>
+    
+
+    <h2 id="components">Components</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Responsibility</th>
+                <th>#</th>
+                
+                <th>Entities</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr>
+                <td><strong>Default</strong></td>
+                <td>Entities in (default)</td>
+                <td>6</td>
+                
+                <td class="entity-list">.eslintrc, .prettierrc, ReactVersions, dangerfile.change, dangerfile.kbs, dangerfile.row</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Babel</strong></td>
+                <td>Entities in babel</td>
+                <td>3</td>
+                
+                <td class="entity-list">babel.config, babel.config-react-compiler, babel.config-ts</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Default2</strong></td>
+                <td>Entities in compiler.</td>
+                <td>1</td>
+                
+                <td class="entity-list">compiler..eslintrc</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Apps</strong></td>
+                <td>Entities in compiler.apps</td>
+                <td>47</td>
+                
+                <td class="entity-list">compiler.apps.playground.app.layout.RootLayout, compiler.apps.playground.colors, compiler.apps.playground.components, compiler.apps.playground.components.Editor, compiler.apps.playground.components.Editor.EditorImpl.Editor, compiler.apps.playground.components.Editor.EditorImpl.compile, compiler.apps.playground.components.Editor.EditorImpl.invokeCompiler, compiler.apps.playground.components.Editor.EditorImpl.parseInput, ... (+39 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Packages</strong></td>
+                <td>Entities in compiler.packages</td>
+                <td>1287</td>
+                
+                <td class="entity-list">compiler.packages.babel-plugin-react-compiler.jest.config, compiler.packages.babel-plugin-react-compiler.scripts.babel-plugin-annotate-react-code.AnnotateReactCodeBabelPlugin, compiler.packages.babel-plugin-react-compiler.scripts.babel-plugin-annotate-react-code.annotate, compiler.packages.babel-plugin-react-compiler.scripts.babel-plugin-annotate-react-code.buildTypeOfReactForget, compiler.packages.babel-plugin-react-compiler.scripts.babel-plugin-annotate-react-code.callsHooksOrCreatesJsx, compiler.packages.babel-plugin-react-compiler.scripts.babel-plugin-annotate-react-code.getFunctionName, compiler.packages.babel-plugin-react-compiler.scripts.babel-plugin-annotate-react-code.isComponentDeclaration, compiler.packages.babel-plugin-react-compiler.scripts.babel-plugin-annotate-react-code.isComponentName, ... (+1279 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Scripts</strong></td>
+                <td>Entities in compiler.scripts</td>
+                <td>16</td>
+                
+                <td class="entity-list">compiler.scripts.anonymize.AnonymizePlugin, compiler.scripts.anonymize.format, compiler.scripts.anonymize.runPlugin, compiler.scripts.copyright.processFile, compiler.scripts.release.prompt-for-otp.run, compiler.scripts.release.publish.main, compiler.scripts.release.shared.build-packages.buildPackages, compiler.scripts.release.shared.packages, ... (+8 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fixtures</strong></td>
+                <td>Entities in fixtures</td>
+                <td>56</td>
+                
+                <td class="entity-list">fixtures.eslint-v6.Comment, fixtures.eslint-v6.ComponentWithConditionalHook, fixtures.eslint-v6.ComponentWithIndividualPropsDeclaredAsDeps, fixtures.eslint-v6.ComponentWithNoPropsDefined, fixtures.eslint-v6.ComponentWithPropsDeclaredAsDep, fixtures.eslint-v6.ComponentWithoutDeclaringPropAsDep, fixtures.eslint-v6.UseEffectWithEmptyDependencies, fixtures.eslint-v6.UseEffectWithNoDependencies, ... (+48 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Art</strong></td>
+                <td>Entities in fixtures.art</td>
+                <td>3</td>
+                
+                <td class="entity-list">fixtures.art.VectorWidget, fixtures.art.app, fixtures.art.webpack.config</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Attribute-Behavior</strong></td>
+                <td>Entities in fixtures.attribute-behavior</td>
+                <td>12</td>
+                
+                <td class="entity-list">fixtures.attribute-behavior.src, fixtures.attribute-behavior.src.App.RendererResult, fixtures.attribute-behavior.src.App.ResultPopover, fixtures.attribute-behavior.src.App.getCanonicalizedValue, fixtures.attribute-behavior.src.App.getRenderedAttributeValue, fixtures.attribute-behavior.src.App.prepareState, fixtures.attribute-behavior.src.App.renderToString, fixtures.attribute-behavior.src.App.warn, ... (+4 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Concurrent</strong></td>
+                <td>Entities in fixtures.concurrent</td>
+                <td>3</td>
+                
+                <td class="entity-list">fixtures.concurrent.time-slicing.src, fixtures.concurrent.time-slicing.src.Charts, fixtures.concurrent.time-slicing.src.Clock</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Devtools</strong></td>
+                <td>Entities in fixtures.devtools</td>
+                <td>8</td>
+                
+                <td class="entity-list">fixtures.devtools.regression.server, fixtures.devtools.regression.shared.Feature, fixtures.devtools.regression.shared.ProfilerChild, fixtures.devtools.regression.shared.ProfilerChild.render, fixtures.devtools.regression.shared.onRender, fixtures.devtools.scheduling-profiler.app.App, fixtures.devtools.scheduling-profiler.run.initDependencies, fixtures.devtools.scheduling-profiler.run.initServer</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Dom</strong></td>
+                <td>Entities in fixtures.dom</td>
+                <td>189</td>
+                
+                <td class="entity-list">compiler.apps.playground.app.Home, compiler.apps.playground.app.page.Page, fixtures.dom.public.renderer, fixtures.dom.src, fixtures.dom.src.components.App.App, fixtures.dom.src.components.App.App.render, fixtures.dom.src.components.Fixture.Fixture, fixtures.dom.src.components.Fixture.Fixture.render, ... (+181 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Eslint-V6</strong></td>
+                <td>Entities in fixtures.eslint-v6</td>
+                <td>1</td>
+                
+                <td class="entity-list">fixtures.eslint-v6.build</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Eslint-V7</strong></td>
+                <td>Entities in fixtures.eslint-v7</td>
+                <td>1</td>
+                
+                <td class="entity-list">fixtures.eslint-v7.build</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Eslint-V8</strong></td>
+                <td>Entities in fixtures.eslint-v8</td>
+                <td>1</td>
+                
+                <td class="entity-list">fixtures.eslint-v8.build</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Eslint-V9</strong></td>
+                <td>Entities in fixtures.eslint-v9</td>
+                <td>2</td>
+                
+                <td class="entity-list">fixtures.eslint-v9.build, fixtures.eslint-v9.eslint.config</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Expiration</strong></td>
+                <td>Entities in fixtures.expiration</td>
+                <td>6</td>
+                
+                <td class="entity-list">fixtures.expiration.src.Counter, fixtures.expiration.src.Counter.componentDidMount, fixtures.expiration.src.Counter.componentDidUpdate, fixtures.expiration.src.Counter.onCommit, fixtures.expiration.src.Counter.render, fixtures.expiration.src.block</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fiber-Debugger</strong></td>
+                <td>Entities in fixtures.fiber-debugger</td>
+                <td>10</td>
+                
+                <td class="entity-list">fixtures.fiber-debugger.src, fixtures.fiber-debugger.src.App.getFiberState, fixtures.fiber-debugger.src.Editor, fixtures.fiber-debugger.src.Fibers.Graph, fixtures.fiber-debugger.src.Fibers.Vertex, fixtures.fiber-debugger.src.Fibers.getFiberColor, fixtures.fiber-debugger.src.describeFibers.describeFibers, fixtures.fiber-debugger.src.describeFibers.getFiberUniqueID, ... (+2 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Fizz</strong></td>
+                <td>Entities in fixtures.fizz</td>
+                <td>11</td>
+                
+                <td class="entity-list">fixtures.fizz.scripts.build, fixtures.fizz.server.delays, fixtures.fizz.server.render-to-buffer.HtmlWritable, fixtures.fizz.server.render-to-stream, fixtures.fizz.server.render-to-string, fixtures.fizz.server.server.handleErrors, fixtures.fizz.server.server.waitForWebpack, fixtures.fizz.src, ... (+3 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Flight</strong></td>
+                <td>Entities in fixtures.flight</td>
+                <td>61</td>
+                
+                <td class="entity-list">fixtures.flight.config.env.getClientEnvironment, fixtures.flight.config.modules.getAdditionalModulePaths, fixtures.flight.config.modules.getJestAliases, fixtures.flight.config.modules.getModules, fixtures.flight.config.modules.getWebpackAliases, fixtures.flight.config.paths.resolveApp, fixtures.flight.config.paths.resolveModule, fixtures.flight.config.webpack.config.createEnvironmentHash, ... (+53 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Flight-Esm</strong></td>
+                <td>Entities in fixtures.flight-esm</td>
+                <td>21</td>
+                
+                <td class="entity-list">fixtures.flight-esm.loader.region.load, fixtures.flight-esm.loader.region.textLoad, fixtures.flight-esm.loader.region.textTransformSource, fixtures.flight-esm.loader.region.transformSourceImpl, fixtures.flight-esm.server.global.request, fixtures.flight-esm.server.region.renderApp, fixtures.flight-esm.src.App.App, fixtures.flight-esm.src.Button.Button, ... (+13 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Flight-Parcel</strong></td>
+                <td>Entities in fixtures.flight-parcel</td>
+                <td>18</td>
+                
+                <td class="entity-list">fixtures.flight-parcel.src.Dialog.Dialog, fixtures.flight-parcel.src.TodoCreate.TodoCreate, fixtures.flight-parcel.src.TodoDetail.TodoDetail, fixtures.flight-parcel.src.TodoItem.TodoItem, fixtures.flight-parcel.src.TodoList.TodoList, fixtures.flight-parcel.src.Todos.Todos, fixtures.flight-parcel.src.actions.Todo, fixtures.flight-parcel.src.actions.createTodo, ... (+10 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Flight-Vite</strong></td>
+                <td>Entities in fixtures.flight-vite</td>
+                <td>67</td>
+                
+                <td class="entity-list">fixtures.flight-vite.basic.browser.callServer, fixtures.flight-vite.basic.browser.findSourceMapURL, fixtures.flight-vite.basic.browser.loadModule, fixtures.flight-vite.basic.browser.setCallServer, fixtures.flight-vite.basic.plugin.assetsURL, fixtures.flight-vite.basic.plugin.collectAssetDeps, fixtures.flight-vite.basic.plugin.collectAssetDepsInner, fixtures.flight-vite.basic.plugin.createVirtualPlugin, ... (+59 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Legacy-Jsx-Runtimes</strong></td>
+                <td>Entities in fixtures.legacy-jsx-runtimes</td>
+                <td>47</td>
+                
+                <td class="entity-list">fixtures.legacy-jsx-runtimes.babel.config, fixtures.legacy-jsx-runtimes.lint-runtimes.getESLintInstance, fixtures.legacy-jsx-runtimes.lint-runtimes.lint, fixtures.legacy-jsx-runtimes.lint-runtimes.lintEverything, fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-dev-runtime.development, fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-dev-runtime.production.min, fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-runtime.development, fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-runtime.production.min.q, ... (+39 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Nesting</strong></td>
+                <td>Entities in fixtures.nesting</td>
+                <td>14</td>
+                
+                <td class="entity-list">fixtures.nesting.src, fixtures.nesting.src.legacy.Greeting, fixtures.nesting.src.legacy.createLegacyRoot.Bridge, fixtures.nesting.src.legacy.createLegacyRoot.createLegacyRoot, fixtures.nesting.src.modern, fixtures.nesting.src.modern.AboutPage.AboutPage, fixtures.nesting.src.modern.AboutPage.mapStateToProps, fixtures.nesting.src.modern.App.handleToggleClick, ... (+6 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Owner-Stacks</strong></td>
+                <td>Entities in fixtures.owner-stacks</td>
+                <td>4</td>
+                
+                <td class="entity-list">fixtures.owner-stacks.src, fixtures.owner-stacks.src.App.TextSymbol, fixtures.owner-stacks.src.App.toggleHighlight, fixtures.owner-stacks.src.reportWebVitals.reportWebVitals</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Packaging</strong></td>
+                <td>Entities in fixtures.packaging</td>
+                <td>27</td>
+                
+                <td class="entity-list">fixtures.packaging.browserify.dev.input, fixtures.packaging.browserify.prod.input, fixtures.packaging.brunch.dev.app.initialize, fixtures.packaging.brunch.dev.config, fixtures.packaging.brunch.dev.input, fixtures.packaging.brunch.prod.app.initialize, fixtures.packaging.brunch.prod.config, fixtures.packaging.brunch.prod.input, ... (+19 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ssr</strong></td>
+                <td>Entities in fixtures.ssr</td>
+                <td>17</td>
+                
+                <td class="entity-list">fixtures.ssr.server, fixtures.ssr.server.render.ThrottledWritable, fixtures.ssr.server.render.ThrottledWritable._final, fixtures.ssr.server.render.ThrottledWritable._write, fixtures.ssr.server.render.ThrottledWritable.constructor, fixtures.ssr.server.render.render, fixtures.ssr.src, fixtures.ssr.src.components.App.App, ... (+9 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ssr2</strong></td>
+                <td>Entities in fixtures.ssr2</td>
+                <td>16</td>
+                
+                <td class="entity-list">fixtures.ssr2.scripts.build, fixtures.ssr2.server.delays, fixtures.ssr2.server.render.createServerData, fixtures.ssr2.server.server.handleErrors, fixtures.ssr2.server.server.waitForWebpack, fixtures.ssr2.src, fixtures.ssr2.src.App, fixtures.ssr2.src.Comments, ... (+8 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Stacks</strong></td>
+                <td>Entities in fixtures.stacks</td>
+                <td>21</td>
+                
+                <td class="entity-list">fixtures.stacks.BabelClasses-compiled._assertThisInitialized, fixtures.stacks.BabelClasses-compiled._defineProperty, fixtures.stacks.BabelClasses-compiled._inheritsLoose, fixtures.stacks.BabelClasses-compiled._setPrototypeOf, fixtures.stacks.BabelClasses-compiled._toPrimitive, fixtures.stacks.BabelClasses-compiled._toPropertyKey, fixtures.stacks.BabelClasses.BabelClass, fixtures.stacks.BabelClasses.BabelClass.render, ... (+13 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>View-Transition</strong></td>
+                <td>Entities in fixtures.view-transition</td>
+                <td>12</td>
+                
+                <td class="entity-list">fixtures.view-transition.server, fixtures.view-transition.server.render, fixtures.view-transition.src, fixtures.view-transition.src.components.App.App, fixtures.view-transition.src.components.Chrome.Chrome.render, fixtures.view-transition.src.components.Page.Component, fixtures.view-transition.src.components.Page.Id, fixtures.view-transition.src.components.Page.Suspend, ... (+4 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Packages2</strong></td>
+                <td>Entities in packages</td>
+                <td>25</td>
+                
+                <td class="entity-list">packages.dom-event-testing-library.createEventTarget, packages.eslint-plugin-react-hooks, packages.internal-test-utils, packages.jest-react, packages.react, packages.react-art, packages.react-cache, packages.react-debug-tools, ... (+17 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Dom-Event-Testing-Library</strong></td>
+                <td>Entities in packages.dom-event-testing-library</td>
+                <td>63</td>
+                
+                <td class="entity-list">packages.dom-event-testing-library.constants, packages.dom-event-testing-library.domEnvironment.emptyFunction, packages.dom-event-testing-library.domEnvironment.hasPointerEvent, packages.dom-event-testing-library.domEnvironment.setPointerEvent, packages.dom-event-testing-library.domEventSequences.contextmenu, packages.dom-event-testing-library.domEventSequences.createTouch, packages.dom-event-testing-library.domEventSequences.createTouchEventPayload, packages.dom-event-testing-library.domEventSequences.getPointerType, ... (+55 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Eslint-Plugin-React-Hooks</strong></td>
+                <td>Entities in packages.eslint-plugin-react-hooks</td>
+                <td>151</td>
+                
+                <td class="entity-list">packages.eslint-plugin-react-hooks.babel.config, packages.eslint-plugin-react-hooks.jest.config, packages.eslint-plugin-react-hooks.npm, packages.eslint-plugin-react-hooks.src, packages.eslint-plugin-react-hooks.src.code-path-analysis.assert.assert, packages.eslint-plugin-react-hooks.src.code-path-analysis.code-path-analyzer.CodePathAnalyzer, packages.eslint-plugin-react-hooks.src.code-path-analysis.code-path-analyzer.CodePathAnalyzer.constructor, packages.eslint-plugin-react-hooks.src.code-path-analysis.code-path-analyzer.CodePathAnalyzer.enterNode, ... (+143 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Internal-Test-Utils</strong></td>
+                <td>Entities in packages.internal-test-utils</td>
+                <td>38</td>
+                
+                <td class="entity-list">packages.internal-test-utils.ReactInternalTestUtils.aggregateErrors, packages.internal-test-utils.ReactInternalTestUtils.assertLog, packages.internal-test-utils.ReactInternalTestUtils.assertYieldsWereCleared, packages.internal-test-utils.ReactInternalTestUtils.simulateEventDispatch, packages.internal-test-utils.ReactInternalTestUtils.unstable_waitForExpired, packages.internal-test-utils.ReactInternalTestUtils.waitFor, packages.internal-test-utils.ReactInternalTestUtils.waitForAll, packages.internal-test-utils.ReactInternalTestUtils.waitForDiscrete, ... (+30 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Jest-React</strong></td>
+                <td>Entities in packages.jest-react</td>
+                <td>7</td>
+                
+                <td class="entity-list">packages.jest-react.npm, packages.jest-react.src.JestReact.assertYieldsWereCleared, packages.jest-react.src.JestReact.captureAssertion, packages.jest-react.src.JestReact.createJSXElementForTestComparison, packages.jest-react.src.JestReact.jsonChildToJSXChild, packages.jest-react.src.JestReact.jsonChildrenToJSXChildren, packages.jest-react.src.JestReact.unstable_toMatchRenderedOutput</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React</strong></td>
+                <td>Entities in packages.react</td>
+                <td>104</td>
+                
+                <td class="entity-list">packages.react.compiler-runtime, packages.react.index.development, packages.react.index.fb, packages.react.index.stable, packages.react.index.stable.development, packages.react.jsx-dev-runtime, packages.react.jsx-dev-runtime.react-server, packages.react.jsx-runtime, ... (+96 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Art</strong></td>
+                <td>Entities in packages.react-art</td>
+                <td>112</td>
+                
+                <td class="entity-list">compiler.packages.babel-plugin-react-compiler.src.HIR.PrintHIR.printPattern, compiler.packages.babel-plugin-react-compiler.src.ReactiveScopes.CodegenReactiveFunction.codegenInstructionNullable, compiler.packages.babel-plugin-react-compiler.src.ReactiveScopes.CodegenReactiveFunction.codegenLValue, compiler.packages.babel-plugin-react-compiler.src.ReactiveScopes.PruneNonEscapingScopes.computePatternLValues, packages.react-art.Circle, packages.react-art.Rectangle, packages.react-art.Wedge, packages.react-art.npm, ... (+104 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Cache</strong></td>
+                <td>Entities in packages.react-cache</td>
+                <td>9</td>
+                
+                <td class="entity-list">packages.react-cache.npm, packages.react-cache.src.LRU.createLRU, packages.react-cache.src.ReactCacheOld.Suspender, packages.react-cache.src.ReactCacheOld.accessResult, packages.react-cache.src.ReactCacheOld.deleteEntry, packages.react-cache.src.ReactCacheOld.identityHashFn, packages.react-cache.src.ReactCacheOld.readContext, packages.react-cache.src.ReactCacheOld.unstable_createResource, ... (+1 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Client</strong></td>
+                <td>Entities in packages.react-client</td>
+                <td>151</td>
+                
+                <td class="entity-list">packages.react-client.flight, packages.react-client.npm.flight, packages.react-client.src.ReactClientConsoleConfigBrowser.bindToConsole, packages.react-client.src.ReactClientConsoleConfigPlain.bindToConsole, packages.react-client.src.ReactClientConsoleConfigServer.bindToConsole, packages.react-client.src.ReactFlightClient.FlightStreamController, packages.react-client.src.ReactFlightClient.ReactPromise, packages.react-client.src.ReactFlightClient.asyncIterator, ... (+143 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Debug-Tools</strong></td>
+                <td>Entities in packages.react-debug-tools</td>
+                <td>43</td>
+                
+                <td class="entity-list">packages.react-debug-tools.npm, packages.react-debug-tools.src.ReactDebugHooks.buildTree, packages.react-debug-tools.src.ReactDebugHooks.findCommonAncestorIndex, packages.react-debug-tools.src.ReactDebugHooks.findPrimitiveIndex, packages.react-debug-tools.src.ReactDebugHooks.findSharedIndex, packages.react-debug-tools.src.ReactDebugHooks.getPrimitiveStackCache, packages.react-debug-tools.src.ReactDebugHooks.handleRenderFunctionError, packages.react-debug-tools.src.ReactDebugHooks.inspectHooks, ... (+35 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools</strong></td>
+                <td>Entities in packages.react-devtools</td>
+                <td>3</td>
+                
+                <td class="entity-list">packages.react-devtools.app, packages.react-devtools.bin, packages.react-devtools.preload</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools-Core</strong></td>
+                <td>Entities in packages.react-devtools-core</td>
+                <td>34</td>
+                
+                <td class="entity-list">packages.react-devtools-core.backend, packages.react-devtools-core.src.backend.connectToDevTools, packages.react-devtools-core.src.backend.connectWithCustomMessagingProtocol, packages.react-devtools-core.src.backend.debug, packages.react-devtools-core.src.backend.initialize, packages.react-devtools-core.src.editor.doesFilePathExist, packages.react-devtools-core.src.editor.getArgumentsForLineNumber, packages.react-devtools-core.src.editor.getValidFilePath, ... (+26 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools-Extensions</strong></td>
+                <td>Entities in packages.react-devtools-extensions</td>
+                <td>88</td>
+                
+                <td class="entity-list">packages.react-devtools-extensions.build.build, packages.react-devtools-extensions.build.ensureLocalBuild, packages.react-devtools-extensions.build.main, packages.react-devtools-extensions.build.postProcess, packages.react-devtools-extensions.build.preProcess, packages.react-devtools-extensions.chrome.build.main, packages.react-devtools-extensions.chrome.deploy.main, packages.react-devtools-extensions.chrome.test, ... (+80 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools-Fusebox</strong></td>
+                <td>Entities in packages.react-devtools-fusebox</td>
+                <td>5</td>
+                
+                <td class="entity-list">packages.react-devtools-fusebox.src.frontend, packages.react-devtools-fusebox.src.frontend.createBridge, packages.react-devtools-fusebox.src.frontend.createStore, packages.react-devtools-fusebox.src.frontend.initializeTab, packages.react-devtools-fusebox.webpack.config.frontend</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools-Inline</strong></td>
+                <td>Entities in packages.react-devtools-inline</td>
+                <td>15</td>
+                
+                <td class="entity-list">compiler.packages.react-compiler-healthcheck.src.checks.libraryCompat, packages.react-devtools-inline.backend, packages.react-devtools-inline.frontend, packages.react-devtools-inline.hookNames, packages.react-devtools-inline.playwright.config, packages.react-devtools-inline.src.backend.activate, packages.react-devtools-inline.src.backend.createBridge, packages.react-devtools-inline.src.backend.finishActivation, ... (+7 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools-Shared</strong></td>
+                <td>Entities in packages.react-devtools-shared</td>
+                <td>633</td>
+                
+                <td class="entity-list">compiler.apps.playground.components.StoreContext.storeReducer, compiler.packages.babel-plugin-react-compiler.src.Entrypoint.ValidateNoUntransformedReferences.transformProgram, compiler.packages.babel-plugin-react-compiler.src.HIR.Environment.Environment.constructor, packages.react-devtools-shared.SourceMapIgnoreListPlugin.SourceMapIgnoreListPlugin, packages.react-devtools-shared.SourceMapIgnoreListPlugin.SourceMapIgnoreListPlugin.apply, packages.react-devtools-shared.SourceMapIgnoreListPlugin.SourceMapIgnoreListPlugin.constructor, packages.react-devtools-shared.babel.config.validateVersion, packages.react-devtools-shared.buildUtils.resolveFeatureFlags, ... (+625 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools-Shell</strong></td>
+                <td>Entities in packages.react-devtools-shell</td>
+                <td>146</td>
+                
+                <td class="entity-list">fixtures.ssr.src.components.Chrome.Chrome, fixtures.ssr.src.components.Page.Page, fixtures.view-transition.src.components.Chrome.Chrome, packages.react-devtools-shared.src.devtools.views.ErrorBoundary.ErrorBoundary.ErrorBoundary, packages.react-devtools-shell.constants, packages.react-devtools-shell.src.app.DeeplyNestedComponents.DeeplyNestedComponents, packages.react-devtools-shell.src.app.DeeplyNestedComponents.Nested, packages.react-devtools-shell.src.app.DeeplyNestedComponents.wrapWithHoc, ... (+138 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Devtools-Timeline</strong></td>
+                <td>Entities in packages.react-devtools-timeline</td>
+                <td>283</td>
+                
+                <td class="entity-list">packages.react-devtools-timeline.src.CanvasPage, packages.react-devtools-timeline.src.CanvasPageContextMenu.CanvasPageContextMenu, packages.react-devtools-timeline.src.CanvasPageContextMenu.copySummary, packages.react-devtools-timeline.src.CanvasPageContextMenu.zoomToBatch, packages.react-devtools-timeline.src.EventTooltip.EventTooltip, packages.react-devtools-timeline.src.EventTooltip.getReactMeasureLabel, packages.react-devtools-timeline.src.Timeline, packages.react-devtools-timeline.src.TimelineContext.TimelineContextController, ... (+275 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Dom</strong></td>
+                <td>Entities in packages.react-dom</td>
+                <td>124</td>
+                
+                <td class="entity-list">packages.react-dom.client, packages.react-dom.npm.checkDCE, packages.react-dom.npm.client.checkDCE, packages.react-dom.npm.client.react-server, packages.react-dom.npm.profiling.checkDCE, packages.react-dom.npm.profiling.react-server, packages.react-dom.npm.react-dom.react-server, packages.react-dom.npm.server, ... (+116 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Dom-Bindings</strong></td>
+                <td>Entities in packages.react-dom-bindings</td>
+                <td>756</td>
+                
+                <td class="entity-list">packages.react-client.src.ReactFlightClient.resolveHint, packages.react-dom-bindings.src.client.CSSPropertyOperations.createDangerousStringForStyles, packages.react-dom-bindings.src.client.CSSPropertyOperations.expandShorthandMap, packages.react-dom-bindings.src.client.CSSPropertyOperations.isValueEmpty, packages.react-dom-bindings.src.client.CSSPropertyOperations.setValueForStyle, packages.react-dom-bindings.src.client.CSSPropertyOperations.setValueForStyles, packages.react-dom-bindings.src.client.CSSPropertyOperations.validateShorthandPropertyCollisionInDev, packages.react-dom-bindings.src.client.CSSShorthandProperty, ... (+748 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Is</strong></td>
+                <td>Entities in packages.react-is</td>
+                <td>17</td>
+                
+                <td class="entity-list">packages.react-is.index.experimental, packages.react-is.index.stable, packages.react-is.npm, packages.react-is.src.ReactIs.isContextConsumer, packages.react-is.src.ReactIs.isContextProvider, packages.react-is.src.ReactIs.isElement, packages.react-is.src.ReactIs.isForwardRef, packages.react-is.src.ReactIs.isFragment, ... (+9 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Markup</strong></td>
+                <td>Entities in packages.react-markup</td>
+                <td>27</td>
+                
+                <td class="entity-list">packages.react-client.src.ReactFlightClient.ResponseInstance, packages.react-client.src.ReactFlightClient.processFullBinaryRow, packages.react-markup.npm, packages.react-markup.npm.react-markup.react-server, packages.react-markup.react-markup.react-server, packages.react-markup.src.ReactFizzConfigMarkup.getViewTransitionFormatContext, packages.react-markup.src.ReactFizzConfigMarkup.pushEndActivityBoundary, packages.react-markup.src.ReactFizzConfigMarkup.pushSegmentFinale, ... (+19 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Native-Renderer</strong></td>
+                <td>Entities in packages.react-native-renderer</td>
+                <td>330</td>
+                
+                <td class="entity-list">packages.react-dom-bindings.src.events.plugins.SelectEventPlugin.constructSelectEvent, packages.react-native-renderer.fabric, packages.react-native-renderer.src.NativeMethodsMixinUtils.mountSafeCallback_NOT_REALLY_SAFE, packages.react-native-renderer.src.NativeMethodsMixinUtils.warnForStyleProps, packages.react-native-renderer.src.ReactFabric.createPortal, packages.react-native-renderer.src.ReactFabric.getPublicInstanceFromRootTag, packages.react-native-renderer.src.ReactFabric.nativeOnCaughtError, packages.react-native-renderer.src.ReactFabric.nativeOnDefaultTransitionIndicator, ... (+322 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Noop-Renderer</strong></td>
+                <td>Entities in packages.react-noop-renderer</td>
+                <td>19</td>
+                
+                <td class="entity-list">packages.react-noop-renderer.flight-client, packages.react-noop-renderer.flight-modules.readModule, packages.react-noop-renderer.flight-modules.saveModule, packages.react-noop-renderer.flight-server, packages.react-noop-renderer.npm, packages.react-noop-renderer.npm.flight-client, packages.react-noop-renderer.npm.flight-modules, packages.react-noop-renderer.npm.flight-server, ... (+11 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Reconciler</strong></td>
+                <td>Entities in packages.react-reconciler</td>
+                <td>882</td>
+                
+                <td class="entity-list">packages.react-reconciler.constants, packages.react-reconciler.npm, packages.react-reconciler.npm.constants, packages.react-reconciler.npm.reflection, packages.react-reconciler.reflection, packages.react-reconciler.src.ReactCapturedValue.createCapturedValueAtFiber, packages.react-reconciler.src.ReactCapturedValue.createCapturedValueFromError, packages.react-reconciler.src.ReactChildFiber.cloneChildFibers, ... (+874 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Refresh</strong></td>
+                <td>Entities in packages.react-refresh</td>
+                <td>24</td>
+                
+                <td class="entity-list">packages.react-refresh.babel, packages.react-refresh.npm.babel, packages.react-refresh.npm.runtime, packages.react-refresh.runtime, packages.react-refresh.src.ReactFreshBabelPlugin, packages.react-refresh.src.ReactFreshRuntime._getMountedRootCount, packages.react-refresh.src.ReactFreshRuntime.canPreserveStateBetween, packages.react-refresh.src.ReactFreshRuntime.cloneMap, ... (+16 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Server</strong></td>
+                <td>Entities in packages.react-server</td>
+                <td>457</td>
+                
+                <td class="entity-list">packages.react-reconciler.src.ReactFiberBeginWork.updateForwardRef, packages.react-reconciler.src.ReactFiberBeginWork.updateFunctionComponent, packages.react-server.flight, packages.react-server.npm, packages.react-server.npm.flight, packages.react-server.src.ReactFizzAsyncDispatcher.getCacheForType, packages.react-server.src.ReactFizzCallUserSpace.ClassInstance, packages.react-server.src.ReactFizzClassComponent.applyDerivedStateFromProps, ... (+449 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Server-Dom-Esm</strong></td>
+                <td>Entities in packages.react-server-dom-esm</td>
+                <td>62</td>
+                
+                <td class="entity-list">packages.react-server-dom-esm.client, packages.react-server-dom-esm.client.browser, packages.react-server-dom-esm.client.node, packages.react-server-dom-esm.esm.react-server-dom-esm-node-loader.production, packages.react-server-dom-esm.npm, packages.react-server-dom-esm.npm.client, packages.react-server-dom-esm.npm.client.browser, packages.react-server-dom-esm.npm.client.node, ... (+54 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Server-Dom-Fb</strong></td>
+                <td>Entities in packages.react-server-dom-fb</td>
+                <td>5</td>
+                
+                <td class="entity-list">packages.react-server-dom-fb.src.ReactDOMServerFB.abortStream, packages.react-server-dom-fb.src.ReactDOMServerFB.debug, packages.react-server-dom-fb.src.ReactDOMServerFB.hasFinished, packages.react-server-dom-fb.src.ReactDOMServerFB.renderNextChunk, packages.react-server-dom-fb.src.ReactDOMServerFB.renderToStream</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Server-Dom-Parcel</strong></td>
+                <td>Entities in packages.react-server-dom-parcel</td>
+                <td>92</td>
+                
+                <td class="entity-list">packages.react-server-dom-parcel.client, packages.react-server-dom-parcel.client.browser, packages.react-server-dom-parcel.client.edge, packages.react-server-dom-parcel.client.node, packages.react-server-dom-parcel.npm, packages.react-server-dom-parcel.npm.client, packages.react-server-dom-parcel.npm.client.browser, packages.react-server-dom-parcel.npm.client.edge, ... (+84 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Server-Dom-Turbopack</strong></td>
+                <td>Entities in packages.react-server-dom-turbopack</td>
+                <td>87</td>
+                
+                <td class="entity-list">packages.react-server-dom-turbopack.client, packages.react-server-dom-turbopack.client.browser, packages.react-server-dom-turbopack.client.edge, packages.react-server-dom-turbopack.client.node, packages.react-server-dom-turbopack.npm, packages.react-server-dom-turbopack.npm.client, packages.react-server-dom-turbopack.npm.client.browser, packages.react-server-dom-turbopack.npm.client.edge, ... (+79 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Server-Dom-Vite</strong></td>
+                <td>Entities in packages.react-server-dom-vite</td>
+                <td>83</td>
+                
+                <td class="entity-list">packages.react-server-dom-vite.client, packages.react-server-dom-vite.client.browser, packages.react-server-dom-vite.client.edge, packages.react-server-dom-vite.client.node, packages.react-server-dom-vite.npm, packages.react-server-dom-vite.npm.client, packages.react-server-dom-vite.npm.client.browser, packages.react-server-dom-vite.npm.client.edge, ... (+75 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Server-Dom-Webpack</strong></td>
+                <td>Entities in packages.react-server-dom-webpack</td>
+                <td>128</td>
+                
+                <td class="entity-list">packages.react-client.src.ReactFlightClient.initializeModuleChunk, packages.react-client.src.ReactFlightClient.resolveModule, packages.react-server-dom-webpack.client, packages.react-server-dom-webpack.client.browser, packages.react-server-dom-webpack.client.edge, packages.react-server-dom-webpack.client.node, packages.react-server-dom-webpack.client.node.unbundled, packages.react-server-dom-webpack.esm.react-server-dom-webpack-node-loader.production, ... (+120 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Suspense-Test-Utils</strong></td>
+                <td>Entities in packages.react-suspense-test-utils</td>
+                <td>1</td>
+                
+                <td class="entity-list">packages.react-suspense-test-utils.npm</td>
+            </tr>
+        
+            <tr>
+                <td><strong>React-Test-Renderer</strong></td>
+                <td>Entities in packages.react-test-renderer</td>
+                <td>3</td>
+                
+                <td class="entity-list">packages.react-test-renderer.npm, packages.react-test-renderer.npm.shallow.ReactShallowRenderer, packages.react-test-renderer.shallow</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Scheduler</strong></td>
+                <td>Entities in packages.scheduler</td>
+                <td>89</td>
+                
+                <td class="entity-list">packages.scheduler.index.native, packages.scheduler.npm, packages.scheduler.npm.index.native, packages.scheduler.npm.umd.scheduler.development, packages.scheduler.npm.umd.scheduler.production.min, packages.scheduler.npm.umd.scheduler.profiling.min, packages.scheduler.npm.unstable_mock, packages.scheduler.npm.unstable_post_task, ... (+81 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Shared</strong></td>
+                <td>Entities in packages.shared</td>
+                <td>73</td>
+                
+                <td class="entity-list">packages.shared.CheckStringCoercion.checkAttributeStringCoercion, packages.shared.CheckStringCoercion.checkCSSPropertyStringCoercion, packages.shared.CheckStringCoercion.checkFormFieldValueStringCoercion, packages.shared.CheckStringCoercion.checkHtmlStringCoercion, packages.shared.CheckStringCoercion.checkKeyStringCoercion, packages.shared.CheckStringCoercion.checkOptionStringCoercion, packages.shared.CheckStringCoercion.checkPropStringCoercion, packages.shared.CheckStringCoercion.testStringCoercion, ... (+65 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Use-Subscription</strong></td>
+                <td>Entities in packages.use-subscription</td>
+                <td>2</td>
+                
+                <td class="entity-list">packages.use-subscription.npm, packages.use-subscription.src.useSubscription.useSubscription</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Use-Sync-External-Store</strong></td>
+                <td>Entities in packages.use-sync-external-store</td>
+                <td>18</td>
+                
+                <td class="entity-list">packages.use-sync-external-store.npm, packages.use-sync-external-store.npm.shim, packages.use-sync-external-store.npm.shim.index.native, packages.use-sync-external-store.npm.shim.with-selector, packages.use-sync-external-store.npm.with-selector, packages.use-sync-external-store.shim, packages.use-sync-external-store.shim.index.native, packages.use-sync-external-store.shim.with-selector, ... (+10 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Scripts2</strong></td>
+                <td>Entities in scripts</td>
+                <td>6</td>
+                
+                <td class="entity-list">scripts.eslint-rules, scripts.eslint.intersect, scripts.eslint.runESLint, scripts.eslint.runESLintOnFilesWithOptions, scripts.perf-counters, scripts.prettier.main</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Babel2</strong></td>
+                <td>Entities in scripts.babel</td>
+                <td>6</td>
+                
+                <td class="entity-list">scripts.babel.getComments.getComments, scripts.babel.transform-lazy-jsx-import, scripts.babel.transform-object-assign, scripts.babel.transform-prevent-infinite-loops, scripts.babel.transform-react-version-pragma.transform, scripts.babel.transform-test-gate-pragma.transform</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Bench</strong></td>
+                <td>Entities in scripts.bench</td>
+                <td>43</td>
+                
+                <td class="entity-list">scripts.bench.benchmark.bootstrap, scripts.bench.benchmark.calculateAverages, scripts.bench.benchmark.calculateStandardErrorOfMean, scripts.bench.benchmark.initChrome, scripts.bench.benchmark.launchChrome, scripts.bench.benchmark.runBenchmark, scripts.bench.benchmark.runScenario, scripts.bench.benchmark.wait, ... (+35 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Ci</strong></td>
+                <td>Entities in scripts.ci</td>
+                <td>10</td>
+                
+                <td class="entity-list">scripts.ci.download_devtools_regression_build.downloadRegressionBuild, scripts.ci.download_devtools_regression_build.main, scripts.ci.run_devtools_e2e_tests.buildInlinePackage, scripts.ci.run_devtools_e2e_tests.exitWithCode, scripts.ci.run_devtools_e2e_tests.format, scripts.ci.run_devtools_e2e_tests.logBright, scripts.ci.run_devtools_e2e_tests.logDim, scripts.ci.run_devtools_e2e_tests.logError, ... (+2 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Devtools2</strong></td>
+                <td>Entities in scripts.devtools</td>
+                <td>29</td>
+                
+                <td class="entity-list">scripts.devtools.build-and-test.archiveGitRevision, scripts.devtools.build-and-test.buildAndTestExtensions, scripts.devtools.build-and-test.buildAndTestInlinePackage, scripts.devtools.build-and-test.buildAndTestStandalonePackage, scripts.devtools.build-and-test.downloadLatestReactBuild, scripts.devtools.build-and-test.main, scripts.devtools.build-and-test.printFinalInstructions, scripts.devtools.configuration, ... (+21 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Error-Codes</strong></td>
+                <td>Entities in scripts.error-codes</td>
+                <td>4</td>
+                
+                <td class="entity-list">scripts.error-codes.Types, scripts.error-codes.extract-errors.main, scripts.error-codes.invertObject.invertObject, scripts.error-codes.transform-error-messages</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Eslint-Rules</strong></td>
+                <td>Entities in scripts.eslint-rules</td>
+                <td>15</td>
+                
+                <td class="entity-list">scripts.eslint-rules.no-primitive-constructors, scripts.eslint-rules.no-production-logging, scripts.eslint-rules.prod-error-codes.nodeToErrorTemplate, scripts.eslint-rules.safe-string-coercion.astReplacer, scripts.eslint-rules.safe-string-coercion.checkBinaryExpression, scripts.eslint-rules.safe-string-coercion.coerceWithStringConstructor, scripts.eslint-rules.safe-string-coercion.hasCoercionCheck, scripts.eslint-rules.safe-string-coercion.isDescendant, ... (+7 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Flags</strong></td>
+                <td>Entities in scripts.flags</td>
+                <td>14</td>
+                
+                <td class="entity-list">scripts.flags.flags.argToHeader, scripts.flags.flags.buildTable, scripts.flags.flags.formatTable, scripts.flags.flags.getNextMajorFlagValue, scripts.flags.flags.getOSSCanaryFlagValue, scripts.flags.flags.getOSSExperimentalFlagValue, scripts.flags.flags.getRNFBFlagValue, scripts.flags.flags.getRNNextMajorFlagValue, ... (+6 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Flow</strong></td>
+                <td>Entities in scripts.flow</td>
+                <td>15</td>
+                
+                <td class="entity-list">scripts.flow.createFlowConfigs.addFork, scripts.flow.createFlowConfigs.findForks, scripts.flow.createFlowConfigs.writeConfig, scripts.flow.environment.NavigationHistoryEntry, scripts.flow.environment.NavigationHistoryEntryEventMap, scripts.flow.environment.NavigationInterceptOptions, scripts.flow.environment.NavigationNavigateOptions, scripts.flow.environment.NavigationOptions, ... (+7 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Jest</strong></td>
+                <td>Entities in scripts.jest</td>
+                <td>53</td>
+                
+                <td class="entity-list">scripts.jest.ReactDOMServerIntegrationEnvironment.ReactDOMServerIntegrationEnvironment, scripts.jest.ReactDOMServerIntegrationEnvironment.ReactDOMServerIntegrationEnvironment.constructor, scripts.jest.ReactDOMServerIntegrationEnvironment.ReactDOMServerIntegrationEnvironment.setup, scripts.jest.ReactDOMServerIntegrationEnvironment.ReactDOMServerIntegrationEnvironment.teardown, scripts.jest.ReactJSDOMEnvironment.ReactJSDOMEnvironment, scripts.jest.ReactJSDOMEnvironment.ReactJSDOMEnvironment.constructor, scripts.jest.TestFlags.getTestFlags, scripts.jest.config.base, ... (+45 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Print-Warnings</strong></td>
+                <td>Entities in scripts.print-warnings</td>
+                <td>1</td>
+                
+                <td class="entity-list">scripts.print-warnings.print-warnings.transform</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Release</strong></td>
+                <td>Entities in scripts.release</td>
+                <td>65</td>
+                
+                <td class="entity-list">scripts.release.build-release-locally-commands.add-build-info-json.run, scripts.release.build-release-locally-commands.build-artifacts.run, scripts.release.build-release-locally-commands.confirm-automated-testing.run, scripts.release.build-release-locally-commands.copy-repo-to-temp-directory.run, scripts.release.build-release-locally-commands.npm-pack-and-unpack.run, scripts.release.build-release-locally-commands.update-version-numbers, scripts.release.build-release-locally.run, scripts.release.build-release.run, ... (+57 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Rollup</strong></td>
+                <td>Entities in scripts.rollup</td>
+                <td>85</td>
+                
+                <td class="entity-list">scripts.rollup.build-all-release-channels.buildForChannel, scripts.rollup.build-all-release-channels.crossDeviceRenameSync, scripts.rollup.build-all-release-channels.main, scripts.rollup.build-all-release-channels.mergeDirsSync, scripts.rollup.build-all-release-channels.processExperimental, scripts.rollup.build-all-release-channels.processStable, scripts.rollup.build-all-release-channels.updatePackageVersions, scripts.rollup.build-all-release-channels.updatePlaceholderReactVersionInCompiledArtifacts, ... (+77 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Shared2</strong></td>
+                <td>Entities in scripts.shared</td>
+                <td>10</td>
+                
+                <td class="entity-list">scripts.shared.evalToString.evalStringAndTemplateConcat, scripts.shared.evalToString.evalStringConcat, scripts.shared.inlinedHostConfigs, scripts.shared.listChangedFiles.exec, scripts.shared.listChangedFiles.execGitCmd, scripts.shared.listChangedFiles.execSlCmd, scripts.shared.listChangedFiles.isGit, scripts.shared.listChangedFiles.isSl, ... (+2 more)</td>
+            </tr>
+        
+            <tr>
+                <td><strong>Tasks</strong></td>
+                <td>Entities in scripts.tasks</td>
+                <td>6</td>
+                
+                <td class="entity-list">scripts.tasks.danger, scripts.tasks.eslint.main, scripts.tasks.flow, scripts.tasks.flow-ci.check, scripts.tasks.linc.main, scripts.tasks.version-check</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <h2 id="smells">Architectural Smells (45)</h2>
+    
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 4 components: Packages <-> React-Art <-> React-Devtools-Shared <-> React-Devtools-Timeline</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Packages, React-Art, React-Devtools-Shared, React-Devtools-Timeline</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.DEPENDENCY_CYCLE</strong>
+        </div>
+        <p class="smell-detail">Circular dependency among 8 components: Flight <-> React-Devtools-Shell <-> React-Dom-Bindings <-> React-Markup <-> React-Native-Renderer <-> React-Reconciler <-> React-Server <-> React-Server-Dom-Webpack</p>
+        <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Flight, React-Devtools-Shell, React-Dom-Bindings, React-Markup, React-Native-Renderer, React-Reconciler, React-Server, React-Server-Dom-Webpack</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Apps contains 47 entities but only 15 internal dependencies (0.32 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Apps into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Apps</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Fixtures contains 56 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Fixtures into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Fixtures</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Dom contains 189 entities but only 14 internal dependencies (0.07 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Dom into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Dom</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Flight contains 61 entities but only 8 internal dependencies (0.13 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Flight into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Flight</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Flight-Esm contains 21 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Flight-Esm into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Flight-Esm</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Legacy-Jsx-Runtimes contains 47 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Legacy-Jsx-Runtimes into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Legacy-Jsx-Runtimes</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Packaging contains 27 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Packaging into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Packaging</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Stacks contains 21 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Stacks into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Stacks</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Packages2 contains 25 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Packages2 into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Packages2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Dom-Event-Testing-Library contains 63 entities but only 10 internal dependencies (0.16 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Dom-Event-Testing-Library into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Dom-Event-Testing-Library</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Eslint-Plugin-React-Hooks contains 151 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Eslint-Plugin-React-Hooks into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Eslint-Plugin-React-Hooks</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Internal-Test-Utils contains 38 entities but only 2 internal dependencies (0.05 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Internal-Test-Utils into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Internal-Test-Utils</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Art contains 112 entities but only 7 internal dependencies (0.06 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Art into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Art</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Client contains 151 entities but only 11 internal dependencies (0.07 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Client into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Client</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Debug-Tools contains 43 entities but only 2 internal dependencies (0.05 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Debug-Tools into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Debug-Tools</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Devtools-Core contains 34 entities but only 2 internal dependencies (0.06 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Devtools-Core into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Devtools-Core</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Devtools-Extensions contains 88 entities but only 7 internal dependencies (0.08 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Devtools-Extensions into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Devtools-Extensions</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Devtools-Shared contains 633 entities but only 189 internal dependencies (0.30 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Devtools-Shared into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Devtools-Shared</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Devtools-Shell contains 146 entities but only 21 internal dependencies (0.14 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Devtools-Shell into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Devtools-Shell</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Dom contains 124 entities but only 8 internal dependencies (0.06 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Dom into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Dom</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Markup contains 27 entities but only 8 internal dependencies (0.30 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Markup into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Markup</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Native-Renderer contains 330 entities but only 115 internal dependencies (0.35 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Native-Renderer into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Native-Renderer</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Refresh contains 24 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Refresh into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Refresh</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Server contains 457 entities but only 114 internal dependencies (0.25 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Server into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Server</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Server-Dom-Esm contains 62 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Server-Dom-Esm into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Server-Dom-Esm</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Server-Dom-Parcel contains 92 entities but only 9 internal dependencies (0.10 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Server-Dom-Parcel into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Server-Dom-Parcel</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Server-Dom-Turbopack contains 87 entities but only 4 internal dependencies (0.05 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Server-Dom-Turbopack into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Server-Dom-Turbopack</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Server-Dom-Vite contains 83 entities but only 9 internal dependencies (0.11 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Server-Dom-Vite into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Server-Dom-Vite</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">React-Server-Dom-Webpack contains 128 entities but only 18 internal dependencies (0.14 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting React-Server-Dom-Webpack into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Server-Dom-Webpack</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Scheduler contains 89 entities but only 35 internal dependencies (0.39 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Scheduler into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Scheduler</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Shared contains 73 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Shared into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Shared</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Bench contains 43 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Bench into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Bench</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Devtools2 contains 29 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Devtools2 into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Devtools2</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Jest contains 53 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Jest into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Jest</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Release contains 65 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Release into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Release</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.CONCERN_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Rollup contains 85 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Rollup into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Rollup</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Config' pattern is scattered across 8 components: Flow, Jest, Packages, React-Client, React-Devtools-Shell, React-Reconciler, React-Server, Rollup</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Config'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Flow, Jest, Packages, React-Client, React-Devtools-Shell, React-Reconciler, React-Server, Rollup</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Controller' pattern is scattered across 4 components: React-Client, React-Devtools-Shared, React-Devtools-Timeline, React-Server</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Controller'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Client, React-Devtools-Shared, React-Devtools-Timeline, React-Server</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Handler' pattern is scattered across 14 components: Dom, Packages, React-Art, React-Client, React-Dom, React-Dom-Bindings, React-Native-Renderer, React-Reconciler, React-Server, React-Server-Dom-Esm, React-Server-Dom-Parcel, React-Server-Dom-Turbopack, React-Server-Dom-Vite, React-Server-Dom-Webpack</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Handler'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Dom, Packages, React-Art, React-Client, React-Dom, React-Dom-Bindings, React-Native-Renderer, React-Reconciler, React-Server, React-Server-Dom-Esm, React-Server-Dom-Parcel, React-Server-Dom-Turbopack, React-Server-Dom-Vite, React-Server-Dom-Webpack</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Helper' pattern is scattered across 3 components: React-Devtools-Shared, Rollup, Scripts</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Helper'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Devtools-Shared, Rollup, Scripts</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Listener' pattern is scattered across 6 components: React-Devtools-Core, React-Devtools-Extensions, React-Devtools-Shared, React-Dom-Bindings, React-Native-Renderer, React-Reconciler</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Listener'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> React-Devtools-Core, React-Devtools-Extensions, React-Devtools-Shared, React-Dom-Bindings, React-Native-Renderer, React-Reconciler</p>
+    </div>
+    
+    <div class="smell high">
+        <div class="smell-header">
+            <span class="badge high">high</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Provider' pattern is scattered across 7 components: Apps, Packages, React-Devtools-Shared, React-Is, React-Reconciler, React-Server, Ssr2</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Provider'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Apps, Packages, React-Devtools-Shared, React-Is, React-Reconciler, React-Server, Ssr2</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
+        </div>
+        <p class="smell-detail">'Test' pattern is scattered across 3 components: Eslint-Plugin-React-Hooks, Packages, React-Devtools-Shell</p>
+        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Test'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Eslint-Plugin-React-Hooks, Packages, React-Devtools-Shell</p>
+    </div>
+    
+    
+
+    <h2 id="dependencies">Dependency Summary</h2>
+    <div class="card">
+        <table>
+            <thead><tr><th>Package</th><th>Entities</th></tr></thead>
+            <tbody>
+            
+                <tr>
+                    <td><code>packages.react-reconciler.src</code></td>
+                    <td>933</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server.src</code></td>
+                    <td>437</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom-bindings.src.client</code></td>
+                    <td>339</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.HIR</code></td>
+                    <td>323</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.ReactiveScopes</code></td>
+                    <td>298</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-native-renderer.src</code></td>
+                    <td>209</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom-bindings.src.server</code></td>
+                    <td>187</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-client.src</code></td>
+                    <td>126</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.eslint-plugin-react-hooks.src.code-path-analysis</code></td>
+                    <td>113</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src</code></td>
+                    <td>103</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-art.src</code></td>
+                    <td>101</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.content-views</code></td>
+                    <td>101</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom-bindings.src.events</code></td>
+                    <td>93</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.Utils</code></td>
+                    <td>91</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.Inference</code></td>
+                    <td>87</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.view-base</code></td>
+                    <td>81</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools</code></td>
+                    <td>78</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.Entrypoint</code></td>
+                    <td>72</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.views.Components</code></td>
+                    <td>71</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-native-renderer.src.legacy-events</code></td>
+                    <td>67</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.rollup</code></td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.src</code></td>
+                    <td>64</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.app</code></td>
+                    <td>64</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.dom-event-testing-library</code></td>
+                    <td>63</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures</code></td>
+                    <td>61</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.shared</code></td>
+                    <td>61</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.src.forks</code></td>
+                    <td>57</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.snap.src.sprout</code></td>
+                    <td>56</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures</code></td>
+                    <td>56</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.Optimization</code></td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.Validation</code></td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.views.Profiler</code></td>
+                    <td>53</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom-bindings.src.events.plugins</code></td>
+                    <td>47</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.hooks</code></td>
+                    <td>45</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-debug-tools.src</code></td>
+                    <td>42</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.snap.src</code></td>
+                    <td>39</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.internal-test-utils</code></td>
+                    <td>38</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src</code></td>
+                    <td>36</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom-bindings.src.shared</code></td>
+                    <td>36</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.views</code></td>
+                    <td>35</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.Transform</code></td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.basic</code></td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend</code></td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.app.InspectableElements</code></td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.bench</code></td>
+                    <td>32</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.src.server</code></td>
+                    <td>31</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.src.client</code></td>
+                    <td>31</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.src.client</code></td>
+                    <td>31</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.eslint-plugin-react-hooks.src.rules</code></td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-core.src</code></td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.src</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.devtools</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.release</code></td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.src.server</code></td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.src.client</code></td>
+                    <td>27</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-client.src.forks.ReactFlightClientConfig</code></td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest</code></td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.view-base.resizable</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-native-renderer.src.__mocks__.react-native.Libraries.ReactPrivate</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server.src.forks.ReactFlightServerConfig</code></td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.src</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.server</code></td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.import-worker</code></td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.client</code></td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.views.ErrorBoundary</code></td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.stacks</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.src</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.views.Highlighter</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.src.client</code></td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.SSA</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.src.jsx</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.fiber</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-refresh.src</code></td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.client.src</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.src.server</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.src.server</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.src</code></td>
+                    <td>19</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.content-views.utils</code></td>
+                    <td>18</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-markup.src</code></td>
+                    <td>18</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.src</code></td>
+                    <td>18</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-parcel.src</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.input-change-events</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.src.main</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.view-base.vertical-scroll-overflow</code></td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.scripts</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.TypeInference</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.hooks.parseHookNames</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.server</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom-bindings.src.server.fizz-instruction-set</code></td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.src.client</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.eslint-rules</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.flow</code></td>
+                    <td>15</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.src.contentScripts</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.views</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.views.Settings</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.shared</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-is.src</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.flags</code></td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-esm.src</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.ssr.src.components</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.shared</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.views.TraceUpdates</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.src.server</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.release.shared-commands</code></td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.components.Editor</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.attribute-behavior.src</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.fragment-refs</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.release.publish-commands</code></td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.lib.stores</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-compiler-runtime</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.src.routes</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.hydration</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.ssr2.src</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.view-transition.src.components</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.src.background</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.errors</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.ci</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.shared</code></td>
+                    <td>10</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.scripts</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.fiber-debugger.src</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-inline.src</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.view-base.utils</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server.src.forks.ReactServerStreamConfig</code></td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.components</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.pointer-events</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-cache.src</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.legacy</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.src</code></td>
+                    <td>8</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.lib</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.scripts.jest</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.selection-events</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.config</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.NativeStyleEditor</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.utils</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-noop-renderer</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-noop-renderer.src</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-reconciler.src.forks.ReactFiberConfig</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.shared.forks.ReactFeatureFlags</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.config</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.rollup.shims.react-native</code></td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-compiler-healthcheck.src.checks</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.src.routes.action-from-client</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>(default)</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.email-inputs</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.number-inputs</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.expiration</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.fizz.server</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.loader</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.jest-react.src</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.ContextMenu</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.views.Components.NativeStyleEditor</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.npm</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server.src.forks.ReactFizzConfig</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.src</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.babel</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.release.build-release-locally-commands</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.release.prepare-release-from-npm-commands</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.rollup.plugins</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.tasks</code></td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-mcp-server.src.types</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.typescript</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.src.entry</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.scripts.release.shared</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.devtools.regression</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.event-pooling</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.form-state</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.nesting.src.modern</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.ssr.server</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.config.DevToolsFeatureFlags</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.e2e-regression</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.multi</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.perf-regression</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.npm.server</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom-bindings.src.events.forks</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-noop-renderer.npm</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-fb.src</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.src</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.src</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.npm</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.bench.benchmarks.hacker-news</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.matchers</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.rollup.validate.eslintrc</code></td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.server.src.utils</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-mcp-server.src.tools</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.eslint-plugin-react-hooks.src.types</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-fusebox.src</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.text-inputs</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.scripts</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.server</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-esm.loader</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-14.react-14</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-15.react-15</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-16.react-16</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-17.react-17</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.ssr2.server</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.index</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.npm</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-art</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.firefox</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.StyleX</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.e2e</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.npm.static</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.server.react-dom-server</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.error-codes</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.setupTests</code></td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.eslint-plugin-react-compiler.src.rules</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.make-read-only-util.src</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.server.src.compiler</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-mcp-server.src.utils</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.basic.transforms</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.e2e</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.eslint-plugin-react-hooks</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.src.routes.serialization</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>babel</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.devtools.scheduling-profiler</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.mouse-events</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.fizz.src</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-esm</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.nesting.src.legacy</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.nesting.src.shared</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.owner-stacks.src</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.systemjs-builder.dev</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.systemjs-builder.prod</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-art.npm</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.chrome</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.edge</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-inline</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.flight</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-reconciler</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server.src.flight</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.npm</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.npm.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.npm</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.npm.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.npm.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.src.server.react-flight-dom-server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.npm.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.npm</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.npm.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.npm.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.src.server.react-flight-dom-server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.npm.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.npm</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.npm.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.npm.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.src.server.react-flight-dom-server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.npm.client</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.npm.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.npm.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.src.server.react-flight-dom-server</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.static</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.src.forks.SchedulerFeatureFlags</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.shared.forks.DefaultPrepareStackTrace</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.spec-equivalence-reporter</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.scripts</code></td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.src.Babel</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.eslint-plugin-react-compiler.src.types</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.server.src.requests</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-mcp-server</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.e2e.basic</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.app</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.scripts.release</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.art</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.concurrent.time-slicing.src</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.password-inputs</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.src.cjs</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-esm.server</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-14</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-15</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-16</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-17</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.nesting.src</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.brunch.dev</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.brunch.prod</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.rjs.dev</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.rjs.prod</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.webpack.dev</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.webpack.prod</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.webpack-alias.dev</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.webpack-alias.prod</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.ssr</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.view-transition</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.src.ReactServer</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-core</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-core.webpack</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.webpack</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.backend.utils</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.devtools.views.Components.reach-ui</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.app.ToDoList</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.e2e-apps</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shell.src.perf-regression.apps</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-is.index</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-reconciler.npm</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-refresh</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-refresh.npm</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.client</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.npm.client</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-test-renderer</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.npm</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.shared.forks.ReactFeatureFlags.test-renderer</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.npm</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.src.forks.useSyncExternalStore</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.bench.benchmarks.pe-class-components</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.bench.benchmarks.pe-functional-components</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.bench.benchmarks.pe-no-components</code></td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.hooks</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.tsup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.eslint-plugin-react-compiler</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.eslint-plugin-react-compiler.tsup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.make-read-only-util.tsup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-compiler-healthcheck.src</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-compiler-healthcheck</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-compiler-healthcheck.tsup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-compiler-runtime.tsup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.server.src</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.server</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-mcp-server.src</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-mcp-server.tsup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.eslint-v9.eslint</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-parcel</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.playwright</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight-vite.vite</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.components.Icons</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.next</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.playwright</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.postcss</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.scripts</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.apps.playground.tailwind</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.jest</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.scripts.jest.e2e-classic</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.scripts.jest.e2e-forget</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.babel-plugin-react-compiler.scripts.jest.main</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.eslint-plugin-react-compiler.babel</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.make-read-only-util.jest</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.art.webpack</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.attribute-behavior</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.concurrent.time-slicing</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.public</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom.src.components.fixtures.date-inputs</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.dom</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.fiber-debugger</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.fizz.scripts</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.fizz</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.config.webpack</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.flight.playwright</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.babel</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-dev-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-dev-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-14.cjs.react-jsx-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-15.cjs.react-jsx-dev-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-15.cjs.react-jsx-dev-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-15.cjs.react-jsx-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-15.cjs.react-jsx-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-16.cjs.react-jsx-dev-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-16.cjs.react-jsx-dev-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-16.cjs.react-jsx-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-16.cjs.react-jsx-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-17.cjs.react-jsx-dev-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-17.cjs.react-jsx-dev-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-17.cjs.react-jsx-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.legacy-jsx-runtimes.react-17.cjs.react-jsx-runtime.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.nesting</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.owner-stacks</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.browserify.dev</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.browserify.prod</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.brunch.dev.app</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging.brunch.prod.app</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.packaging</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.ssr2.scripts</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.ssr2</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.view-transition.server</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.eslint-plugin-react-hooks.babel</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.eslint-plugin-react-hooks.jest</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.jest-react</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.index.experimental</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.index.stable</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.jsx-dev-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.jsx-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.npm.jsx-dev-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.npm.jsx-runtime</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.npm.react</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.react</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react.src.ReactServer.experimental</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-cache</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-client</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-client.npm</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-debug-tools</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.flow-typed</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.flow-typed.npm.react-test-renderer_v16.x</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-extensions.popups</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-fusebox.webpack.config</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-inline.playwright</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-inline.webpack</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.babel</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.frontend.hooks</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.frontend</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.frontend.utils</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.hooks.parseHookNames.parseSourceAndMetadata</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-shared.src.shared</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-devtools-timeline.src.import-worker.importFile</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.npm.client</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.npm.profiling</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.npm.react-dom</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.npm.unstable_testing</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.ReactDOMFB</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.ReactDOMTestingFB</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.client.__mocks__</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.server.react-dom-server.browser</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.server.react-dom-server.bun</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.server.react-dom-server.edge</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.src.server.react-dom-server.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-dom.unstable_testing</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-is</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-markup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-markup.npm.react-markup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-markup.react-markup</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-markup.src.ReactMarkupClient</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-markup.src.ReactMarkupServer</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-native-renderer</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-reconciler.src.__mocks__.scheduler</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server.npm</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.esm.react-server-dom-esm-node-loader</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.npm.server</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.npm.static</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.server</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.src.server.react-flight-dom-server</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-esm.static</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-parcel.src.shared</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-turbopack.src.shared</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-vite.src.shared</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.client.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.esm.react-server-dom-webpack-node-loader</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.npm.client.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.npm.server.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.npm.static.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.server.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.src.server.react-flight-dom-server.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.src.shared</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-server-dom-webpack.static.node</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-suspense-test-utils</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.react-test-renderer.npm</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.index</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.npm.index</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.npm.umd.scheduler</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.npm.umd.scheduler.production</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.scheduler.npm.umd.scheduler.profiling</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-subscription</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-subscription.src</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.npm.shim.index</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.npm.shim</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.shim.index</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.shim</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>packages.use-sync-external-store.src.forks.isServerEnvironment</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.devtools.config</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.devtools</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.jest.devtools.setupTests</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.print-warnings</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.release.download-experimental-build-commands</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.rollup.externs</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>scripts.rollup.shims.facebook-www</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>compiler.packages.react-forgive.</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.eslint-v6</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.eslint-v7</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.eslint-v8</code></td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td><code>fixtures.eslint-v9</code></td>
+                    <td>1</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Generated by arcade-agent &mdash; software architecture analysis toolkit
+    </footer>
+
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>
