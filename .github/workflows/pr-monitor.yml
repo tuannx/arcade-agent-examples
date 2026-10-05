@@ -1,6 +1,7 @@
 name: pr-monitor
 # Autoharness: scan famous upstream PRs, publish to our Pages only.
 # No upstream comments. Mention happens in our own issue/report.
+# Fix v2: list API has no additions/comments -> must call detail per PR.
 
 on:
   schedule:
@@ -22,20 +23,37 @@ jobs:
         run: |
           mkdir -p docs/monitor
           echo "# PR monitor — $(date -u +%F)" > docs/monitor/latest.md
+          : > docs/monitor/mentions.txt
+          total=0
           for repo in django/django facebook/react vuejs/core; do
             echo "" >> docs/monitor/latest.md
             echo "## $repo" >> docs/monitor/latest.md
-            gh api "repos/$repo/pulls?state=open&per_page=30&sort=updated" \
-              -q '.[] | select((.additions // 0) + (.deletions // 0) > 500 or (.comments // 0) > 15) | "- \(.html_url) · +\(.additions // 0)/-\(.deletions // 0) · comments \(.comments // 0) · \(.title)"' \
-              >> docs/monitor/latest.md || echo "- scan failed for $repo" >> docs/monitor/latest.md
-            # mention reference (creates cross-ref from this repo only when committed in an issue; file alone is our record)
-            gh api "repos/$repo/pulls?state=open&per_page=5" -q '.[0] | "\($repo)#\(.number)"' >> docs/monitor/mentions.txt || true
+            count=0
+            # list only returns number/title/url; detail returns additions/deletions/comments
+            for num in $(gh api "repos/$repo/pulls?state=open&per_page=30&sort=updated" -q '.[].number'); do
+              line=$(gh api "repos/$repo/pulls/$num" -q '"- \(.html_url) · +\(.additions)/-\(.deletions) · files \(.changed_files) · comments \(.comments + .review_comments) · \(.title) ||| \((.additions + .deletions)) \(.changed_files) \((.comments + .review_comments))"')
+              meta=$(echo "$line" | awk -F' \\|\\|\\| ' '{print $2}')
+              total_lines=$(echo $meta | awk '{print $1}')
+              files=$(echo $meta | awk '{print $2}')
+              comments=$(echo $meta | awk '{print $3}')
+              text=$(echo "$line" | awk -F' \\|\\|\\| ' '{print $1}')
+              if [ "${total_lines:-0}" -gt 500 ] || [ "${files:-0}" -gt 20 ] || [ "${comments:-0}" -gt 15 ]; then
+                echo "$text" >> docs/monitor/latest.md
+                echo "${repo}#${num}" >> docs/monitor/mentions.txt
+                count=$((count+1))
+              fi
+            done
+            if [ "$count" -eq 0 ]; then echo "- no PR over threshold in top 30 updated" >> docs/monitor/latest.md; fi
+            echo "scanned $repo: $count matched"
+            total=$((total+count))
           done
+          echo "" >> docs/monitor/latest.md
+          echo "Total matched: $total" >> docs/monitor/latest.md
           cat docs/monitor/latest.md
       - name: Commit monitor snapshot
         run: |
           git config user.name "autoharness"
           git config user.email "autoharness@users.noreply.github.com"
           git add docs/monitor/
-          git diff --cached --quiet || git commit -m "monitor: daily PR scan"
+          git diff --cached --quiet || git commit -m "monitor: daily PR scan (detail API)"
           git push || true
