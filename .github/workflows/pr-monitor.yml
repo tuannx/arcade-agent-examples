@@ -25,7 +25,7 @@ jobs:
           echo "# PR monitor — $(date -u +%F)" > docs/monitor/latest.md
           : > docs/monitor/mentions.txt
           total=0
-          for repo in django/django facebook/react vuejs/core; do
+          for repo in django/django facebook/react vuejs/core OpenFeign/feign apache/seatunnel checkstyle/checkstyle flowable/flowable-engine apache/jmeter apache/iceberg aeron-io/aeron testcontainers/testcontainers-java dropwizard/dropwizard apache/tomcat; do
             echo "" >> docs/monitor/latest.md
             echo "## $repo" >> docs/monitor/latest.md
             count=0
