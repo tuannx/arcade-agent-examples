@@ -1,4 +1,13 @@
 {
+  "analyzer": {
+    "package": "arcade-agent",
+    "version": "0.3.0",
+    "installed_version": "0.3.0",
+    "upstream": "https://github.com/arcade-agent/arcade-agent",
+    "upstream_tag": "v0.3.0",
+    "upstream_commit": "576e412dadd6f752f3a5f886201a7e80db93407f",
+    "upstream_commit_source": "pin"
+  },
   "targets": {
     "commons-lang": {
       "sha": "29624cdb50ecd794207d561345b2fc9ca3a9d326",
@@ -10,8 +19,7 @@
         "Dependency Cycle": 1,
         "Concern Overload": 17,
         "Scattered Parasitic Functionality": 4
-      },
-      "seconds": 0.2
+      }
     },
     "commons-io": {
       "sha": "2c6bf8dea065e96651661d5e277e35b2f343d879",
@@ -23,8 +31,7 @@
         "Dependency Cycle": 2,
         "Concern Overload": 9,
         "Scattered Parasitic Functionality": 2
-      },
-      "seconds": 0.1
+      }
     },
     "commons-collections": {
       "sha": "a350e2c73bf61230afad1bf6f3dc770b2ddb36ee",
@@ -36,8 +43,7 @@
         "Dependency Cycle": 4,
         "Concern Overload": 15,
         "Scattered Parasitic Functionality": 2
-      },
-      "seconds": 0.2
+      }
     },
     "spring-core": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -49,8 +55,7 @@
         "Dependency Cycle": 1,
         "Scattered Parasitic Functionality": 6,
         "Link/Upstream Overload": 4
-      },
-      "seconds": 0.3
+      }
     },
     "spring-beans": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -62,8 +67,7 @@
         "Dependency Cycle": 1,
         "Concern Overload": 8,
         "Scattered Parasitic Functionality": 6
-      },
-      "seconds": 0.3
+      }
     },
     "spring-context": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -76,8 +80,7 @@
         "Concern Overload": 1,
         "Scattered Parasitic Functionality": 8,
         "Link/Upstream Overload": 1
-      },
-      "seconds": 0.2
+      }
     },
     "spring-web": {
       "sha": "93ff61fb1ff9b30654d5b44f488887ce100974f1",
@@ -90,8 +93,7 @@
         "Concern Overload": 5,
         "Scattered Parasitic Functionality": 9,
         "Link/Upstream Overload": 2
-      },
-      "seconds": 0.3
+      }
     },
     "kafka": {
       "sha": "800676c2e366bac8f32625697c67b68db5a817a1",
@@ -104,8 +106,7 @@
         "Concern Overload": 2,
         "Scattered Parasitic Functionality": 6,
         "Link/Upstream Overload": 2
-      },
-      "seconds": 6.1
+      }
     }
   }
 }

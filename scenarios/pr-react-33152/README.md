@@ -5,7 +5,9 @@
 - PR: [facebook/react#33152](https://github.com/facebook/react/pull/33152)
 - Issue: [tuannx/arcade-agent-examples#1](https://github.com/tuannx/arcade-agent-examples/issues/1)
 - Boundary: base `2b4064eb9b40f65d20a03ce93b246ad762d562e6` → head `b5f88376aace22604c0694463bdbc96f23635c89`
-- Overview uses auto `pkg` depth. `pkg_depth=2` is the packages.* view.
+- Overview (auto `pkg` depth): 7,382 → 7,539 entities, 6 → 6 components, 7 → 7 smells, 0 shifts, 0 new smells.
+- `pkg_depth=2`: 83 → 85 components. Head-only: `React-Server-Dom-Vite`, `Flight-Vite`.
+- `packages.*` entities: 5,096 → 5,186.
 - Not part of `make all`. The checkout is the full React tree at two commits.
 
 ```bash

@@ -38,6 +38,13 @@ def _one_thing(deep: dict) -> str:
     )
 
 
+def _format_delta(before: float, after: float) -> str:
+    text = f"{(after - before):+.4f}".rstrip("0").rstrip(".")
+    if text in ("+", "+0", "-0", "-"):
+        return "0"
+    return text
+
+
 def _metric_bits(changelog: dict) -> str:
     metrics = changelog.get("metrics") or {}
     parts = []
@@ -45,7 +52,9 @@ def _metric_bits(changelog: dict) -> str:
         row = metrics.get(name)
         if not row:
             continue
-        parts.append(f"{name} {row['a']} → {row['b']} (delta {row['delta']})")
+        parts.append(
+            f"{name} {row['a']} → {row['b']} (delta {_format_delta(row['a'], row['b'])})"
+        )
     return " · ".join(parts)
 
 

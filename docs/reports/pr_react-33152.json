@@ -1,5 +1,14 @@
 {
-  "repo": "react",
+  "analyzer": {
+    "package": "arcade-agent",
+    "version": "0.3.0",
+    "installed_version": "0.3.0",
+    "upstream": "https://github.com/arcade-agent/arcade-agent",
+    "upstream_tag": "v0.3.0",
+    "upstream_commit": "576e412dadd6f752f3a5f886201a7e80db93407f",
+    "upstream_commit_source": "pin"
+  },
+  "repo": "facebook/react",
   "pr": 33152,
   "title": "feat: add react-server-dom-vite",
   "url": "https://github.com/facebook/react/pull/33152",
@@ -16,6 +25,711 @@
     "edges": 4491,
     "components": 6,
     "smells": 7
+  },
+  "deep": {
+    "pkg_depth": 2,
+    "main_source_prefix": "packages",
+    "base": {
+      "components": 83,
+      "entities": 7382,
+      "edges": 4453,
+      "smells": 44,
+      "main_source_entities": 5096,
+      "components_by_size": [
+        {
+          "name": "Packages",
+          "entities": 1287
+        },
+        {
+          "name": "React-Reconciler",
+          "entities": 882
+        },
+        {
+          "name": "React-Dom-Bindings",
+          "entities": 756
+        },
+        {
+          "name": "React-Devtools-Shared",
+          "entities": 633
+        },
+        {
+          "name": "React-Server",
+          "entities": 454
+        },
+        {
+          "name": "React-Native-Renderer",
+          "entities": 330
+        },
+        {
+          "name": "React-Devtools-Timeline",
+          "entities": 283
+        },
+        {
+          "name": "Dom",
+          "entities": 189
+        },
+        {
+          "name": "Eslint-Plugin-React-Hooks",
+          "entities": 151
+        },
+        {
+          "name": "React-Client",
+          "entities": 148
+        },
+        {
+          "name": "React-Devtools-Shell",
+          "entities": 146
+        },
+        {
+          "name": "React-Server-Dom-Webpack",
+          "entities": 128
+        },
+        {
+          "name": "React-Dom",
+          "entities": 124
+        },
+        {
+          "name": "React-Art",
+          "entities": 112
+        },
+        {
+          "name": "React",
+          "entities": 104
+        },
+        {
+          "name": "React-Server-Dom-Parcel",
+          "entities": 92
+        },
+        {
+          "name": "Scheduler",
+          "entities": 89
+        },
+        {
+          "name": "React-Devtools-Extensions",
+          "entities": 88
+        },
+        {
+          "name": "React-Server-Dom-Turbopack",
+          "entities": 87
+        },
+        {
+          "name": "Rollup",
+          "entities": 85
+        },
+        {
+          "name": "Shared",
+          "entities": 73
+        },
+        {
+          "name": "Release",
+          "entities": 65
+        },
+        {
+          "name": "Dom-Event-Testing-Library",
+          "entities": 63
+        },
+        {
+          "name": "React-Server-Dom-Esm",
+          "entities": 62
+        },
+        {
+          "name": "Flight",
+          "entities": 61
+        },
+        {
+          "name": "Fixtures",
+          "entities": 56
+        },
+        {
+          "name": "Jest",
+          "entities": 53
+        },
+        {
+          "name": "Apps",
+          "entities": 47
+        },
+        {
+          "name": "Legacy-Jsx-Runtimes",
+          "entities": 47
+        },
+        {
+          "name": "Bench",
+          "entities": 43
+        },
+        {
+          "name": "React-Debug-Tools",
+          "entities": 43
+        },
+        {
+          "name": "Internal-Test-Utils",
+          "entities": 38
+        },
+        {
+          "name": "React-Devtools-Core",
+          "entities": 34
+        },
+        {
+          "name": "Devtools2",
+          "entities": 29
+        },
+        {
+          "name": "Packaging",
+          "entities": 27
+        },
+        {
+          "name": "React-Markup",
+          "entities": 27
+        },
+        {
+          "name": "Packages2",
+          "entities": 24
+        },
+        {
+          "name": "React-Refresh",
+          "entities": 24
+        },
+        {
+          "name": "Flight-Esm",
+          "entities": 21
+        },
+        {
+          "name": "Stacks",
+          "entities": 21
+        },
+        {
+          "name": "React-Noop-Renderer",
+          "entities": 19
+        },
+        {
+          "name": "Flight-Parcel",
+          "entities": 18
+        },
+        {
+          "name": "Use-Sync-External-Store",
+          "entities": 18
+        },
+        {
+          "name": "React-Is",
+          "entities": 17
+        },
+        {
+          "name": "Ssr",
+          "entities": 17
+        },
+        {
+          "name": "Scripts",
+          "entities": 16
+        },
+        {
+          "name": "Ssr2",
+          "entities": 16
+        },
+        {
+          "name": "Eslint-Rules",
+          "entities": 15
+        },
+        {
+          "name": "Flow",
+          "entities": 15
+        },
+        {
+          "name": "React-Devtools-Inline",
+          "entities": 15
+        },
+        {
+          "name": "Flags",
+          "entities": 14
+        },
+        {
+          "name": "Nesting",
+          "entities": 14
+        },
+        {
+          "name": "Attribute-Behavior",
+          "entities": 12
+        },
+        {
+          "name": "View-Transition",
+          "entities": 12
+        },
+        {
+          "name": "Fizz",
+          "entities": 11
+        },
+        {
+          "name": "Ci",
+          "entities": 10
+        },
+        {
+          "name": "Fiber-Debugger",
+          "entities": 10
+        },
+        {
+          "name": "Shared2",
+          "entities": 10
+        },
+        {
+          "name": "React-Cache",
+          "entities": 9
+        },
+        {
+          "name": "Devtools",
+          "entities": 8
+        },
+        {
+          "name": "Jest-React",
+          "entities": 7
+        },
+        {
+          "name": "Babel2",
+          "entities": 6
+        },
+        {
+          "name": "Default",
+          "entities": 6
+        },
+        {
+          "name": "Expiration",
+          "entities": 6
+        },
+        {
+          "name": "Scripts2",
+          "entities": 6
+        },
+        {
+          "name": "Tasks",
+          "entities": 6
+        },
+        {
+          "name": "React-Devtools-Fusebox",
+          "entities": 5
+        },
+        {
+          "name": "React-Server-Dom-Fb",
+          "entities": 5
+        },
+        {
+          "name": "Error-Codes",
+          "entities": 4
+        },
+        {
+          "name": "Owner-Stacks",
+          "entities": 4
+        },
+        {
+          "name": "Art",
+          "entities": 3
+        },
+        {
+          "name": "Babel",
+          "entities": 3
+        },
+        {
+          "name": "Concurrent",
+          "entities": 3
+        },
+        {
+          "name": "React-Devtools",
+          "entities": 3
+        },
+        {
+          "name": "React-Test-Renderer",
+          "entities": 3
+        },
+        {
+          "name": "Eslint-V9",
+          "entities": 2
+        },
+        {
+          "name": "Use-Subscription",
+          "entities": 2
+        },
+        {
+          "name": "Default2",
+          "entities": 1
+        },
+        {
+          "name": "Eslint-V6",
+          "entities": 1
+        },
+        {
+          "name": "Eslint-V7",
+          "entities": 1
+        },
+        {
+          "name": "Eslint-V8",
+          "entities": 1
+        },
+        {
+          "name": "Print-Warnings",
+          "entities": 1
+        },
+        {
+          "name": "React-Suspense-Test-Utils",
+          "entities": 1
+        }
+      ]
+    },
+    "head": {
+      "components": 85,
+      "entities": 7539,
+      "edges": 4491,
+      "smells": 45,
+      "main_source_entities": 5186,
+      "components_by_size": [
+        {
+          "name": "Packages",
+          "entities": 1287
+        },
+        {
+          "name": "React-Reconciler",
+          "entities": 882
+        },
+        {
+          "name": "React-Dom-Bindings",
+          "entities": 756
+        },
+        {
+          "name": "React-Devtools-Shared",
+          "entities": 633
+        },
+        {
+          "name": "React-Server",
+          "entities": 457
+        },
+        {
+          "name": "React-Native-Renderer",
+          "entities": 330
+        },
+        {
+          "name": "React-Devtools-Timeline",
+          "entities": 283
+        },
+        {
+          "name": "Dom",
+          "entities": 189
+        },
+        {
+          "name": "Eslint-Plugin-React-Hooks",
+          "entities": 151
+        },
+        {
+          "name": "React-Client",
+          "entities": 151
+        },
+        {
+          "name": "React-Devtools-Shell",
+          "entities": 146
+        },
+        {
+          "name": "React-Server-Dom-Webpack",
+          "entities": 128
+        },
+        {
+          "name": "React-Dom",
+          "entities": 124
+        },
+        {
+          "name": "React-Art",
+          "entities": 112
+        },
+        {
+          "name": "React",
+          "entities": 104
+        },
+        {
+          "name": "React-Server-Dom-Parcel",
+          "entities": 92
+        },
+        {
+          "name": "Scheduler",
+          "entities": 89
+        },
+        {
+          "name": "React-Devtools-Extensions",
+          "entities": 88
+        },
+        {
+          "name": "React-Server-Dom-Turbopack",
+          "entities": 87
+        },
+        {
+          "name": "Rollup",
+          "entities": 85
+        },
+        {
+          "name": "React-Server-Dom-Vite",
+          "entities": 83
+        },
+        {
+          "name": "Shared",
+          "entities": 73
+        },
+        {
+          "name": "Flight-Vite",
+          "entities": 67
+        },
+        {
+          "name": "Release",
+          "entities": 65
+        },
+        {
+          "name": "Dom-Event-Testing-Library",
+          "entities": 63
+        },
+        {
+          "name": "React-Server-Dom-Esm",
+          "entities": 62
+        },
+        {
+          "name": "Flight",
+          "entities": 61
+        },
+        {
+          "name": "Fixtures",
+          "entities": 56
+        },
+        {
+          "name": "Jest",
+          "entities": 53
+        },
+        {
+          "name": "Apps",
+          "entities": 47
+        },
+        {
+          "name": "Legacy-Jsx-Runtimes",
+          "entities": 47
+        },
+        {
+          "name": "Bench",
+          "entities": 43
+        },
+        {
+          "name": "React-Debug-Tools",
+          "entities": 43
+        },
+        {
+          "name": "Internal-Test-Utils",
+          "entities": 38
+        },
+        {
+          "name": "React-Devtools-Core",
+          "entities": 34
+        },
+        {
+          "name": "Devtools2",
+          "entities": 29
+        },
+        {
+          "name": "Packaging",
+          "entities": 27
+        },
+        {
+          "name": "React-Markup",
+          "entities": 27
+        },
+        {
+          "name": "Packages2",
+          "entities": 25
+        },
+        {
+          "name": "React-Refresh",
+          "entities": 24
+        },
+        {
+          "name": "Flight-Esm",
+          "entities": 21
+        },
+        {
+          "name": "Stacks",
+          "entities": 21
+        },
+        {
+          "name": "React-Noop-Renderer",
+          "entities": 19
+        },
+        {
+          "name": "Flight-Parcel",
+          "entities": 18
+        },
+        {
+          "name": "Use-Sync-External-Store",
+          "entities": 18
+        },
+        {
+          "name": "React-Is",
+          "entities": 17
+        },
+        {
+          "name": "Ssr",
+          "entities": 17
+        },
+        {
+          "name": "Scripts",
+          "entities": 16
+        },
+        {
+          "name": "Ssr2",
+          "entities": 16
+        },
+        {
+          "name": "Eslint-Rules",
+          "entities": 15
+        },
+        {
+          "name": "Flow",
+          "entities": 15
+        },
+        {
+          "name": "React-Devtools-Inline",
+          "entities": 15
+        },
+        {
+          "name": "Flags",
+          "entities": 14
+        },
+        {
+          "name": "Nesting",
+          "entities": 14
+        },
+        {
+          "name": "Attribute-Behavior",
+          "entities": 12
+        },
+        {
+          "name": "View-Transition",
+          "entities": 12
+        },
+        {
+          "name": "Fizz",
+          "entities": 11
+        },
+        {
+          "name": "Ci",
+          "entities": 10
+        },
+        {
+          "name": "Fiber-Debugger",
+          "entities": 10
+        },
+        {
+          "name": "Shared2",
+          "entities": 10
+        },
+        {
+          "name": "React-Cache",
+          "entities": 9
+        },
+        {
+          "name": "Devtools",
+          "entities": 8
+        },
+        {
+          "name": "Jest-React",
+          "entities": 7
+        },
+        {
+          "name": "Babel2",
+          "entities": 6
+        },
+        {
+          "name": "Default",
+          "entities": 6
+        },
+        {
+          "name": "Expiration",
+          "entities": 6
+        },
+        {
+          "name": "Scripts2",
+          "entities": 6
+        },
+        {
+          "name": "Tasks",
+          "entities": 6
+        },
+        {
+          "name": "React-Devtools-Fusebox",
+          "entities": 5
+        },
+        {
+          "name": "React-Server-Dom-Fb",
+          "entities": 5
+        },
+        {
+          "name": "Error-Codes",
+          "entities": 4
+        },
+        {
+          "name": "Owner-Stacks",
+          "entities": 4
+        },
+        {
+          "name": "Art",
+          "entities": 3
+        },
+        {
+          "name": "Babel",
+          "entities": 3
+        },
+        {
+          "name": "Concurrent",
+          "entities": 3
+        },
+        {
+          "name": "React-Devtools",
+          "entities": 3
+        },
+        {
+          "name": "React-Test-Renderer",
+          "entities": 3
+        },
+        {
+          "name": "Eslint-V9",
+          "entities": 2
+        },
+        {
+          "name": "Use-Subscription",
+          "entities": 2
+        },
+        {
+          "name": "Default2",
+          "entities": 1
+        },
+        {
+          "name": "Eslint-V6",
+          "entities": 1
+        },
+        {
+          "name": "Eslint-V7",
+          "entities": 1
+        },
+        {
+          "name": "Eslint-V8",
+          "entities": 1
+        },
+        {
+          "name": "Print-Warnings",
+          "entities": 1
+        },
+        {
+          "name": "React-Suspense-Test-Utils",
+          "entities": 1
+        }
+      ]
+    },
+    "components_only_in_head": [
+      {
+        "name": "React-Server-Dom-Vite",
+        "entities": 83
+      },
+      {
+        "name": "Flight-Vite",
+        "entities": 67
+      }
+    ],
+    "components_only_in_base": []
   },
   "changelog": {
     "refs": {
