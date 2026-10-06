@@ -8,15 +8,20 @@ Kafka excludes docker/ and examples/ (non-production noise).
 Usage: python run.py [--out docs/reports] [--only commons-lang,spring-web]
 """
 import argparse
-import json
 import os
 import subprocess
+import sys
 import time
 from pathlib import Path
 
 SCEN = Path(__file__).resolve().parent
+ROOT = SCEN.parents[1]
+sys.path.insert(0, str(ROOT))
+
+from scenarios.analyzer_pin import write_summary
+
 CACHE = SCEN / "repos"
-DEFAULT_OUT = SCEN.parents[1] / "docs" / "reports"
+DEFAULT_OUT = ROOT / "docs" / "reports"
 
 TARGETS = {
     "commons-lang": {
@@ -144,7 +149,6 @@ def main():
             "components": len(arch.components),
             "smells": len(smells),
             "smell_types": by_type,
-            "seconds": round(dt, 1),
         }
         try:
             visualize(f"{name} (smell sweep)", name, graph, arch, smells,
@@ -152,11 +156,9 @@ def main():
         except Exception as e:
             print(f"  visualize failed: {e}", flush=True)
 
-    (OUT / "sweeps_summary.json").write_text(json.dumps(
-        {"targets": results}, indent=2))
+    write_summary(OUT / "sweeps_summary.json", {"targets": results})
     for name, r in results.items():
-        print(f"  {name}: {r['entities']} entities, {r['smells']} smells, "
-              f"{r['seconds']}s")
+        print(f"  {name}: {r['entities']} entities, {r['smells']} smells")
     print("DONE")
 
 

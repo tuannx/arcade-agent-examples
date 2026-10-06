@@ -13,13 +13,19 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 import time
 from pathlib import Path
 
 SCEN = Path(__file__).resolve().parent
+ROOT = SCEN.parents[1]
+sys.path.insert(0, str(ROOT))
+
+from scenarios.analyzer_pin import write_summary
+
 CACHE = SCEN / "repos"
 WORK = SCEN / "worktrees"
-DEFAULT_OUT = SCEN.parents[1] / "docs" / "reports"
+DEFAULT_OUT = ROOT / "docs" / "reports"
 
 URL = "https://github.com/jaegertracing/jaeger.git"
 BASE = "11b08c08b216d03e52f1d8df04f071ddf57091c3"
@@ -125,7 +131,7 @@ def main():
         },
         "changelog": clean(cl),
     }
-    (OUT / "adr011_summary.json").write_text(json.dumps(summary, indent=2))
+    write_summary(OUT / "adr011_summary.json", summary)
     print(json.dumps(summary["changelog"].get("summary", {}), indent=2))
     print("DONE")
 

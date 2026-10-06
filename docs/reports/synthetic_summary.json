@@ -1,4 +1,13 @@
 {
+  "analyzer": {
+    "package": "arcade-agent",
+    "version": "0.3.0",
+    "installed_version": "0.3.0",
+    "upstream": "https://github.com/arcade-agent/arcade-agent",
+    "upstream_tag": "v0.3.0",
+    "upstream_commit": "576e412dadd6f752f3a5f886201a7e80db93407f",
+    "upstream_commit_source": "pin"
+  },
   "demo": "synthetic deterministic arch-demo",
   "before_stats": {
     "entities": 39,

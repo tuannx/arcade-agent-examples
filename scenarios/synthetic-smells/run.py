@@ -9,12 +9,18 @@ Usage: python run.py [--out docs/reports]
 import argparse
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
 SCEN = Path(__file__).resolve().parent
+ROOT = SCEN.parents[1]
+sys.path.insert(0, str(ROOT))
+
+from scenarios.analyzer_pin import write_summary
+
 SYN = SCEN / "synthetic"
-DEFAULT_OUT = SCEN.parents[1] / "docs" / "reports"
+DEFAULT_OUT = ROOT / "docs" / "reports"
 
 
 def parse_args():
@@ -95,7 +101,7 @@ def main():
         },
         "changelog": clean(cl),
     }
-    (OUT / "synthetic_summary.json").write_text(json.dumps(summary, indent=2))
+    write_summary(OUT / "synthetic_summary.json", summary)
     print(json.dumps(summary["changelog"].get("summary", {}), indent=2))
     print("DONE")
 
