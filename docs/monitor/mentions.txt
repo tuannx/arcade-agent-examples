@@ -69,8 +69,8 @@ apache/iceberg#14800
 aeron-io/aeron#1775
 aeron-io/aeron#1931
 aeron-io/aeron#1994
-aeron-io/aeron#2155
 aeron-io/aeron#2129
+aeron-io/aeron#2155
 testcontainers/testcontainers-java#11140
 testcontainers/testcontainers-java#11331
 testcontainers/testcontainers-java#4465

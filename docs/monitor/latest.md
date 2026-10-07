@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-06
+# PR monitor — 2026-10-07
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -23,7 +23,7 @@
 - https://github.com/vuejs/core/pull/8701 · +581/-145 · files 9 · comments 1 · feat(keep-alive): allow custom caching strategy
 
 ## OpenFeign/feign
-- https://github.com/OpenFeign/feign/pull/3551 · +582/-38 · files 7 · comments 16 · Streaming decoder support2
+- https://github.com/OpenFeign/feign/pull/3551 · +520/-39 · files 7 · comments 16 · Streaming decoder support2
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10099 · +415/-8 · files 11 · comments 16 · [Feature][seatunnel-connectors-v2/connector-jdbc]sqlserver support bulk copy write
@@ -90,8 +90,8 @@
 - https://github.com/aeron-io/aeron/pull/1775 · +1523/-281 · files 41 · comments 9 · [Java] New term buffer cleanup logic
 - https://github.com/aeron-io/aeron/pull/1931 · +762/-17 · files 10 · comments 1 · Log Publisher Fragmented Message Tracker
 - https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
-- https://github.com/aeron-io/aeron/pull/2155 · +2220/-75 · files 28 · comments 0 · [Java] CPU pinning implementation for Driver, Archive, and Cluster
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
+- https://github.com/aeron-io/aeron/pull/2155 · +2220/-75 · files 28 · comments 29 · [Java] CPU pinning implementation for Driver, Archive, and Cluster
 
 ## testcontainers/testcontainers-java
 - https://github.com/testcontainers/testcontainers-java/pull/11140 · +278/-247 · files 3 · comments 0 · Change com.squareup.okhttp3:okhttp:5.1.0 to Apache HttpClient5
@@ -100,7 +100,7 @@
 
 ## dropwizard/dropwizard
 - https://github.com/dropwizard/dropwizard/pull/10746 · +324/-40 · files 10 · comments 24 · Structured logging support
-- https://github.com/dropwizard/dropwizard/pull/11359 · +610/-289 · files 5 · comments 0 · Issue #11349: Rewrite AssetServlet's Range header handling and precondition handling to fix various bugs/deficiencies
+- https://github.com/dropwizard/dropwizard/pull/11359 · +608/-288 · files 5 · comments 1 · Issue #11349: Rewrite AssetServlet's Range header handling and precondition handling to fix various bugs/deficiencies
 
 ## apache/tomcat
 - https://github.com/apache/tomcat/pull/399 · +7/-0 · files 1 · comments 20 · Add getRequest method to RequestFacade, to get the wrapped Request
