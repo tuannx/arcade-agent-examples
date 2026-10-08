@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-07
+# PR monitor — 2026-10-08
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -91,7 +91,7 @@
 - https://github.com/aeron-io/aeron/pull/1931 · +762/-17 · files 10 · comments 1 · Log Publisher Fragmented Message Tracker
 - https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
-- https://github.com/aeron-io/aeron/pull/2155 · +2220/-75 · files 28 · comments 29 · [Java] CPU pinning implementation for Driver, Archive, and Cluster
+- https://github.com/aeron-io/aeron/pull/2155 · +2334/-128 · files 36 · comments 43 · [Java] CPU pinning implementation for Driver, Archive, and Cluster
 
 ## testcontainers/testcontainers-java
 - https://github.com/testcontainers/testcontainers-java/pull/11140 · +278/-247 · files 3 · comments 0 · Change com.squareup.okhttp3:okhttp:5.1.0 to Apache HttpClient5
