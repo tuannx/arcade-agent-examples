@@ -4,15 +4,28 @@ Run this on your repo first:
 
 ```yaml
 # .github/workflows/arch-drift.yml
-- uses: arcade-agent/arcade-agent/.github/workflows/analyze.yml@v0
+- uses: arcade-agent/arcade-agent/actions/analyze@v0.3.0
+  with:
+    arcade-agent-version: "0.3.0"
 ```
 
-Or locally in 2 minutes:
+Same pin on the org action:
+
+```yaml
+- uses: arcade-agent/analyze-action@v1
+  with:
+    arcade-agent-version: "0.3.0"
+```
+
+Or locally:
 
 ```bash
-pip install "arcade-agent[languages]"
-arcade analyze . --report report.html
+pip install "arcade-agent[languages]==0.3.0"
+arcade-self-analysis --source . --output-html report.html --output-json report.json
 ```
+
+This repo installs that release from `analyzer-pin.json` (`make install`).
+Pin decision: [ADR 0001](docs/adr/0001-pin-arcade-agent-release.md).
 
 ## Latest runs — numbers first
 
@@ -35,8 +48,10 @@ Each number links to a fork Pages with the full report. Report is the product.
 ## Try a scenario in 1 command
 
 ```bash
-make synthetic  # 0.2s, 2 smells → 0
-make all        # all scenarios, reports in docs/reports/
+make install
+make synthetic   # 0.2s, 2 smells → 0
+make all         # routine scenarios, reports in docs/reports/
+make react33152  # facebook/react#33152 (own target, full checkout)
 ```
 
 ## For maintainers

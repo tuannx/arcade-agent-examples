@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned arcade-agent
+        run: make install
+
+      - name: Pin matches docs
+        run: make check-pin
+
+      - name: Synthetic reports are byte-stable
+        run: |
+          set -euo pipefail
+          make synthetic
+          mkdir -p /tmp/synthetic-a
+          cp docs/reports/synthetic_summary.json \
+             docs/reports/synthetic_before.html \
+             docs/reports/synthetic_after.html \
+             /tmp/synthetic-a/
+          make synthetic
+          cmp /tmp/synthetic-a/synthetic_summary.json docs/reports/synthetic_summary.json
+          cmp /tmp/synthetic-a/synthetic_before.html docs/reports/synthetic_before.html
+          cmp /tmp/synthetic-a/synthetic_after.html docs/reports/synthetic_after.html
+          git diff --exit-code -- \
+            docs/reports/synthetic_summary.json \
+            docs/reports/synthetic_before.html \
+            docs/reports/synthetic_after.html

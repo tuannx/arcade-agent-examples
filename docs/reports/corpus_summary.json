@@ -1,4 +1,13 @@
 {
+  "analyzer": {
+    "package": "arcade-agent",
+    "version": "0.3.0",
+    "installed_version": "0.3.0",
+    "upstream": "https://github.com/arcade-agent/arcade-agent",
+    "upstream_tag": "v0.3.0",
+    "upstream_commit": "576e412dadd6f752f3a5f886201a7e80db93407f",
+    "upstream_commit_source": "pin"
+  },
   "targets": {
     "clap": {
       "fork": "https://github.com/arcade-agent/clap",
@@ -11,8 +20,7 @@
       "smells": 1,
       "smell_types": {
         "Dependency Cycle": 1
-      },
-      "seconds": 1.2
+      }
     },
     "cobra": {
       "fork": "https://github.com/arcade-agent/cobra",
@@ -23,8 +31,7 @@
       "edges": 538,
       "components": 36,
       "smells": 0,
-      "smell_types": {},
-      "seconds": 0.1
+      "smell_types": {}
     },
     "hiredis": {
       "fork": "https://github.com/arcade-agent/hiredis",
@@ -37,8 +44,7 @@
       "smells": 2,
       "smell_types": {
         "Concern Overload": 2
-      },
-      "seconds": 0.3
+      }
     }
   }
 }
