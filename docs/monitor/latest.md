@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-08
+# PR monitor — 2026-10-09
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -91,7 +91,7 @@
 - https://github.com/aeron-io/aeron/pull/1931 · +762/-17 · files 10 · comments 1 · Log Publisher Fragmented Message Tracker
 - https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
-- https://github.com/aeron-io/aeron/pull/2155 · +2334/-128 · files 36 · comments 43 · [Java] CPU pinning implementation for Driver, Archive, and Cluster
+- https://github.com/aeron-io/aeron/pull/2155 · +2203/-189 · files 39 · comments 45 · [Java] CPU pinning implementation for Driver, Archive, and Cluster
 
 ## testcontainers/testcontainers-java
 - https://github.com/testcontainers/testcontainers-java/pull/11140 · +278/-247 · files 3 · comments 0 · Change com.squareup.okhttp3:okhttp:5.1.0 to Apache HttpClient5
@@ -100,7 +100,6 @@
 
 ## dropwizard/dropwizard
 - https://github.com/dropwizard/dropwizard/pull/10746 · +324/-40 · files 10 · comments 24 · Structured logging support
-- https://github.com/dropwizard/dropwizard/pull/11359 · +608/-288 · files 5 · comments 1 · Issue #11349: Rewrite AssetServlet's Range header handling and precondition handling to fix various bugs/deficiencies
 
 ## apache/tomcat
 - https://github.com/apache/tomcat/pull/399 · +7/-0 · files 1 · comments 20 · Add getRequest method to RequestFacade, to get the wrapped Request
@@ -116,4 +115,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 
-Total matched: 90
+Total matched: 89

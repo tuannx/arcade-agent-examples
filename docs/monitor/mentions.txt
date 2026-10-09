@@ -75,7 +75,6 @@ testcontainers/testcontainers-java#11140
 testcontainers/testcontainers-java#11331
 testcontainers/testcontainers-java#4465
 dropwizard/dropwizard#10746
-dropwizard/dropwizard#11359
 apache/tomcat#399
 apache/tomcat#596
 apache/tomcat#316
