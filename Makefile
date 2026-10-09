@@ -1,9 +1,9 @@
 PY ?= python3
 REPORTS = docs/reports
 
-.PHONY: all synthetic adr011 adr014 sweeps corpus clean
+.PHONY: all synthetic adr011 adr014 sweeps corpus skillevaluator clean
 
-all: synthetic adr011 adr014 sweeps corpus
+all: synthetic adr011 adr014 sweeps corpus skillevaluator
 
 $(REPORTS):
 	mkdir -p $(REPORTS)
@@ -22,6 +22,9 @@ sweeps: $(REPORTS)
 
 corpus: $(REPORTS)
 	$(PY) scenarios/fork-corpus/run.py --out $(REPORTS)
+
+skillevaluator: $(REPORTS)
+	$(PY) scenarios/skillevaluator-eval/run.py --out $(REPORTS)
 
 clean:
 	rm -rf $(REPORTS)

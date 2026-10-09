@@ -1,0 +1,1344 @@
+{
+  "timestamp": "2026-10-09T19:59:16.635848+00:00",
+  "repo_name": "SkillEvaluator",
+  "language": "python",
+  "languages": [
+    "python"
+  ],
+  "commit_sha": "local",
+  "ref": "local",
+  "algorithm": "pkg",
+  "num_components": 26,
+  "num_entities": 642,
+  "num_edges": 440,
+  "source_num_entities": 3339,
+  "class_count": 225,
+  "function_count": 2222,
+  "method_count": 891,
+  "entity_kind_counts": {
+    "class": 225,
+    "function": 2222,
+    "method": 891,
+    "module": 1
+  },
+  "component_dependencies": [
+    {
+      "source": "Cli",
+      "target": "CliHelp"
+    },
+    {
+      "source": "Cli",
+      "target": "LoggingConfig"
+    },
+    {
+      "source": "Cli",
+      "target": "Reporting"
+    },
+    {
+      "source": "Cli",
+      "target": "Tier1"
+    },
+    {
+      "source": "Cli",
+      "target": "Utils"
+    },
+    {
+      "source": "Deduplication",
+      "target": "Embedding"
+    },
+    {
+      "source": "Deduplication",
+      "target": "Inference"
+    },
+    {
+      "source": "Deduplication",
+      "target": "Models"
+    },
+    {
+      "source": "Deduplication",
+      "target": "Utils"
+    },
+    {
+      "source": "Deduplication",
+      "target": "Validators"
+    },
+    {
+      "source": "Embedding",
+      "target": "Deduplication"
+    },
+    {
+      "source": "Embedding",
+      "target": "ProviderConfig"
+    },
+    {
+      "source": "Embedding",
+      "target": "Utils"
+    },
+    {
+      "source": "Evidence",
+      "target": "Reporting"
+    },
+    {
+      "source": "Inference",
+      "target": "ProviderConfig"
+    },
+    {
+      "source": "ModelCommands",
+      "target": "ModelCatalog"
+    },
+    {
+      "source": "ModelCommands",
+      "target": "ProviderConfig"
+    },
+    {
+      "source": "Reporting",
+      "target": "Utils"
+    },
+    {
+      "source": "SourceIdentity",
+      "target": "Reporting"
+    },
+    {
+      "source": "Tier1",
+      "target": "Models"
+    },
+    {
+      "source": "Tier1",
+      "target": "Reporting"
+    },
+    {
+      "source": "Tier1",
+      "target": "Utils"
+    },
+    {
+      "source": "Tier1",
+      "target": "Validators"
+    },
+    {
+      "source": "Tier2",
+      "target": "Embedding"
+    },
+    {
+      "source": "Tier2",
+      "target": "Validators"
+    },
+    {
+      "source": "Tier3",
+      "target": "Evaluation"
+    },
+    {
+      "source": "Tier3",
+      "target": "ProviderConfig"
+    },
+    {
+      "source": "Tier3",
+      "target": "Tier3Environments"
+    },
+    {
+      "source": "Tier3",
+      "target": "Utils"
+    },
+    {
+      "source": "TierGroup",
+      "target": "CliHelp"
+    },
+    {
+      "source": "TierWorkflows",
+      "target": "ProviderConfig"
+    },
+    {
+      "source": "TierWorkflows",
+      "target": "Utils"
+    },
+    {
+      "source": "Utils",
+      "target": "Models"
+    },
+    {
+      "source": "Utils",
+      "target": "Tier3"
+    },
+    {
+      "source": "Validators",
+      "target": "Config"
+    },
+    {
+      "source": "Validators",
+      "target": "Embedding"
+    },
+    {
+      "source": "Validators",
+      "target": "Models"
+    },
+    {
+      "source": "Validators",
+      "target": "Spdx"
+    },
+    {
+      "source": "Validators",
+      "target": "Utils"
+    }
+  ],
+  "components": [
+    {
+      "name": "Cli",
+      "responsibility": "Entities in cli",
+      "num_entities": 23,
+      "class_count": 2,
+      "function_count": 21,
+      "method_count": 4,
+      "entity_kind_counts": {
+        "class": 2,
+        "function": 21,
+        "method": 4
+      },
+      "entities": [
+        "skillevaluator.cli._AliasChoice",
+        "skillevaluator.cli._MultiValueOption",
+        "skillevaluator.cli.cli",
+        "skillevaluator.cli.compare",
+        "skillevaluator.cli.context_optimization_check",
+        "skillevaluator.cli.create_dataset",
+        "skillevaluator.cli.dedup_scan",
+        "skillevaluator.cli.doctor",
+        "skillevaluator.cli.evaluate",
+        "skillevaluator.cli.harbor_view",
+        "skillevaluator.cli.health_check",
+        "skillevaluator.cli.init_custom_grader",
+        "skillevaluator.cli.init_harbor_task",
+        "skillevaluator.cli.lint_scripts",
+        "skillevaluator.cli.models_command",
+        "skillevaluator.cli.pii_scan",
+        "skillevaluator.cli.quality_check",
+        "skillevaluator.cli.rubric_eval",
+        "skillevaluator.cli.security_scan",
+        "skillevaluator.cli.similarity_check",
+        "skillevaluator.cli.tier3_validate",
+        "skillevaluator.cli.validate",
+        "skillevaluator.cli.view"
+      ]
+    },
+    {
+      "name": "CliCore",
+      "responsibility": "Entities in cli_core",
+      "num_entities": 5,
+      "class_count": 0,
+      "function_count": 5,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 5
+      },
+      "entities": [
+        "skillevaluator.cli_core.detect_content_type",
+        "skillevaluator.cli_core.resolve_plugin_path",
+        "skillevaluator.cli_core.resolve_rules_path",
+        "skillevaluator.cli_core.resolve_skill_path",
+        "skillevaluator.cli_core.resolve_workflows_path"
+      ]
+    },
+    {
+      "name": "CliHelp",
+      "responsibility": "Entities in cli_help",
+      "num_entities": 4,
+      "class_count": 3,
+      "function_count": 1,
+      "method_count": 4,
+      "entity_kind_counts": {
+        "class": 3,
+        "function": 1,
+        "method": 4
+      },
+      "entities": [
+        "skillevaluator.cli_help.GroupedOption",
+        "skillevaluator.cli_help.RichCommand",
+        "skillevaluator.cli_help.RichGroup",
+        "skillevaluator.cli_help.render_help"
+      ]
+    },
+    {
+      "name": "Config",
+      "responsibility": "Entities in config",
+      "num_entities": 3,
+      "class_count": 0,
+      "function_count": 3,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 3
+      },
+      "entities": [
+        "skillevaluator.config.load_license_config",
+        "skillevaluator.config.load_pii_patterns",
+        "skillevaluator.config.load_unicode_smuggle_patterns"
+      ]
+    },
+    {
+      "name": "Constants",
+      "responsibility": "Entities in constants",
+      "num_entities": 1,
+      "class_count": 1,
+      "function_count": 0,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "class": 1
+      },
+      "entities": [
+        "skillevaluator.constants.ExitCode"
+      ]
+    },
+    {
+      "name": "Deduplication",
+      "responsibility": "Entities in deduplication",
+      "num_entities": 21,
+      "class_count": 9,
+      "function_count": 12,
+      "method_count": 17,
+      "entity_kind_counts": {
+        "class": 9,
+        "function": 12,
+        "method": 17
+      },
+      "entities": [
+        "skillevaluator.deduplication.intra_skill.intra_skill_validator.IntraSkillValidator",
+        "skillevaluator.deduplication.intra_skill.llm_analyzer.analyze_cluster",
+        "skillevaluator.deduplication.intra_skill.llm_analyzer.build_user_prompt",
+        "skillevaluator.deduplication.intra_skill.llm_analyzer.verdict_to_severity",
+        "skillevaluator.deduplication.intra_skill.semantic_clustering.ContentCluster",
+        "skillevaluator.deduplication.intra_skill.semantic_clustering.UnionFind",
+        "skillevaluator.deduplication.intra_skill.semantic_clustering.build_clusters",
+        "skillevaluator.deduplication.utils.chunker.ContentChunk",
+        "skillevaluator.deduplication.utils.chunker.chunk_file",
+        "skillevaluator.deduplication.utils.chunker.chunk_python",
+        "skillevaluator.deduplication.utils.chunker.chunk_shell",
+        "skillevaluator.deduplication.utils.chunker.split_into_paragraphs",
+        "skillevaluator.deduplication.utils.skill_collector.CollectedFile",
+        "skillevaluator.deduplication.utils.skill_collector.SkillCollectionError",
+        "skillevaluator.deduplication.utils.skill_collector._CandidateFile",
+        "skillevaluator.deduplication.utils.skill_collector._SecureReadError",
+        "skillevaluator.deduplication.utils.skill_collector._SecureRoot",
+        "skillevaluator.deduplication.utils.skill_collector.collect_files",
+        "skillevaluator.embedding.extractor.extract_from_rule",
+        "skillevaluator.embedding.extractor.extract_from_workflow",
+        "skillevaluator.tier2.commands.run_context_optimization_check"
+      ]
+    },
+    {
+      "name": "Embedding",
+      "responsibility": "Entities in embedding",
+      "num_entities": 15,
+      "class_count": 8,
+      "function_count": 7,
+      "method_count": 23,
+      "entity_kind_counts": {
+        "class": 8,
+        "function": 7,
+        "method": 23
+      },
+      "entities": [
+        "skillevaluator.embedding.client.EmbeddingClient",
+        "skillevaluator.embedding.client.SimilarityConfigError",
+        "skillevaluator.embedding.client.normalize_embedding_vector",
+        "skillevaluator.embedding.client.unit_vector_similarity",
+        "skillevaluator.embedding.client.validate_embedding_vector",
+        "skillevaluator.embedding.extractor.ContentEntry",
+        "skillevaluator.embedding.extractor._ExtractionBudget",
+        "skillevaluator.embedding.extractor.discover_and_extract",
+        "skillevaluator.embedding.extractor.extract_from_skill",
+        "skillevaluator.embedding.limits.validate_max_entries",
+        "skillevaluator.embedding.limits.validate_max_scalar_comparisons",
+        "skillevaluator.embedding.registry.EmbeddingRegistry",
+        "skillevaluator.embedding.registry.RegistryEntry",
+        "skillevaluator.embedding.registry.SimilarityMatch",
+        "skillevaluator.embedding.registry._DuplicateCatalogKeyError"
+      ]
+    },
+    {
+      "name": "Evaluation",
+      "responsibility": "Entities in evaluation",
+      "num_entities": 14,
+      "class_count": 6,
+      "function_count": 8,
+      "method_count": 11,
+      "entity_kind_counts": {
+        "class": 6,
+        "function": 8,
+        "method": 11
+      },
+      "entities": [
+        "skillevaluator.evaluation.dimension_judge.compute_dimensions",
+        "skillevaluator.evaluation.dimension_judge.compute_dimensions_deterministic",
+        "skillevaluator.evaluation.insights_judge.build_insights",
+        "skillevaluator.evaluation.options.DatasetOptions",
+        "skillevaluator.evaluation.options.EvaluationOptions",
+        "skillevaluator.evaluation.results.DatasetGenerationError",
+        "skillevaluator.evaluation.results.DatasetGenerationResult",
+        "skillevaluator.evaluation.service.EvaluationService",
+        "skillevaluator.evaluation.tier3_report._ReportBudget",
+        "skillevaluator.evaluation.tier3_report.agent_eval_result_from_directory",
+        "skillevaluator.evaluation.tier3_report.agent_eval_result_from_run",
+        "skillevaluator.evaluation.tier3_report.render_agent_eval_html_report",
+        "skillevaluator.tier3.commands.create_dataset",
+        "skillevaluator.tier3.generate_dataset.main"
+      ]
+    },
+    {
+      "name": "Evidence",
+      "responsibility": "Entities in evidence",
+      "num_entities": 2,
+      "class_count": 1,
+      "function_count": 1,
+      "method_count": 12,
+      "entity_kind_counts": {
+        "class": 1,
+        "function": 1,
+        "method": 12
+      },
+      "entities": [
+        "skillevaluator.evidence.evidence_ref_identity",
+        "skillevaluator.reporting.markdown.MarkdownReporter"
+      ]
+    },
+    {
+      "name": "Inference",
+      "responsibility": "Entities in inference",
+      "num_entities": 21,
+      "class_count": 10,
+      "function_count": 11,
+      "method_count": 40,
+      "entity_kind_counts": {
+        "class": 10,
+        "function": 11,
+        "method": 40
+      },
+      "entities": [
+        "skillevaluator.evaluation.dimension_judge.DimensionJudge",
+        "skillevaluator.evaluation.insights_judge.InsightsJudge",
+        "skillevaluator.inference.client.LLMClient",
+        "skillevaluator.inference.client.SchemaTargetKey",
+        "skillevaluator.inference.diagnostics.llm_failure_diagnostic",
+        "skillevaluator.inference.diagnostics.safe_llm_labels",
+        "skillevaluator.inference.finding_verifier.FindingVerifier",
+        "skillevaluator.inference.retry.RetryConfig",
+        "skillevaluator.inference.retry.calculate_full_jitter_delay",
+        "skillevaluator.inference.retry.extract_http_status",
+        "skillevaluator.inference.retry.extract_retry_after",
+        "skillevaluator.inference.retry.is_retriable_exception",
+        "skillevaluator.inference.retry.is_retriable_status_code",
+        "skillevaluator.inference.retry.parse_retry_after",
+        "skillevaluator.inference.retry.resolve_retry_config",
+        "skillevaluator.inference.retry.retry_call_with_backoff",
+        "skillevaluator.inference.types.EmptyLLMResponseError",
+        "skillevaluator.inference.types.LLMClientError",
+        "skillevaluator.inference.types.LLMVerdict",
+        "skillevaluator.tier3.eval_core.llm_judge.call_public_llm",
+        "skillevaluator.validators.rubric_eval.RubricJudge"
+      ]
+    },
+    {
+      "name": "LoggingConfig",
+      "responsibility": "Entities in logging_config",
+      "num_entities": 3,
+      "class_count": 1,
+      "function_count": 2,
+      "method_count": 1,
+      "entity_kind_counts": {
+        "class": 1,
+        "function": 2,
+        "method": 1
+      },
+      "entities": [
+        "skillevaluator.logging_config._LiteralRichHandler",
+        "skillevaluator.logging_config.get_logger",
+        "skillevaluator.logging_config.setup_logging"
+      ]
+    },
+    {
+      "name": "ModelCatalog",
+      "responsibility": "Entities in model_catalog",
+      "num_entities": 16,
+      "class_count": 11,
+      "function_count": 5,
+      "method_count": 19,
+      "entity_kind_counts": {
+        "class": 11,
+        "function": 5,
+        "method": 19
+      },
+      "entities": [
+        "skillevaluator.model_catalog.CatalogModel",
+        "skillevaluator.model_catalog.ModelCatalogError",
+        "skillevaluator.model_catalog.ModelCatalogFailureKind",
+        "skillevaluator.model_catalog.ModelRecord",
+        "skillevaluator.model_catalog._DeadlineConnectionMixin",
+        "skillevaluator.model_catalog._DeadlineHTTPHandler",
+        "skillevaluator.model_catalog._DeadlineHTTPResponse",
+        "skillevaluator.model_catalog._DeadlineHTTPSHandler",
+        "skillevaluator.model_catalog._DeadlineResponseSocket",
+        "skillevaluator.model_catalog._DeadlineSocketRaw",
+        "skillevaluator.model_catalog._RejectRedirects",
+        "skillevaluator.model_catalog.fetch_anthropic_model_record",
+        "skillevaluator.model_catalog.fetch_model_records",
+        "skillevaluator.model_catalog.select_catalog_models",
+        "skillevaluator.tier3.harbor.runtime_preflight.credential_probe_disposition",
+        "skillevaluator.tier3.harbor.runtime_preflight.probe_model"
+      ]
+    },
+    {
+      "name": "ModelCommands",
+      "responsibility": "Entities in model_commands",
+      "num_entities": 1,
+      "class_count": 0,
+      "function_count": 1,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 1
+      },
+      "entities": [
+        "skillevaluator.model_commands.run_models_command"
+      ]
+    },
+    {
+      "name": "Models",
+      "responsibility": "Entities in models",
+      "num_entities": 31,
+      "class_count": 24,
+      "function_count": 7,
+      "method_count": 74,
+      "entity_kind_counts": {
+        "class": 24,
+        "function": 7,
+        "method": 74
+      },
+      "entities": [
+        "skillevaluator.embedding.registry.classify",
+        "skillevaluator.evaluation.tier3_report.advisory_skip_result",
+        "skillevaluator.evaluation.tier3_report.dataset_required_result",
+        "skillevaluator.models.field_validators.ensure_string_list",
+        "skillevaluator.models.field_validators.parse_nested_model",
+        "skillevaluator.models.plugin.PluginAuthor",
+        "skillevaluator.models.plugin.PluginDependencySection",
+        "skillevaluator.models.plugin.PluginManifest",
+        "skillevaluator.models.plugin.PluginMcpEntry",
+        "skillevaluator.models.plugin.PluginSelector",
+        "skillevaluator.models.quality.QualityDimension",
+        "skillevaluator.models.quality.QualityIssue",
+        "skillevaluator.models.quality.QualityScoreResult",
+        "skillevaluator.models.quality.score_to_grade",
+        "skillevaluator.models.result.Finding",
+        "skillevaluator.models.result.Severity",
+        "skillevaluator.models.result.SuccessDetail",
+        "skillevaluator.models.result.ValidationResult",
+        "skillevaluator.models.result.ValidationSummary",
+        "skillevaluator.models.rules.RulesFrontmatter",
+        "skillevaluator.models.rules.RulesManifest",
+        "skillevaluator.models.rules.RulesMetadata",
+        "skillevaluator.models.rules.validate_rules_filename",
+        "skillevaluator.models.skill.SkillFrontmatter",
+        "skillevaluator.models.skill.SkillManifest",
+        "skillevaluator.models.skill.SkillMetadata",
+        "skillevaluator.models.workflows.ReferenceFrontmatter",
+        "skillevaluator.models.workflows.WorkflowsFrontmatter",
+        "skillevaluator.models.workflows.WorkflowsManifest",
+        "skillevaluator.models.workflows.WorkflowsMetadata",
+        "skillevaluator.models.workflows.WorkflowsStructure"
+      ]
+    },
+    {
+      "name": "ProviderConfig",
+      "responsibility": "Entities in provider_config",
+      "num_entities": 4,
+      "class_count": 2,
+      "function_count": 2,
+      "method_count": 1,
+      "entity_kind_counts": {
+        "class": 2,
+        "function": 2,
+        "method": 1
+      },
+      "entities": [
+        "skillevaluator.provider_config.ProviderConfig",
+        "skillevaluator.provider_config.ProviderConfigurationError",
+        "skillevaluator.provider_config.resolve_embedding_provider",
+        "skillevaluator.provider_config.resolve_llm_provider"
+      ]
+    },
+    {
+      "name": "Reporting",
+      "responsibility": "Entities in reporting",
+      "num_entities": 35,
+      "class_count": 12,
+      "function_count": 23,
+      "method_count": 82,
+      "entity_kind_counts": {
+        "class": 12,
+        "function": 23,
+        "method": 82
+      },
+      "entities": [
+        "skillevaluator.reporting.base.ReporterBase",
+        "skillevaluator.reporting.base.UnsafeReportPathError",
+        "skillevaluator.reporting.base.additional_errors",
+        "skillevaluator.reporting.base.is_advisory_agent_eval_skip",
+        "skillevaluator.reporting.base.passes_required_gate",
+        "skillevaluator.reporting.cli.CLIReporter",
+        "skillevaluator.reporting.console_ui.TierBlock",
+        "skillevaluator.reporting.console_ui.TierRow",
+        "skillevaluator.reporting.console_ui.ValidateView",
+        "skillevaluator.reporting.console_ui.Verdict",
+        "skillevaluator.reporting.console_ui.ViewProgressReporter",
+        "skillevaluator.reporting.console_ui.check_ticker_row",
+        "skillevaluator.reporting.console_ui.detail_row",
+        "skillevaluator.reporting.console_ui.engine_feed_rows",
+        "skillevaluator.reporting.console_ui.final_check_ticker_row",
+        "skillevaluator.reporting.console_ui.first_fix",
+        "skillevaluator.reporting.console_ui.lift_row",
+        "skillevaluator.reporting.console_ui.make_view_console",
+        "skillevaluator.reporting.console_ui.stage_hint_row",
+        "skillevaluator.reporting.console_ui.summarize_tier1",
+        "skillevaluator.reporting.console_ui.summarize_tier2",
+        "skillevaluator.reporting.console_ui.summarize_tier3",
+        "skillevaluator.reporting.harbor_viewer.harbor_evidence_label",
+        "skillevaluator.reporting.harbor_viewer.harbor_evidence_link_text",
+        "skillevaluator.reporting.harbor_viewer.normalize_agent_eval_harbor_links",
+        "skillevaluator.reporting.harbor_viewer.normalize_harbor_viewer_for_display",
+        "skillevaluator.reporting.harbor_viewer.safe_url",
+        "skillevaluator.reporting.harbor_viewer.step_number_from_url",
+        "skillevaluator.reporting.html.HTMLReporter",
+        "skillevaluator.reporting.html.PackageLoader",
+        "skillevaluator.reporting.html._Tier3PreviewBudget",
+        "skillevaluator.reporting.html.is_tier2_validator_name",
+        "skillevaluator.reporting.naming.report_basename",
+        "skillevaluator.reporting.sarif_reporter.SARIFReporter",
+        "skillevaluator.reporting.sarif_reporter.merge_catalog_sarif_documents"
+      ]
+    },
+    {
+      "name": "SourceIdentity",
+      "responsibility": "Entities in source_identity",
+      "num_entities": 11,
+      "class_count": 3,
+      "function_count": 8,
+      "method_count": 22,
+      "entity_kind_counts": {
+        "class": 3,
+        "function": 8,
+        "method": 22
+      },
+      "entities": [
+        "skillevaluator.evaluation.tier3_report.build_agent_eval_payload",
+        "skillevaluator.reporting.benchmark.BenchmarkReporter",
+        "skillevaluator.reporting.json_reporter.JSONReporter",
+        "skillevaluator.source_identity.EvaluatedSourceConflict",
+        "skillevaluator.source_identity.evaluated_source_carriers",
+        "skillevaluator.source_identity.evaluated_source_revision",
+        "skillevaluator.source_identity.is_container_revision",
+        "skillevaluator.source_identity.merge_evaluated_sources",
+        "skillevaluator.source_identity.normalized_evaluated_source",
+        "skillevaluator.source_identity.recorded_evaluated_source",
+        "skillevaluator.source_identity.resolve_evaluated_source"
+      ]
+    },
+    {
+      "name": "Spdx",
+      "responsibility": "Entities in spdx",
+      "num_entities": 2,
+      "class_count": 0,
+      "function_count": 2,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 2
+      },
+      "entities": [
+        "skillevaluator.deduplication.utils.chunker.chunk_markdown",
+        "skillevaluator.spdx.is_spdx_only_html_comment"
+      ]
+    },
+    {
+      "name": "Tier1",
+      "responsibility": "Entities in tier1",
+      "num_entities": 8,
+      "class_count": 0,
+      "function_count": 8,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 8
+      },
+      "entities": [
+        "skillevaluator.tier1.commands.emit_reports",
+        "skillevaluator.tier1.commands.enabled_check_lineup",
+        "skillevaluator.tier1.commands.run_lint_scripts",
+        "skillevaluator.tier1.commands.run_pii_scan",
+        "skillevaluator.tier1.commands.run_quality_check",
+        "skillevaluator.tier1.commands.run_rubric_eval",
+        "skillevaluator.tier1.commands.run_security_scan",
+        "skillevaluator.tier1.commands.run_validation"
+      ]
+    },
+    {
+      "name": "Tier2",
+      "responsibility": "Entities in tier2",
+      "num_entities": 2,
+      "class_count": 0,
+      "function_count": 2,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 2
+      },
+      "entities": [
+        "skillevaluator.tier2.commands.run_dedup_scan",
+        "skillevaluator.tier2.commands.run_similarity_check"
+      ]
+    },
+    {
+      "name": "Tier3",
+      "responsibility": "Entities in tier3",
+      "num_entities": 333,
+      "class_count": 99,
+      "function_count": 233,
+      "method_count": 300,
+      "entity_kind_counts": {
+        "class": 99,
+        "function": 233,
+        "method": 300,
+        "module": 1
+      },
+      "entities": [
+        "skillevaluator.model_catalog._DeadlineHTTPConnection",
+        "skillevaluator.model_catalog._DeadlineHTTPSConnection",
+        "skillevaluator.tier3.case_ids.safe_child",
+        "skillevaluator.tier3.case_ids.validate_case_id",
+        "skillevaluator.tier3.case_ids.validate_case_ids",
+        "skillevaluator.tier3.case_ids.validate_output_directory_path",
+        "skillevaluator.tier3.commands.compare_results",
+        "skillevaluator.tier3.commands.doctor",
+        "skillevaluator.tier3.commands.evaluate",
+        "skillevaluator.tier3.commands.harbor_view",
+        "skillevaluator.tier3.commands.init_harbor_task",
+        "skillevaluator.tier3.commands.parse_agent_model_overrides",
+        "skillevaluator.tier3.commands.parse_agents",
+        "skillevaluator.tier3.commands.resolve_agents",
+        "skillevaluator.tier3.commands.validate_agents",
+        "skillevaluator.tier3.commands.validate_evals",
+        "skillevaluator.tier3.commands.view_results",
+        "skillevaluator.tier3.dataset_progress.dataset_generation_progress",
+        "skillevaluator.tier3.dataset_utils.detect_dataset_format",
+        "skillevaluator.tier3.dataset_utils.find_dataset_file",
+        "skillevaluator.tier3.dataset_utils.find_eval_file",
+        "skillevaluator.tier3.dataset_utils.load_dataset_entries",
+        "skillevaluator.tier3.dataset_utils.load_dataset_entries_with_format",
+        "skillevaluator.tier3.dataset_utils.normalize_dataset_entries",
+        "skillevaluator.tier3.eval_core.atif_helpers.attach_metric_evidence_refs",
+        "skillevaluator.tier3.eval_core.atif_helpers.build_behavior_evidence",
+        "skillevaluator.tier3.eval_core.atif_helpers.build_conversation_summary",
+        "skillevaluator.tier3.eval_core.atif_helpers.build_metric_evidence_bundles",
+        "skillevaluator.tier3.eval_core.atif_helpers.build_metric_evidence_refs",
+        "skillevaluator.tier3.eval_core.atif_helpers.build_verified_facts",
+        "skillevaluator.tier3.eval_core.atif_helpers.extract_tool_calls_as_dicts",
+        "skillevaluator.tier3.eval_core.atif_helpers.get_agent_text",
+        "skillevaluator.tier3.eval_core.atif_helpers.get_all_tool_calls",
+        "skillevaluator.tier3.eval_core.atif_helpers.get_bash_commands",
+        "skillevaluator.tier3.eval_core.atif_helpers.get_final_response",
+        "skillevaluator.tier3.eval_core.atif_helpers.get_output_tokens",
+        "skillevaluator.tier3.eval_core.atif_helpers.get_read_calls",
+        "skillevaluator.tier3.eval_core.atif_helpers.get_skill_tool_calls",
+        "skillevaluator.tier3.eval_core.checks.check_activation",
+        "skillevaluator.tier3.eval_core.checks.check_error_recovery",
+        "skillevaluator.tier3.eval_core.checks.check_negative_case",
+        "skillevaluator.tier3.eval_core.checks.check_routing",
+        "skillevaluator.tier3.eval_core.checks.check_script_execution",
+        "skillevaluator.tier3.eval_core.checks.check_security",
+        "skillevaluator.tier3.eval_core.checks.check_token_efficiency",
+        "skillevaluator.tier3.eval_core.checks.check_tool_efficiency",
+        "skillevaluator.tier3.eval_core.checks.check_workflow_order",
+        "skillevaluator.tier3.eval_core.checks.resolve_acceptable_skills",
+        "skillevaluator.tier3.eval_core.checks.resolve_should_trigger",
+        "skillevaluator.tier3.eval_core.checks.score_skill_efficiency",
+        "skillevaluator.tier3.eval_core.checks.score_skill_execution",
+        "skillevaluator.tier3.eval_core.codex_tool_call_normalizer.atif_content_text",
+        "skillevaluator.tier3.eval_core.codex_tool_call_normalizer.iter_normalized_tool_calls",
+        "skillevaluator.tier3.eval_core.codex_tool_call_normalizer.normalize_tool_call",
+        "skillevaluator.tier3.eval_core.codex_tool_call_normalizer.normalized_tool_call_observation",
+        "skillevaluator.tier3.eval_core.codex_tool_call_normalizer.normalized_tool_call_wrapper_observation",
+        "skillevaluator.tier3.eval_core.llm_judge.judge_accuracy",
+        "skillevaluator.tier3.eval_core.llm_judge.judge_behavior_check",
+        "skillevaluator.tier3.eval_core.llm_judge.judge_goal_accuracy",
+        "skillevaluator.tier3.eval_core.log_converters.load_trajectory_with_fallback",
+        "skillevaluator.tier3.eval_core.log_converters.synthetic_trajectory_from_claude_stream_jsonl",
+        "skillevaluator.tier3.eval_core.log_converters.synthetic_trajectory_from_cline_cli",
+        "skillevaluator.tier3.eval_core.log_converters.synthetic_trajectory_from_codex_json",
+        "skillevaluator.tier3.eval_core.log_converters.synthetic_trajectory_from_codex_txt",
+        "skillevaluator.tier3.eval_core.log_converters.synthetic_trajectory_from_cursor_cli",
+        "skillevaluator.tier3.eval_core.log_converters.synthetic_trajectory_from_opencode_json",
+        "skillevaluator.tier3.eval_core.secret_redaction.redact_secrets_in_log_line",
+        "skillevaluator.tier3.evals_config.EvalsConfigError",
+        "skillevaluator.tier3.evals_config.encode_environment_kwarg",
+        "skillevaluator.tier3.evals_config.find_evals_config",
+        "skillevaluator.tier3.evals_config.load_evals_config",
+        "skillevaluator.tier3.evals_config.parse_environment_kwarg_overrides",
+        "skillevaluator.tier3.evals_config.validate_environment_kwargs",
+        "skillevaluator.tier3.evals_spec.CheckResult",
+        "skillevaluator.tier3.evals_spec.EntrySpec",
+        "skillevaluator.tier3.evals_spec.Requirement",
+        "skillevaluator.tier3.evals_spec.Scope",
+        "skillevaluator.tier3.evals_spec.validate_harbor_contract",
+        "skillevaluator.tier3.evals_spec.validate_skillevaluators",
+        "skillevaluator.tier3.evals_spec.validate_tier3_source",
+        "skillevaluator.tier3.generate_dataset.generate_one_case",
+        "skillevaluator.tier3.harbor.adapter._BaselineAliasValidation",
+        "skillevaluator.tier3.harbor.adapter._EvaluatorProjectionSelection",
+        "skillevaluator.tier3.harbor.adapter._NativeVerifierPass",
+        "skillevaluator.tier3.harbor.adapter._TomlKeyAssignment",
+        "skillevaluator.tier3.harbor.adapter._TomlTableHeader",
+        "skillevaluator.tier3.harbor.adapter.find_evals_file",
+        "skillevaluator.tier3.harbor.adapter.generate_harbor_tasks",
+        "skillevaluator.tier3.harbor.adapter.private_evaluator_skill_snapshot",
+        "skillevaluator.tier3.harbor.adapter.stage_native_harbor_tasks",
+        "skillevaluator.tier3.harbor.adapter.validate_output_provenance_key_location",
+        "skillevaluator.tier3.harbor.adapter.validate_results_root_location",
+        "skillevaluator.tier3.harbor.artifact_retention.HarborArtifactLifecycle",
+        "skillevaluator.tier3.harbor.artifact_retention.RetentionOutcome",
+        "skillevaluator.tier3.harbor.canonical_agent_name",
+        "skillevaluator.tier3.harbor.collector._RewardStructureLimitError",
+        "skillevaluator.tier3.harbor.collector._TrajectoryMergeError",
+        "skillevaluator.tier3.harbor.collector._TrajectoryReferenceState",
+        "skillevaluator.tier3.harbor.collector.collect_harbor_results",
+        "skillevaluator.tier3.harbor.collector.harbor_job_passed",
+        "skillevaluator.tier3.harbor.collector.validate_harbor_job_result",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorGatewayCodex",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorGatewayOpenCode",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorLocalClaudeCode",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorLocalCodex",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorLocalNvidiaBuildClaudeCode",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorLocalNvidiaBuildCodex",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorLocalOpenCode",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorNvidiaBuildClaudeCode",
+        "skillevaluator.tier3.harbor.local_agents.SkillEvaluatorNvidiaBuildCodex",
+        "skillevaluator.tier3.harbor.local_agents._LocalHostNvidiaBuildBridgeAgent",
+        "skillevaluator.tier3.harbor.local_agents._NvidiaBuildBridgeAgent",
+        "skillevaluator.tier3.harbor.local_environment.SkillEvaluatorLocalEnvironment",
+        "skillevaluator.tier3.harbor.local_environment._StreamCallbackOutput",
+        "skillevaluator.tier3.harbor.local_runtime.RuntimePathResolutionError",
+        "skillevaluator.tier3.harbor.local_runtime.default_runtime_root",
+        "skillevaluator.tier3.harbor.local_runtime.ensure_local_runtimes",
+        "skillevaluator.tier3.harbor.local_runtime.find_runtime_command",
+        "skillevaluator.tier3.harbor.local_runtime.local_runtime_error_message",
+        "skillevaluator.tier3.harbor.local_runtime.local_runtime_install_command",
+        "skillevaluator.tier3.harbor.local_runtime.local_subprocess_env",
+        "skillevaluator.tier3.harbor.local_runtime.missing_local_runtimes",
+        "skillevaluator.tier3.harbor.local_runtime.runtime_bin_dirs",
+        "skillevaluator.tier3.harbor.local_runtime.runtime_command_roots",
+        "skillevaluator.tier3.harbor.local_runtime.runtime_path",
+        "skillevaluator.tier3.harbor.local_runtime.validate_local_agents",
+        "skillevaluator.tier3.harbor.local_runtime.validate_runtime_root",
+        "skillevaluator.tier3.harbor.local_sandbox.Sandbox",
+        "skillevaluator.tier3.harbor.local_sandbox.SandboxPlan",
+        "skillevaluator.tier3.harbor.local_sandbox.SandboxUnavailable",
+        "skillevaluator.tier3.harbor.local_sandbox.apply_rlimits",
+        "skillevaluator.tier3.harbor.local_sandbox.coerce_flag",
+        "skillevaluator.tier3.harbor.local_sandbox.detect",
+        "skillevaluator.tier3.harbor.local_sandbox.require_supported_platform",
+        "skillevaluator.tier3.harbor.local_sandbox.resolve_mode",
+        "skillevaluator.tier3.harbor.metrics.CustomMetricContractError",
+        "skillevaluator.tier3.harbor.metrics.average_custom_metrics",
+        "skillevaluator.tier3.harbor.metrics.average_metrics",
+        "skillevaluator.tier3.harbor.metrics.custom_metric_contract_error",
+        "skillevaluator.tier3.harbor.metrics.custom_metric_name_is_publishable",
+        "skillevaluator.tier3.harbor.metrics.dimension_scores",
+        "skillevaluator.tier3.harbor.metrics.extract_custom_metrics",
+        "skillevaluator.tier3.harbor.metrics.metric_set_for_reward",
+        "skillevaluator.tier3.harbor.metrics.metric_set_for_rewards",
+        "skillevaluator.tier3.harbor.metrics.metric_value",
+        "skillevaluator.tier3.harbor.metrics.overall_score",
+        "skillevaluator.tier3.harbor.metrics.rewards_have_mixed_metric_contracts",
+        "skillevaluator.tier3.harbor.metrics.score_definition",
+        "skillevaluator.tier3.harbor.metrics.score_value",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.BridgeConfig",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.BridgePayloadError",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.NvidiaBuildBridgeHandler",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.RunningBridge",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._BackendDeadline",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._BackendError",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._BridgeHTTPServer",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._DeadlineConnectionMixin",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._DeadlineHTTPConnection",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._DeadlineHTTPHandler",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._DeadlineHTTPSConnection",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._DeadlineHTTPSHandler",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._NamespaceToolTarget",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge._NoRedirect",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.anthropic_to_chat_request",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.chat_completion_to_anthropic_events",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.chat_completion_to_responses_events",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.check_ready_file",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.main",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.redact_bridge_text",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.responses_to_chat_request",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.serve",
+        "skillevaluator.tier3.harbor.nvidia_build_bridge.start_in_process_bridge",
+        "skillevaluator.tier3.harbor.progress.NullProgressReporter",
+        "skillevaluator.tier3.harbor.progress.PlainProgressReporter",
+        "skillevaluator.tier3.harbor.progress.ProgressEvent",
+        "skillevaluator.tier3.harbor.progress.ProgressReporter",
+        "skillevaluator.tier3.harbor.progress.RichProgressReporter",
+        "skillevaluator.tier3.harbor.progress.SafeProgressReporter",
+        "skillevaluator.tier3.harbor.progress.Tier3RunPlan",
+        "skillevaluator.tier3.harbor.progress.create_progress_reporter",
+        "skillevaluator.tier3.harbor.progress.redact_progress_detail",
+        "skillevaluator.tier3.harbor.progress.safe_progress_reporter",
+        "skillevaluator.tier3.harbor.progress.secret_values_from_environment",
+        "skillevaluator.tier3.harbor.report.add_evidence_links_to_suggestions",
+        "skillevaluator.tier3.harbor.report.display_findings_report",
+        "skillevaluator.tier3.harbor.report_data.DatasetSnapshotContractError",
+        "skillevaluator.tier3.harbor.report_data._BoundedDataset",
+        "skillevaluator.tier3.harbor.report_data._JSONLimitError",
+        "skillevaluator.tier3.harbor.report_data.aggregate_execution_error_details",
+        "skillevaluator.tier3.harbor.report_data.build_dataset_snapshot",
+        "skillevaluator.tier3.harbor.report_data.dataset_snapshot_manifest",
+        "skillevaluator.tier3.harbor.report_data.deduplicate_dataset_entries",
+        "skillevaluator.tier3.harbor.report_data.encode_dataset_snapshot",
+        "skillevaluator.tier3.harbor.report_data.load_agent_data",
+        "skillevaluator.tier3.harbor.report_data.load_dataset",
+        "skillevaluator.tier3.harbor.report_data.load_dataset_snapshot",
+        "skillevaluator.tier3.harbor.report_data.load_staged_harbor_dataset",
+        "skillevaluator.tier3.harbor.report_data.logical_trial_reward_groups",
+        "skillevaluator.tier3.harbor.report_data.metrics_for_agents",
+        "skillevaluator.tier3.harbor.report_data.metrics_for_condition",
+        "skillevaluator.tier3.harbor.report_data.summarize_dataset_entries",
+        "skillevaluator.tier3.harbor.runner.AgentRuntimePlan",
+        "skillevaluator.tier3.harbor.runner._BoundedHarborProcessResult",
+        "skillevaluator.tier3.harbor.runner._FinalResultContractError",
+        "skillevaluator.tier3.harbor.runner._HarborRunTimeoutError",
+        "skillevaluator.tier3.harbor.runner._NvidiaBuildKeyHandoff",
+        "skillevaluator.tier3.harbor.runner._RunProgressLifecycle",
+        "skillevaluator.tier3.harbor.runner.build_harbor_run_command",
+        "skillevaluator.tier3.harbor.runner.format_harbor_view_command",
+        "skillevaluator.tier3.harbor.runner.run_harbor_eval",
+        "skillevaluator.tier3.harbor.runtime_preflight.CredentialProbeDisposition",
+        "skillevaluator.tier3.harbor.runtime_preflight.ModelProbeResult",
+        "skillevaluator.tier3.harbor.runtime_preflight.PreflightResult",
+        "skillevaluator.tier3.harbor.runtime_preflight.run_agent_runtime_preflight",
+        "skillevaluator.tier3.harbor.runtime_preflight.validate_harbor_agent_only_job_result",
+        "skillevaluator.tier3.harbor.secret_redaction",
+        "skillevaluator.tier3.harbor.secure_copy.UnsafeStagingError",
+        "skillevaluator.tier3.harbor.secure_copy._AtomicRenameUnsupported",
+        "skillevaluator.tier3.harbor.secure_copy._FileManifest",
+        "skillevaluator.tier3.harbor.secure_copy._ManifestEntry",
+        "skillevaluator.tier3.harbor.secure_copy._StagedNode",
+        "skillevaluator.tier3.harbor.secure_copy._TreeManifest",
+        "skillevaluator.tier3.harbor.secure_copy.copy_file_secure",
+        "skillevaluator.tier3.harbor.secure_copy.copytree_secure",
+        "skillevaluator.tier3.harbor.secure_copy.tree_content_fingerprint_secure",
+        "skillevaluator.tier3.harbor.secure_docker_environment.SkillEvaluatorDockerEnvironment",
+        "skillevaluator.tier3.harbor.secure_docker_environment.SkillEvaluatorSecureDockerEnvironment",
+        "skillevaluator.tier3.harbor.secure_docker_environment._ComposeCommandTimeout",
+        "skillevaluator.tier3.harbor.secure_docker_environment._ComposeModelLoader",
+        "skillevaluator.tier3.harbor.secure_docker_environment._RawContainerState",
+        "skillevaluator.tier3.harbor.secure_docker_environment._RawServiceSnapshot",
+        "skillevaluator.tier3.harbor.secure_docker_environment._SecretTrieNode",
+        "skillevaluator.tier3.harbor.secure_docker_environment._SecureHandoffScope",
+        "skillevaluator.tier3.harbor.secure_docker_environment._SidecarOperation",
+        "skillevaluator.tier3.harbor.secure_docker_environment._StreamingSecretRedactor",
+        "skillevaluator.tier3.harbor.secure_docker_environment._ValidatedTarMember",
+        "skillevaluator.tier3.harbor.secure_docker_environment._WindowsArtifactUsage",
+        "skillevaluator.tier3.harbor.secure_docker_environment._WindowsFilesystemReserve",
+        "skillevaluator.tier3.harbor.secure_docker_environment._WindowsTransferDiskBudgetExceeded",
+        "skillevaluator.tier3.harbor.secure_docker_environment._WindowsTransferTotalTimeout",
+        "skillevaluator.tier3.harbor.sensitive_stdin._SecretCache",
+        "skillevaluator.tier3.harbor.sensitive_stdin.read_nvidia_build_key_from_stdin",
+        "skillevaluator.tier3.harbor.stream_redaction.CommandOutputByteBudget",
+        "skillevaluator.tier3.harbor.stream_redaction.CommandOutputLimitError",
+        "skillevaluator.tier3.harbor.stream_redaction.StreamingLogRedactor",
+        "skillevaluator.tier3.harbor.stream_redaction.StreamingSecretRedactor",
+        "skillevaluator.tier3.harbor.stream_redaction._SecretTrieNode",
+        "skillevaluator.tier3.harbor.stream_redaction._StreamingKnownPatternRedactor",
+        "skillevaluator.tier3.harbor.stream_redaction.collision_safe_redaction_marker",
+        "skillevaluator.tier3.harbor.templates.custom_grader_runner.main",
+        "skillevaluator.tier3.harbor.templates.eval.EvalRetryConfig",
+        "skillevaluator.tier3.harbor.templates.eval.SchemaTargetKey",
+        "skillevaluator.tier3.harbor.templates.eval.attach_metric_evidence_refs",
+        "skillevaluator.tier3.harbor.templates.eval.build_behavior_evidence",
+        "skillevaluator.tier3.harbor.templates.eval.build_conversation_summary",
+        "skillevaluator.tier3.harbor.templates.eval.build_metric_evidence_bundles",
+        "skillevaluator.tier3.harbor.templates.eval.build_metric_evidence_refs",
+        "skillevaluator.tier3.harbor.templates.eval.build_verified_facts",
+        "skillevaluator.tier3.harbor.templates.eval.call_public_llm",
+        "skillevaluator.tier3.harbor.templates.eval.check_activation",
+        "skillevaluator.tier3.harbor.templates.eval.check_error_recovery",
+        "skillevaluator.tier3.harbor.templates.eval.check_negative_case",
+        "skillevaluator.tier3.harbor.templates.eval.check_routing",
+        "skillevaluator.tier3.harbor.templates.eval.check_script_execution",
+        "skillevaluator.tier3.harbor.templates.eval.check_security",
+        "skillevaluator.tier3.harbor.templates.eval.check_tool_efficiency",
+        "skillevaluator.tier3.harbor.templates.eval.check_workflow_order",
+        "skillevaluator.tier3.harbor.templates.eval.extract_json",
+        "skillevaluator.tier3.harbor.templates.eval.extract_tool_calls_as_dicts",
+        "skillevaluator.tier3.harbor.templates.eval.get_agent_text",
+        "skillevaluator.tier3.harbor.templates.eval.get_all_tool_calls",
+        "skillevaluator.tier3.harbor.templates.eval.get_bash_commands",
+        "skillevaluator.tier3.harbor.templates.eval.get_read_calls",
+        "skillevaluator.tier3.harbor.templates.eval.get_skill_tool_calls",
+        "skillevaluator.tier3.harbor.templates.eval.judge_accuracy",
+        "skillevaluator.tier3.harbor.templates.eval.judge_behavior_check",
+        "skillevaluator.tier3.harbor.templates.eval.judge_goal_accuracy",
+        "skillevaluator.tier3.harbor.templates.eval.main",
+        "skillevaluator.tier3.harbor.templates.eval.redact_secrets_in_log_line",
+        "skillevaluator.tier3.harbor.templates.eval.resolve_should_trigger",
+        "skillevaluator.tier3.harbor.templates.eval.score_skill_execution",
+        "skillevaluator.tier3.harbor.templates.eval.write_reward_outputs",
+        "skillevaluator.tier3.harbor.templates.metric.main",
+        "skillevaluator.tier3.output_provenance.generated_output_marker_payload",
+        "skillevaluator.tier3.output_provenance.is_generated_output_root",
+        "skillevaluator.tier3.output_provenance.mark_generated_output_root",
+        "skillevaluator.tier3.output_provenance.output_provenance_key_path",
+        "skillevaluator.tier3.output_provenance.remove_generated_output_root_if_owned",
+        "skillevaluator.tier3.output_provenance.remove_output_reservation_if_identity_matches",
+        "skillevaluator.tier3.output_provenance.validate_generated_output_replacement",
+        "skillevaluator.tier3.output_provenance.validate_provenance_key_outside",
+        "skillevaluator.tier3.output_provenance.write_generated_output_marker",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.call_api.build_url_from_spec",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.call_api.fetch_openapi_spec",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.call_api.find_operation",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.call_api.main",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.call_api.make_request",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.parse_openapi.fetch_spec",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.parse_openapi.main",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.parse_openapi.parse_parameters",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.parse_openapi.parse_request_body",
+        "skillevaluator.tier3.reference_skills.api-caller.scripts.parse_openapi.parse_spec",
+        "skillevaluator.tier3.reference_skills.calculator.scripts.calc.main",
+        "skillevaluator.tier3.reference_skills.calculator.scripts.calc.safe_eval",
+        "skillevaluator.tier3.reference_skills.calculator.scripts.calc.try_conversion",
+        "skillevaluator.tier3.reference_skills.calculator.scripts.calc.try_percentage",
+        "skillevaluator.tier3.reference_skills.task-list.scripts.tasks.TaskManager",
+        "skillevaluator.tier3.reference_skills.task-list.scripts.tasks.format_result",
+        "skillevaluator.tier3.reference_skills.task-list.scripts.tasks.handle_operation",
+        "skillevaluator.tier3.reference_skills.task-list.scripts.tasks.main",
+        "skillevaluator.tier3.reference_skills.text-analyzer.scripts.analyze_text.analyze",
+        "skillevaluator.tier3.reference_skills.text-analyzer.scripts.analyze_text.format_report",
+        "skillevaluator.tier3.reference_skills.text-analyzer.scripts.analyze_text.main",
+        "skillevaluator.tier3.result_display.render_evaluation_result",
+        "skillevaluator.tier3.result_display.render_result",
+        "skillevaluator.tier3.results_location.ensure_skill_results_gitignore",
+        "skillevaluator.tier3.results_location.env_results_root",
+        "skillevaluator.tier3.results_location.external_results_root",
+        "skillevaluator.tier3.results_location.git_root_for",
+        "skillevaluator.tier3.results_location.gitignore_entry_for_skill_results",
+        "skillevaluator.tier3.results_location.is_legacy_completed_run_dir",
+        "skillevaluator.tier3.results_location.iter_candidate_results_roots",
+        "skillevaluator.tier3.results_location.legacy_results_root",
+        "skillevaluator.tier3.results_location.ordered_run_directories",
+        "skillevaluator.tier3.results_location.publish_latest_results",
+        "skillevaluator.tier3.results_location.resolve_explicit_or_latest_results",
+        "skillevaluator.tier3.results_location.resolve_latest_results",
+        "skillevaluator.tier3.results_location.resolve_results_root",
+        "skillevaluator.tier3.results_location.run_directory_sort_key",
+        "skillevaluator.tier3.results_location.skill_results_name",
+        "skillevaluator.tier3.toml_utils.extract_toml_metadata_entry_id",
+        "skillevaluator.tier3.toml_utils.toml_quote",
+        "skillevaluator.tier3.workflow.build_tier3_workflow"
+      ]
+    },
+    {
+      "name": "Tier3Environments",
+      "responsibility": "Entities in tier3_environments",
+      "num_entities": 1,
+      "class_count": 0,
+      "function_count": 1,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 1
+      },
+      "entities": [
+        "skillevaluator.tier3_environments.harbor_environment_type"
+      ]
+    },
+    {
+      "name": "TierGroup",
+      "responsibility": "Entities in tier_group",
+      "num_entities": 4,
+      "class_count": 1,
+      "function_count": 3,
+      "method_count": 4,
+      "entity_kind_counts": {
+        "class": 1,
+        "function": 3,
+        "method": 4
+      },
+      "entities": [
+        "skillevaluator.cli.tier1",
+        "skillevaluator.cli.tier2",
+        "skillevaluator.cli.tier3",
+        "skillevaluator.tier_group.TierGroup"
+      ]
+    },
+    {
+      "name": "TierWorkflows",
+      "responsibility": "Entities in tier_workflows",
+      "num_entities": 1,
+      "class_count": 0,
+      "function_count": 1,
+      "method_count": 0,
+      "entity_kind_counts": {
+        "function": 1
+      },
+      "entities": [
+        "skillevaluator.tier_workflows.run_tier2_workflow"
+      ]
+    },
+    {
+      "name": "Utils",
+      "responsibility": "Entities in utils",
+      "num_entities": 37,
+      "class_count": 6,
+      "function_count": 31,
+      "method_count": 13,
+      "entity_kind_counts": {
+        "class": 6,
+        "function": 31,
+        "method": 13
+      },
+      "entities": [
+        "skillevaluator.tier3.commands.init_custom_grader",
+        "skillevaluator.tier3.harbor.adapter.build_eval_base_image",
+        "skillevaluator.tier3.harbor.adapter.prebuild_task_environments",
+        "skillevaluator.tier3.output_provenance.write_output_file_atomically",
+        "skillevaluator.tier_workflows.require_skill",
+        "skillevaluator.utils.helpers.find_bundled_plugin_skills",
+        "skillevaluator.utils.helpers.find_skills_in_directory",
+        "skillevaluator.utils.helpers.get_skill_name_from_path",
+        "skillevaluator.utils.helpers.make_timestamped_basename",
+        "skillevaluator.utils.helpers.resolve_git_remote_url",
+        "skillevaluator.utils.helpers.resolve_git_root",
+        "skillevaluator.utils.path_security.canonicalize_trusted_root_alias",
+        "skillevaluator.utils.process_environment.child_process_env",
+        "skillevaluator.utils.redaction.contains_credential_value",
+        "skillevaluator.utils.redaction.credential_uri_secret_values",
+        "skillevaluator.utils.redaction.is_sensitive_key",
+        "skillevaluator.utils.redaction.redact_sensitive_data",
+        "skillevaluator.utils.redaction.redact_sensitive_text",
+        "skillevaluator.utils.rich_markup.escape_markup",
+        "skillevaluator.utils.rich_markup.strip_terminal_controls",
+        "skillevaluator.utils.secure_fs.SecurePathError",
+        "skillevaluator.utils.secure_fs.SecureRoot",
+        "skillevaluator.utils.secure_fs._WindowsHandleMetadata",
+        "skillevaluator.utils.secure_fs.stat_is_link_or_reparse",
+        "skillevaluator.utils.tier2_paths.is_contained_compatibility_alias",
+        "skillevaluator.utils.tier2_paths.is_link_or_reparse",
+        "skillevaluator.utils.tier2_paths.paths_refer_to_same_location",
+        "skillevaluator.utils.tier2_paths.safe_path_label",
+        "skillevaluator.utils.tier2_paths.sanitize_path_text",
+        "skillevaluator.utils.tier2_paths.sanitize_tier2_results",
+        "skillevaluator.utils.tool_runner.ExternalTool",
+        "skillevaluator.utils.tool_runner.ToolResult",
+        "skillevaluator.utils.tool_runner.Tools",
+        "skillevaluator.utils.tool_runner.create_temp_config",
+        "skillevaluator.utils.tool_runner.cvss_to_severity",
+        "skillevaluator.utils.tool_runner.parse_json_output",
+        "skillevaluator.utils.tool_runner.resolve_tool_path"
+      ]
+    },
+    {
+      "name": "Validators",
+      "responsibility": "Entities in validators",
+      "num_entities": 44,
+      "class_count": 26,
+      "function_count": 18,
+      "method_count": 264,
+      "entity_kind_counts": {
+        "class": 26,
+        "function": 18,
+        "method": 264
+      },
+      "entities": [
+        "skillevaluator.tier_workflows.run_tier1_workflow",
+        "skillevaluator.validators.base.ValidatorBase",
+        "skillevaluator.validators.base.continue_on_failure_scope",
+        "skillevaluator.validators.base.iter_scannable_files",
+        "skillevaluator.validators.code_risk.CodeRiskValidator",
+        "skillevaluator.validators.dependencies.DependencySecurityValidator",
+        "skillevaluator.validators.frontmatter_parser.ParsedFrontmatter",
+        "skillevaluator.validators.frontmatter_parser.format_validation_location",
+        "skillevaluator.validators.frontmatter_parser.parse_frontmatter",
+        "skillevaluator.validators.frontmatter_parser.validate_pydantic_model",
+        "skillevaluator.validators.hygiene.HygieneValidator",
+        "skillevaluator.validators.license.LicenseDetection",
+        "skillevaluator.validators.license.LicenseValidator",
+        "skillevaluator.validators.license._LicenseFileScan",
+        "skillevaluator.validators.markdown._AnchorHrefParser",
+        "skillevaluator.validators.markdown._ScriptEndSearch",
+        "skillevaluator.validators.markdown.markdown_link_targets",
+        "skillevaluator.validators.markdown.normalized_local_path",
+        "skillevaluator.validators.naming_utils.NamingValidationConfig",
+        "skillevaluator.validators.naming_utils.validate_kebab_case_name",
+        "skillevaluator.validators.naming_utils.validate_line_count",
+        "skillevaluator.validators.plugin_schema.PluginSchemaValidator",
+        "skillevaluator.validators.policy.ValidationPolicy",
+        "skillevaluator.validators.policy.apply_policy",
+        "skillevaluator.validators.policy.default_policy",
+        "skillevaluator.validators.policy.load_policy_file",
+        "skillevaluator.validators.policy.load_profile",
+        "skillevaluator.validators.policy.resolve_policy",
+        "skillevaluator.validators.quality_score.QualityScoreValidator",
+        "skillevaluator.validators.rubric_eval.RubricEvalValidator",
+        "skillevaluator.validators.rubric_eval._UnavailableRubricReport",
+        "skillevaluator.validators.rubric_eval._UnsafeRubricInputError",
+        "skillevaluator.validators.rules_schema.RulesSchemaValidator",
+        "skillevaluator.validators.rules_schema.parse_rules_manifest",
+        "skillevaluator.validators.schema.SchemaValidator",
+        "skillevaluator.validators.schema.parse_skill_manifest",
+        "skillevaluator.validators.script_lint.ScriptLintValidator",
+        "skillevaluator.validators.secrets.SecretsValidator",
+        "skillevaluator.validators.security.SecurityValidator",
+        "skillevaluator.validators.similarity.SimilarityValidator",
+        "skillevaluator.validators.unicode_smuggle.UnicodeSmuggleValidator",
+        "skillevaluator.validators.version.VersionValidator",
+        "skillevaluator.validators.workflows_schema.WorkflowsSchemaValidator",
+        "skillevaluator.validators.workflows_schema.parse_workflows_manifest"
+      ]
+    }
+  ],
+  "metrics": {
+    "RCI": 0.5136,
+    "TurboMQ": 7.6933,
+    "BasicMQ": 0.2959,
+    "IntraConnectivity": 0.0561,
+    "InterConnectivity": 0.059,
+    "TwoWayPairRatio": 0.0541
+  },
+  "derived_metrics": {
+    "DependencyHealth": 0.9432,
+    "ComponentBalance": 0.2684,
+    "HubBalance": 0.68,
+    "BoundaryClarity": 0.98,
+    "DependencyDistribution": 0.5464,
+    "SmellDiscipline": 0.6615,
+    "PrincipleAlignmentScore": 0.7918,
+    "BalancedArchitectureScore": 0.5624
+  },
+  "principle_signals": {
+    "AcyclicDependencies": 0.9077,
+    "LayeringHealth": 0.9343,
+    "ResponsibilityFocus": 0.7538,
+    "InterfaceSegregation": 1.0,
+    "ComponentBalance": 0.2684,
+    "HubBalance": 0.68,
+    "BoundaryClarity": 0.98,
+    "DependencyDistribution": 0.5464,
+    "SmellDiscipline": 0.6615
+  },
+  "score_drivers": {
+    "risks": [
+      {
+        "name": "ComponentBalance",
+        "value": 0.2684,
+        "gap_to_ideal": 0.7316
+      },
+      {
+        "name": "DependencyDistribution",
+        "value": 0.5464,
+        "gap_to_ideal": 0.4536
+      },
+      {
+        "name": "SmellDiscipline",
+        "value": 0.6615,
+        "gap_to_ideal": 0.3385
+      }
+    ],
+    "strengths": [
+      {
+        "name": "InterfaceSegregation",
+        "value": 1.0,
+        "gap_to_ideal": 0.0
+      },
+      {
+        "name": "BoundaryClarity",
+        "value": 0.98,
+        "gap_to_ideal": 0.02
+      },
+      {
+        "name": "LayeringHealth",
+        "value": 0.9343,
+        "gap_to_ideal": 0.0657
+      }
+    ]
+  },
+  "smells": [
+    {
+      "smell_type": "Dependency Cycle",
+      "severity": "low",
+      "affected_components": [
+        "Tier3",
+        "Utils"
+      ],
+      "description": "Circular dependency among 2 components: Tier3 <-> Utils",
+      "explanation": "Dependency cycles make components tightly coupled \u2014 you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.",
+      "suggestion": "Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP)."
+    },
+    {
+      "smell_type": "Dependency Cycle",
+      "severity": "medium",
+      "affected_components": [
+        "Deduplication",
+        "Embedding",
+        "Validators"
+      ],
+      "description": "Circular dependency among 3 components: Deduplication <-> Embedding <-> Validators",
+      "explanation": "Dependency cycles make components tightly coupled \u2014 you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.",
+      "suggestion": "Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP)."
+    },
+    {
+      "smell_type": "Concern Overload",
+      "severity": "medium",
+      "affected_components": [
+        "Cli"
+      ],
+      "description": "Cli contains 23 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.",
+      "explanation": "Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.",
+      "suggestion": "Consider splitting Cli into smaller, focused components with single responsibilities."
+    },
+    {
+      "smell_type": "Concern Overload",
+      "severity": "high",
+      "affected_components": [
+        "Tier3"
+      ],
+      "description": "Tier3 contains 333 entities but only 90 internal dependencies (0.27 per entity), suggesting multiple responsibilities.",
+      "explanation": "Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.",
+      "suggestion": "Consider splitting Tier3 into smaller, focused components with single responsibilities."
+    },
+    {
+      "smell_type": "Concern Overload",
+      "severity": "medium",
+      "affected_components": [
+        "Utils"
+      ],
+      "description": "Utils contains 37 entities but only 5 internal dependencies (0.14 per entity), suggesting multiple responsibilities.",
+      "explanation": "Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.",
+      "suggestion": "Consider splitting Utils into smaller, focused components with single responsibilities."
+    },
+    {
+      "smell_type": "Scattered Parasitic Functionality",
+      "severity": "medium",
+      "affected_components": [
+        "Inference",
+        "ProviderConfig",
+        "Tier3",
+        "Validators"
+      ],
+      "description": "'Config' pattern is scattered across 4 components: Inference, ProviderConfig, Tier3, Validators",
+      "explanation": "When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.",
+      "suggestion": "Centralize 'Config'-related functionality into a dedicated component to reduce scattering."
+    },
+    {
+      "smell_type": "Scattered Parasitic Functionality",
+      "severity": "medium",
+      "affected_components": [
+        "LoggingConfig",
+        "ModelCatalog",
+        "Tier3"
+      ],
+      "description": "'Handler' pattern is scattered across 3 components: LoggingConfig, ModelCatalog, Tier3",
+      "explanation": "When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.",
+      "suggestion": "Centralize 'Handler'-related functionality into a dedicated component to reduce scattering."
+    }
+  ]
+}

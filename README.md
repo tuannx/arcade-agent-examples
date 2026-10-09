@@ -21,6 +21,7 @@ arcade analyze . --report report.html
 | [Django](https://tuannx.github.io/django/) | 10,881 | 6.3s | django/django#18036 — SAFE FEATURE |
 | [React](https://tuannx.github.io/react/) | 7,861 | 8.4s | facebook/react#37187 — SAFE, -19,239 lines |
 | [Vue](https://tuannx.github.io/core/) | 1,630 | 1.4s | vuejs/core#15633 — 5 SHIFTS |
+| [SkillEvaluator](https://tuannx.github.io/arcade-agent-examples/reports/skillevaluator.html) | 3,339 | 1.8s | pinned tuannx/SkillEvaluator@f32c884 |
 
 Each number links to a fork Pages with the full report. Report is the product.
 

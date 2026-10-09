@@ -1,0 +1,77 @@
+{
+  "target": "SkillEvaluator",
+  "fork": "https://github.com/tuannx/SkillEvaluator",
+  "upstream": "https://github.com/NVIDIA/SkillEvaluator",
+  "sha": "f32c88455b6007b7afca9d1d3909283226d52efa",
+  "language": "python",
+  "tool": "arcade-agent 0.4.0 self-analysis (pkg, helper-filtering, ARCADE_MOCK=1)",
+  "source_entities": 3339,
+  "entities": 642,
+  "edges": 440,
+  "components": 26,
+  "smells": [
+    {
+      "type": "Dependency Cycle",
+      "severity": "low",
+      "components": [
+        "Tier3",
+        "Utils"
+      ]
+    },
+    {
+      "type": "Dependency Cycle",
+      "severity": "medium",
+      "components": [
+        "Deduplication",
+        "Embedding",
+        "Validators"
+      ]
+    },
+    {
+      "type": "Concern Overload",
+      "severity": "medium",
+      "components": [
+        "Cli"
+      ]
+    },
+    {
+      "type": "Concern Overload",
+      "severity": "high",
+      "components": [
+        "Tier3"
+      ]
+    },
+    {
+      "type": "Concern Overload",
+      "severity": "medium",
+      "components": [
+        "Utils"
+      ]
+    },
+    {
+      "type": "Scattered Parasitic Functionality",
+      "severity": "medium",
+      "components": [
+        "Inference",
+        "ProviderConfig",
+        "Tier3",
+        "Validators"
+      ]
+    },
+    {
+      "type": "Scattered Parasitic Functionality",
+      "severity": "medium",
+      "components": [
+        "LoggingConfig",
+        "ModelCatalog",
+        "Tier3"
+      ]
+    }
+  ],
+  "rci": 0.5136,
+  "turbo_mq": 7.6933,
+  "balanced_architecture_score": 0.5624,
+  "seconds": 2.6,
+  "analysis_json": "skillevaluator_analysis.json",
+  "report_html": "skillevaluator.html"
+}
