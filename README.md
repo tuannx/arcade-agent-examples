@@ -4,7 +4,7 @@ Run this on your repo first:
 
 ```yaml
 # .github/workflows/arch-drift.yml
-- uses: arcade-agent/arcade-agent/.github/workflows/analyze.yml@v0
+- uses: arcade-agent/arcade-agent/actions/analyze@v0.4.2
 ```
 
 Or locally in 2 minutes:
