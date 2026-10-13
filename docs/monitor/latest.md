@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-12
+# PR monitor — 2026-10-13
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -23,7 +23,7 @@
 - https://github.com/vuejs/core/pull/8701 · +581/-145 · files 9 · comments 1 · feat(keep-alive): allow custom caching strategy
 
 ## OpenFeign/feign
-- https://github.com/OpenFeign/feign/pull/3551 · +520/-39 · files 7 · comments 16 · Streaming decoder support2
+- https://github.com/OpenFeign/feign/pull/3551 · +520/-39 · files 7 · comments 17 · Streaming decoder support2
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10099 · +415/-8 · files 11 · comments 16 · [Feature][seatunnel-connectors-v2/connector-jdbc]sqlserver support bulk copy write
@@ -37,6 +37,7 @@
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
 - https://github.com/apache/seatunnel/pull/10573 · +1189/-12 · files 4 · comments 5 · [Feature][Connectors-v2] Optimize unit testing for SQL Server in JDBC connector
 - https://github.com/apache/seatunnel/pull/11222 · +808/-42 · files 7 · comments 6 · [Improve][Transform-V2] Expand CopyTransform support for timestamp_tz, vector, and multiple_row types
+- https://github.com/apache/seatunnel/pull/10961 · +381/-11 · files 13 · comments 21 · [Feature][Connector-V2] Support the MySQL compatibility mode of KingbaseES
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -91,7 +92,6 @@
 - https://github.com/aeron-io/aeron/pull/1931 · +762/-17 · files 10 · comments 1 · Log Publisher Fragmented Message Tracker
 - https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
-- https://github.com/aeron-io/aeron/pull/2155 · +2227/-189 · files 40 · comments 45 · [Java] CPU pinning implementation for Driver, Archive, and Cluster
 
 ## testcontainers/testcontainers-java
 - https://github.com/testcontainers/testcontainers-java/pull/11140 · +278/-247 · files 3 · comments 0 · Change com.squareup.okhttp3:okhttp:5.1.0 to Apache HttpClient5

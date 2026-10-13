@@ -26,6 +26,7 @@ apache/seatunnel#10060
 apache/seatunnel#10779
 apache/seatunnel#10573
 apache/seatunnel#11222
+apache/seatunnel#10961
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
 checkstyle/checkstyle#20338
@@ -70,7 +71,6 @@ aeron-io/aeron#1775
 aeron-io/aeron#1931
 aeron-io/aeron#1994
 aeron-io/aeron#2129
-aeron-io/aeron#2155
 testcontainers/testcontainers-java#11140
 testcontainers/testcontainers-java#11331
 testcontainers/testcontainers-java#4465
