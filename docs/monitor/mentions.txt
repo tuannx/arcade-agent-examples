@@ -32,6 +32,7 @@ checkstyle/checkstyle#21413
 checkstyle/checkstyle#20338
 checkstyle/checkstyle#21567
 checkstyle/checkstyle#21497
+checkstyle/checkstyle#18872
 flowable/flowable-engine#3028
 flowable/flowable-engine#3694
 flowable/flowable-engine#3797
