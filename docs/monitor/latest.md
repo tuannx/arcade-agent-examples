@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-16
+# PR monitor — 2026-10-17
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -46,6 +46,7 @@
 - https://github.com/checkstyle/checkstyle/pull/21567 · +160/-145 · files 35 · comments 2 · Issue #21552: fix violation comment rules to match outside MODIFIERS
 - https://github.com/checkstyle/checkstyle/pull/21497 · +133/-1 · files 3 · comments 20 · Issue #18858: Fix EmptyLineSeparator false positive for anonymous class
 - https://github.com/checkstyle/checkstyle/pull/18872 · +445/-14 · files 23 · comments 19 · Issue #16100: adding basic md comment grammar support
+- https://github.com/checkstyle/checkstyle/pull/21516 · +219/-1 · files 4 · comments 17 · Issue #6020: fix indentation of wrapped arguments in chained calls
 
 ## flowable/flowable-engine
 - https://github.com/flowable/flowable-engine/pull/3028 · +697/-0 · files 11 · comments 4 · Add ability to dynamically search for comments
@@ -116,4 +117,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 
-Total matched: 90
+Total matched: 91
