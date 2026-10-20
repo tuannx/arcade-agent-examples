@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-19
+# PR monitor — 2026-10-20
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -23,21 +23,22 @@
 - https://github.com/vuejs/core/pull/8701 · +581/-145 · files 9 · comments 1 · feat(keep-alive): allow custom caching strategy
 
 ## OpenFeign/feign
-- https://github.com/OpenFeign/feign/pull/3551 · +520/-39 · files 7 · comments 17 · Streaming decoder support2
+- https://github.com/OpenFeign/feign/pull/3551 · +520/-39 · files 7 · comments 18 · Streaming decoder support2
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10099 · +415/-8 · files 11 · comments 16 · [Feature][seatunnel-connectors-v2/connector-jdbc]sqlserver support bulk copy write
 - https://github.com/apache/seatunnel/pull/10399 · +1724/-45 · files 28 · comments 13 · [Feature][Zeta] Add compaction support to IMAP external storage
 - https://github.com/apache/seatunnel/pull/10851 · +533/-11 · files 11 · comments 5 · [Fix][Connectors-v2] Avoid Iceberg DROP_DATA full-table delete commit
 - https://github.com/apache/seatunnel/pull/10478 · +1533/-132 · files 41 · comments 3 · [Feature][Connector-V2][File-Source]Support metadata column for file source connector
-- https://github.com/apache/seatunnel/pull/11568 · +519/-7 · files 15 · comments 1 · [Fix][Zeta] Resolve allowed environment variables in REST HOCON
-- https://github.com/apache/seatunnel/pull/11570 · +1690/-1 · files 16 · comments 1 · [Feature][Zeta] Add incremental job monitoring API
-- https://github.com/apache/seatunnel/pull/10521 · +986/-0 · files 15 · comments 15 · [Feature][Connectors-v2] Adding Connectors for SingleStoreFeature singlestore
-- https://github.com/apache/seatunnel/pull/10060 · +314/-22 · files 8 · comments 29 · [Fix][Connector-doris] DorisStreamLoad loading state mismanagement causes RecordBuffer infinite loop during shutdown
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
-- https://github.com/apache/seatunnel/pull/10573 · +1189/-12 · files 4 · comments 5 · [Feature][Connectors-v2] Optimize unit testing for SQL Server in JDBC connector
 - https://github.com/apache/seatunnel/pull/11222 · +808/-42 · files 7 · comments 6 · [Improve][Transform-V2] Expand CopyTransform support for timestamp_tz, vector, and multiple_row types
-- https://github.com/apache/seatunnel/pull/10961 · +381/-11 · files 13 · comments 21 · [Feature][Connector-V2] Support the MySQL compatibility mode of KingbaseES
+- https://github.com/apache/seatunnel/pull/11767 · +1406/-220 · files 10 · comments 0 · [Docs][Connector-V2] Improve ClickhouseFile Cloudberry Jira Persistiq and SelectDB-Cloud connector docs
+- https://github.com/apache/seatunnel/pull/11772 · +926/-11 · files 10 · comments 0 · [Docs][Connector-V2] Improve GraphQL NatsJetStream Klaviyo Lemlist and MyHours connector docs
+- https://github.com/apache/seatunnel/pull/11782 · +1333/-1198 · files 10 · comments 0 · [Docs][Connector-V2] Improve SqlServer Cloudberry Http SftpFile and MySQL connector docs
+- https://github.com/apache/seatunnel/pull/11783 · +4273/-98 · files 32 · comments 0 · [Feature][Zeta] Add dirty job tracking for member-loss recovery attempts
+- https://github.com/apache/seatunnel/pull/11694 · +766/-60 · files 17 · comments 1 · [Docs][Connector-V2] Improve Clickhouse Http MongoDB Redis and Easysearch connector docs
+- https://github.com/apache/seatunnel/pull/11401 · +558/-47 · files 17 · comments 5 · [Feature][Connector-V2] Expose CDC source identifier metadata
+- https://github.com/apache/seatunnel/pull/10232 · +186/-45 · files 14 · comments 18 · [Feature][seatunnel core][seatunnel-flink-start] Filnk engine supports task restore from checkpoint upon startup
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -119,4 +120,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 
-Total matched: 93
+Total matched: 94
