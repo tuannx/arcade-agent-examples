@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-20
+# PR monitor — 2026-10-21
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
