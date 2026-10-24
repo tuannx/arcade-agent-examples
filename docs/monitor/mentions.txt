@@ -26,7 +26,6 @@ apache/seatunnel#11772
 apache/seatunnel#11782
 apache/seatunnel#11783
 apache/seatunnel#11694
-apache/seatunnel#11401
 apache/seatunnel#10232
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
@@ -35,7 +34,6 @@ checkstyle/checkstyle#21567
 checkstyle/checkstyle#21497
 checkstyle/checkstyle#18872
 checkstyle/checkstyle#21516
-checkstyle/checkstyle#21734
 checkstyle/checkstyle#21565
 flowable/flowable-engine#3028
 flowable/flowable-engine#3694

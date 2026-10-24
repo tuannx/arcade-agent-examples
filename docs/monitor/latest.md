@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-23
+# PR monitor — 2026-10-24
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -37,7 +37,6 @@
 - https://github.com/apache/seatunnel/pull/11782 · +1333/-1198 · files 10 · comments 0 · [Docs][Connector-V2] Improve SqlServer Cloudberry Http SftpFile and MySQL connector docs
 - https://github.com/apache/seatunnel/pull/11783 · +4273/-98 · files 32 · comments 0 · [Feature][Zeta] Add dirty job tracking for member-loss recovery attempts
 - https://github.com/apache/seatunnel/pull/11694 · +766/-60 · files 17 · comments 1 · [Docs][Connector-V2] Improve Clickhouse Http MongoDB Redis and Easysearch connector docs
-- https://github.com/apache/seatunnel/pull/11401 · +558/-47 · files 17 · comments 5 · [Feature][Connector-V2] Expose CDC source identifier metadata
 - https://github.com/apache/seatunnel/pull/10232 · +186/-45 · files 14 · comments 18 · [Feature][seatunnel core][seatunnel-flink-start] Filnk engine supports task restore from checkpoint upon startup
 
 ## checkstyle/checkstyle
@@ -48,7 +47,6 @@
 - https://github.com/checkstyle/checkstyle/pull/21497 · +133/-1 · files 3 · comments 20 · Issue #18858: Fix EmptyLineSeparator false positive for anonymous class
 - https://github.com/checkstyle/checkstyle/pull/18872 · +445/-14 · files 23 · comments 19 · Issue #16100: adding basic md comment grammar support
 - https://github.com/checkstyle/checkstyle/pull/21516 · +219/-1 · files 4 · comments 17 · Issue #6020: fix indentation of wrapped arguments in chained calls
-- https://github.com/checkstyle/checkstyle/pull/21734 · +823/-1 · files 41 · comments 4 · Issue #21165: add MissingJavadocModule check
 - https://github.com/checkstyle/checkstyle/pull/21565 · +1154/-0 · files 33 · comments 9 · Add FinalPatternVariable check
 
 ## flowable/flowable-engine
@@ -120,4 +118,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 
-Total matched: 94
+Total matched: 92
