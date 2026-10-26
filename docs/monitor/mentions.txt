@@ -18,7 +18,6 @@ OpenFeign/feign#3551
 OpenFeign/feign#3645
 apache/seatunnel#10399
 apache/seatunnel#10779
-apache/seatunnel#10232
 apache/seatunnel#11960
 apache/seatunnel#11829
 apache/seatunnel#12201
@@ -31,6 +30,8 @@ apache/seatunnel#10808
 apache/seatunnel#11639
 apache/seatunnel#11947
 apache/seatunnel#12005
+apache/seatunnel#12151
+apache/seatunnel#12254
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
 checkstyle/checkstyle#20338

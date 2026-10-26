@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-25
+# PR monitor — 2026-10-26
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -29,7 +29,6 @@
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10399 · +1724/-45 · files 28 · comments 13 · [Feature][Zeta] Add compaction support to IMAP external storage
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
-- https://github.com/apache/seatunnel/pull/10232 · +186/-45 · files 14 · comments 18 · [Feature][seatunnel core][seatunnel-flink-start] Filnk engine supports task restore from checkpoint upon startup
 - https://github.com/apache/seatunnel/pull/11960 · +4368/-1059 · files 38 · comments 5 · [Improve][Flink] Replace the local schema coordinator with a checkpointed data-plane protocol
 - https://github.com/apache/seatunnel/pull/11829 · +675/-0 · files 3 · comments 4 · [Feature][CDC][DDL] Add schema evolution timeline design
 - https://github.com/apache/seatunnel/pull/12201 · +1072/-55 · files 11 · comments 0 · [Improve][Zeta] Preserve WAIT queue order across master failover
@@ -42,6 +41,8 @@
 - https://github.com/apache/seatunnel/pull/11639 · +1922/-32 · files 32 · comments 7 · [Improve][Connector-V2] Move Debezium ownership from connector-cdc-base to each CDC connector
 - https://github.com/apache/seatunnel/pull/11947 · +1748/-0 · files 6 · comments 1 · [Test][E2E] Add Zeta CDC cluster failover coverage
 - https://github.com/apache/seatunnel/pull/12005 · +772/-18 · files 11 · comments 1 · [Improve][Connector-V2] Support safe Oracle JDBC range splitting
+- https://github.com/apache/seatunnel/pull/12151 · +564/-25 · files 3 · comments 1 · [Fix][Connector-V2] Unblock split fetcher shutdown
+- https://github.com/apache/seatunnel/pull/12254 · +5354/-5 · files 38 · comments 6 · [Feature][Connector-V2] Add GaussDB CDC connector
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -122,4 +123,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 
-Total matched: 96
+Total matched: 97
