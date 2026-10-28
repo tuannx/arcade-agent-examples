@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-27
+# PR monitor — 2026-10-28
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -43,6 +43,7 @@
 - https://github.com/apache/seatunnel/pull/12005 · +772/-18 · files 11 · comments 1 · [Improve][Connector-V2] Support safe Oracle JDBC range splitting
 - https://github.com/apache/seatunnel/pull/12151 · +564/-25 · files 3 · comments 1 · [Fix][Connector-V2] Unblock split fetcher shutdown
 - https://github.com/apache/seatunnel/pull/12254 · +5354/-5 · files 38 · comments 6 · [Feature][Connector-V2] Add GaussDB CDC connector
+- https://github.com/apache/seatunnel/pull/12498 · +1029/-1 · files 12 · comments 5 · [Improve][Connector-V2] Batch DuckLake JDBC writes through a temporary table
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -123,4 +124,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 
-Total matched: 97
+Total matched: 98

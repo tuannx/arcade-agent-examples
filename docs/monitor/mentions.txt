@@ -32,6 +32,7 @@ apache/seatunnel#11947
 apache/seatunnel#12005
 apache/seatunnel#12151
 apache/seatunnel#12254
+apache/seatunnel#12498
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
 checkstyle/checkstyle#20338
