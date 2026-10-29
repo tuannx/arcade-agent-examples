@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-28
+# PR monitor — 2026-10-29
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -123,5 +123,6 @@
 - https://github.com/apache/tomcat/pull/914 · +762/-77 · files 20 · comments 5 · Add configurable compression
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
+- https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 98
+Total matched: 99

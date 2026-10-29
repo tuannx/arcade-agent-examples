@@ -96,3 +96,4 @@ apache/tomcat#987
 apache/tomcat#914
 apache/tomcat#980
 apache/tomcat#928
+apache/tomcat#1064
