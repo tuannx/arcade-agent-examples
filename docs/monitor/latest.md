@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-29
+# PR monitor — 2026-10-30
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -23,8 +23,8 @@
 - https://github.com/vuejs/core/pull/8701 · +581/-145 · files 9 · comments 1 · feat(keep-alive): allow custom caching strategy
 
 ## OpenFeign/feign
-- https://github.com/OpenFeign/feign/pull/3645 · +1124/-0 · files 14 · comments 0 · feign-kotlin: add non-blocking WebClient AsyncClient and improve coroutine support
 - https://github.com/OpenFeign/feign/pull/3551 · +520/-39 · files 7 · comments 19 · Streaming decoder support2
+- https://github.com/OpenFeign/feign/pull/3645 · +1124/-0 · files 14 · comments 0 · feign-kotlin: add non-blocking WebClient AsyncClient and improve coroutine support
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10399 · +1724/-45 · files 28 · comments 13 · [Feature][Zeta] Add compaction support to IMAP external storage
