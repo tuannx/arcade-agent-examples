@@ -27,12 +27,8 @@ apache/seatunnel#12112
 apache/seatunnel#12308
 apache/seatunnel#12014
 apache/seatunnel#10808
-apache/seatunnel#11639
-apache/seatunnel#11947
-apache/seatunnel#12005
-apache/seatunnel#12151
-apache/seatunnel#12254
 apache/seatunnel#12498
+apache/seatunnel#11215
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
 checkstyle/checkstyle#20338
@@ -71,11 +67,11 @@ apache/iceberg#13306
 apache/iceberg#12070
 apache/iceberg#12868
 apache/iceberg#11317
-apache/iceberg#13694
 apache/iceberg#14101
 apache/iceberg#15595
 apache/iceberg#15101
 apache/iceberg#14800
+apache/iceberg#15830
 aeron-io/aeron#1775
 aeron-io/aeron#1931
 aeron-io/aeron#1994

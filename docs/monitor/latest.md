@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-30
+# PR monitor — 2026-10-31
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -38,12 +38,8 @@
 - https://github.com/apache/seatunnel/pull/12308 · +2028/-166 · files 19 · comments 3 · [Feature][Connector-V2][TiDB-CDC] Support multi-table sync in one source
 - https://github.com/apache/seatunnel/pull/12014 · +2448/-30 · files 56 · comments 12 · [Feature][Connector-V2] Support MySQL-CDC TRUNCATE TABLE as a table-operation event
 - https://github.com/apache/seatunnel/pull/10808 · +2516/-173 · files 54 · comments 33 · [Fix][Zeta] Fix master worker separated cluster routing
-- https://github.com/apache/seatunnel/pull/11639 · +1922/-32 · files 32 · comments 7 · [Improve][Connector-V2] Move Debezium ownership from connector-cdc-base to each CDC connector
-- https://github.com/apache/seatunnel/pull/11947 · +1748/-0 · files 6 · comments 1 · [Test][E2E] Add Zeta CDC cluster failover coverage
-- https://github.com/apache/seatunnel/pull/12005 · +772/-18 · files 11 · comments 1 · [Improve][Connector-V2] Support safe Oracle JDBC range splitting
-- https://github.com/apache/seatunnel/pull/12151 · +564/-25 · files 3 · comments 1 · [Fix][Connector-V2] Unblock split fetcher shutdown
-- https://github.com/apache/seatunnel/pull/12254 · +5354/-5 · files 38 · comments 6 · [Feature][Connector-V2] Add GaussDB CDC connector
 - https://github.com/apache/seatunnel/pull/12498 · +1029/-1 · files 12 · comments 5 · [Improve][Connector-V2] Batch DuckLake JDBC writes through a temporary table
+- https://github.com/apache/seatunnel/pull/11215 · +583/-1 · files 7 · comments 19 · [Feature][Zeta] Add SeaTunnel Engine cluster health and topology metrics
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -90,11 +86,11 @@
 - https://github.com/apache/iceberg/pull/12070 · +896/-42 · files 13 · comments 29 · Kafka Connect: Add delta writer support
 - https://github.com/apache/iceberg/pull/12868 · +14/-18 · files 4 · comments 23 · Spark: Avoid closing deserialized copies of shared resources like FileIO
 - https://github.com/apache/iceberg/pull/11317 · +174/-0 · files 4 · comments 24 · Spark: add property to disable client-side purging in spark
-- https://github.com/apache/iceberg/pull/13694 · +2828/-1063 · files 54 · comments 15 · Core: Introduce content_stats
 - https://github.com/apache/iceberg/pull/14101 · +586/-24 · files 19 · comments 93 · API, Core: Add geospatial predicates and bounding box literals
 - https://github.com/apache/iceberg/pull/15595 · +175/-143 · files 6 · comments 23 · Core: Simplify RESTTableScan by removing catalog internals
 - https://github.com/apache/iceberg/pull/15101 · +15391/-141 · files 90 · comments 7 · Secondary Index metadata handling POC implementation
 - https://github.com/apache/iceberg/pull/14800 · +954/-139 · files 52 · comments 20 · Spark, Arrow, Parquet: Add vectorized read support for parquet v2 encodings 
+- https://github.com/apache/iceberg/pull/15830 · +588/-2 · files 2 · comments 24 · REST Spec: Add resolve endpoint for catalog objects
 
 ## aeron-io/aeron
 - https://github.com/aeron-io/aeron/pull/1775 · +1523/-281 · files 41 · comments 9 · [Java] New term buffer cleanup logic
@@ -125,4 +121,4 @@
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 99
+Total matched: 95
