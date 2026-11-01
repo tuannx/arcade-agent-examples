@@ -7,13 +7,16 @@
   "tool": "arcade-agent 0.4.0 self-analysis (pkg, helper-filtering, ARCADE_MOCK=1)",
   "source_entities": 3339,
   "entities": 642,
-  "edges": 440,
+  "edges": 519,
   "components": 26,
   "smells": [
     {
       "type": "Dependency Cycle",
-      "severity": "low",
+      "severity": "high",
       "components": [
+        "Evaluation",
+        "Reporting",
+        "SourceIdentity",
         "Tier3",
         "Utils"
       ]
@@ -68,10 +71,10 @@
       ]
     }
   ],
-  "rci": 0.5136,
-  "turbo_mq": 7.6933,
-  "balanced_architecture_score": 0.5624,
-  "seconds": 2.6,
+  "rci": 0.4644,
+  "turbo_mq": 6.6751,
+  "balanced_architecture_score": 0.5009,
+  "seconds": 2.0,
   "analysis_json": "skillevaluator_analysis.json",
   "report_html": "skillevaluator.html"
 }

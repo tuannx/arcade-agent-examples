@@ -108,7 +108,7 @@
             <div class="label">Dependencies</div>
         </div>
         <div class="stat-card">
-            <div class="number">36</div>
+            <div class="number">33</div>
             <div class="label">Components</div>
         </div>
         <div class="stat-card">
@@ -116,6 +116,8 @@
             <div class="label">Smells</div>
         </div>
     </div>
+
+        
 
     
 
@@ -141,10 +143,7 @@ graph TD
     Genyamlcustom["Genyamlcustom\n(1 entities)"]
     Genyamltree["Genyamltree\n(1 entities)"]
     Genyamltreecustom["Genyamltreecustom\n(1 entities)"]
-    Byname["Byname\n(1 entities)"]
-    Len["Len\n(1 entities)"]
-    Less["Less\n(1 entities)"]
-    Swap["Swap\n(1 entities)"]
+    Byname["Byname\n(4 entities)"]
     Cmddoc["Cmddoc\n(1 entities)"]
     Cmdoption["Cmdoption\n(1 entities)"]
     Defaultlinkhandler["Defaultlinkhandler\n(1 entities)"]
@@ -201,11 +200,8 @@ graph TD
     Genyamlcustom --> Hasseealso
     Genyamltree --> Genyamltreecustom
     Genyamltreecustom --> Genyamlcustom
-    Len --> Byname
-    Less --> Byname
     Manpreamble --> Genmanheader
     Manprintoptions --> Manprintflags
-    Swap --> Byname
         </pre>
     </div>
 
@@ -373,33 +369,9 @@ graph TD
             <tr>
                 <td><strong>Byname</strong></td>
                 <td>Entities in byName</td>
-                <td>1</td>
+                <td>4</td>
                 
-                <td class="entity-list">doc.byName</td>
-            </tr>
-        
-            <tr>
-                <td><strong>Len</strong></td>
-                <td>Entities in byName.Len</td>
-                <td>1</td>
-                
-                <td class="entity-list">doc.byName.Len</td>
-            </tr>
-        
-            <tr>
-                <td><strong>Less</strong></td>
-                <td>Entities in byName.Less</td>
-                <td>1</td>
-                
-                <td class="entity-list">doc.byName.Less</td>
-            </tr>
-        
-            <tr>
-                <td><strong>Swap</strong></td>
-                <td>Entities in byName.Swap</td>
-                <td>1</td>
-                
-                <td class="entity-list">doc.byName.Swap</td>
+                <td class="entity-list">doc.byName, doc.byName.Len, doc.byName.Less, doc.byName.Swap</td>
             </tr>
         
             <tr>

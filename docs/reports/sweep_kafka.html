@@ -91,7 +91,7 @@
         
         <a href="#diagram">Diagram</a>
         <a href="#components">Components</a>
-        <a href="#smells">Smells (11)</a>
+        <a href="#smells">Smells (8)</a>
         <a href="#dependencies">Dependencies</a>
     </nav>
 
@@ -104,7 +104,7 @@
             <div class="label">Entities</div>
         </div>
         <div class="stat-card">
-            <div class="number">399273</div>
+            <div class="number">63929</div>
             <div class="label">Dependencies</div>
         </div>
         <div class="stat-card">
@@ -112,10 +112,12 @@
             <div class="label">Components</div>
         </div>
         <div class="stat-card">
-            <div class="number">11</div>
+            <div class="number">8</div>
             <div class="label">Smells</div>
         </div>
     </div>
+
+        
 
     
 
@@ -124,12 +126,12 @@
         <pre class="mermaid">
 graph TD
     Default["Default\n(6 entities)"]
-    Docker["Docker\n(925 entities)"]
-    Examples["Examples\n(165 entities)"]
-    Server["Server\n(8 entities)"]
-    Builders["Builders\n(27 entities)"]
-    Share["Share\n(197 entities)"]
-    Kafka["Kafka\n(30122 entities)"]
+    Docker["Docker\n(115 entities)"]
+    Examples["Examples\n(77 entities)"]
+    Server["Server\n(1 entities)"]
+    Builders["Builders\n(22 entities)"]
+    Share["Share\n(97 entities)"]
+    Kafka["Kafka\n(31132 entities)"]
     Builders --> Kafka
     Builders --> Share
     Default --> Docker
@@ -150,7 +152,7 @@ graph TD
     </div>
 
     
-    <div class="rationale">Package-based grouping (depth=3 after common prefix '') with dependency-affinity facade refinement (1083 entities reassigned).</div>
+    <div class="rationale">Package-based grouping (depth=3 after common prefix '') with dependency-affinity facade refinement (287 entities reassigned).</div>
     
 
     <h2 id="components">Components</h2>
@@ -177,55 +179,55 @@ graph TD
             <tr>
                 <td><strong>Docker</strong></td>
                 <td>Entities in kafka.docker</td>
-                <td>925</td>
+                <td>115</td>
                 
-                <td class="entity-list">kafka.docker.Appenders, kafka.docker.Appenders.getProperties, kafka.docker.Appenders.setProperties, kafka.docker.Configuration, kafka.docker.Configuration.getAdditionalProperties, kafka.docker.Configuration.getAppenders, kafka.docker.Configuration.getLoggers, kafka.docker.Configuration.getProperties, ... (+917 more)</td>
+                <td class="entity-list">kafka.docker.Appenders, kafka.docker.Appenders.getProperties, kafka.docker.Appenders.setProperties, kafka.docker.Configuration, kafka.docker.Configuration.getAdditionalProperties, kafka.docker.Configuration.getAppenders, kafka.docker.Configuration.getLoggers, kafka.docker.Configuration.getProperties, ... (+107 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Examples</strong></td>
                 <td>Entities in kafka.examples</td>
-                <td>165</td>
+                <td>77</td>
                 
-                <td class="entity-list">kafka.examples.Consumer, kafka.examples.Consumer.Consumer, kafka.examples.Consumer.createKafkaConsumer, kafka.examples.Consumer.onPartitionsAssigned, kafka.examples.Consumer.onPartitionsLost, kafka.examples.Consumer.onPartitionsRevoked, kafka.examples.Consumer.run, kafka.examples.Consumer.shutdown, ... (+157 more)</td>
+                <td class="entity-list">kafka.examples.Consumer, kafka.examples.Consumer.Consumer, kafka.examples.Consumer.createKafkaConsumer, kafka.examples.Consumer.onPartitionsAssigned, kafka.examples.Consumer.onPartitionsLost, kafka.examples.Consumer.onPartitionsRevoked, kafka.examples.Consumer.run, kafka.examples.Consumer.shutdown, ... (+69 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Server</strong></td>
                 <td>Entities in kafka.server</td>
-                <td>8</td>
+                <td>1</td>
                 
-                <td class="entity-list">kafka.server.TierStateMachine, kafka.server.TierStateMachine.TierStateMachine, kafka.server.TierStateMachine.buildProducerSnapshotFile, kafka.server.TierStateMachine.buildRemoteLogAuxState, kafka.server.TierStateMachine.buildRemoteStorageException, kafka.server.TierStateMachine.fetchEarlierEpochEndOffset, kafka.server.TierStateMachine.readLeaderEpochCheckpoint, kafka.server.TierStateMachine.start</td>
+                <td class="entity-list">kafka.server.TierStateMachine</td>
             </tr>
         
             <tr>
                 <td><strong>Builders</strong></td>
                 <td>Entities in kafka.server.builders</td>
-                <td>27</td>
+                <td>22</td>
                 
-                <td class="entity-list">kafka.server.builders.KafkaApisBuilder, kafka.server.builders.KafkaApisBuilder.build, kafka.server.builders.KafkaApisBuilder.setApiVersionManager, kafka.server.builders.KafkaApisBuilder.setAuthorizerPlugin, kafka.server.builders.KafkaApisBuilder.setAutoTopicCreationManager, kafka.server.builders.KafkaApisBuilder.setBrokerId, kafka.server.builders.KafkaApisBuilder.setBrokerTopicStats, kafka.server.builders.KafkaApisBuilder.setClientMetricsManager, ... (+19 more)</td>
+                <td class="entity-list">kafka.server.builders.KafkaApisBuilder, kafka.server.builders.KafkaApisBuilder.setBrokerId, kafka.server.builders.KafkaApisBuilder.setClusterId, kafka.server.builders.KafkaApisBuilder.setConfig, kafka.server.builders.KafkaApisBuilder.setQuotas, kafka.server.builders.KafkaApisBuilder.setReplicaManager, kafka.server.builders.KafkaApisBuilder.setRequestChannel, kafka.server.builders.KafkaApisBuilder.setTxnCoordinator, ... (+14 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Share</strong></td>
                 <td>Entities in kafka.server.share</td>
-                <td>197</td>
+                <td>97</td>
                 
-                <td class="entity-list">kafka.server.share.DelayedShareFetch, kafka.server.share.DelayedShareFetch.DelayedShareFetch, kafka.server.share.DelayedShareFetch.acquirablePartitions, kafka.server.share.DelayedShareFetch.anyPartitionHasLogReadError, kafka.server.share.DelayedShareFetch.cancelRemoteFetchTask, kafka.server.share.DelayedShareFetch.combineLogReadResponse, kafka.server.share.DelayedShareFetch.completeAsyncRequestWithEmptyResponse, kafka.server.share.DelayedShareFetch.completeErroneousRemoteShareFetchRequest, ... (+189 more)</td>
+                <td class="entity-list">kafka.server.builders.KafkaApisBuilder.setSharePartitionManager, kafka.server.share.DelayedShareFetch, kafka.server.share.DelayedShareFetch.DelayedShareFetch, kafka.server.share.DelayedShareFetch.acquirablePartitions, kafka.server.share.DelayedShareFetch.cancelRemoteFetchTask, kafka.server.share.DelayedShareFetch.completeErroneousRemoteShareFetchRequest, kafka.server.share.DelayedShareFetch.completeRemoteFetchRequest, kafka.server.share.DelayedShareFetch.completeRemoteShareFetchRequestOutsidePurgatory, ... (+89 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Kafka</strong></td>
                 <td>Entities in org.apache.kafka</td>
-                <td>30122</td>
+                <td>31132</td>
                 
-                <td class="entity-list">kafka.examples.ExactlyOnceMessageProcessor, kafka.examples.ExactlyOnceMessageProcessor.ExactlyOnceMessageProcessor, kafka.examples.ExactlyOnceMessageProcessor.close, kafka.examples.ExactlyOnceMessageProcessor.getOffsetsToCommit, kafka.examples.ExactlyOnceMessageProcessor.getRemainingRecords, kafka.examples.ExactlyOnceMessageProcessor.maybeRetry, kafka.examples.ExactlyOnceMessageProcessor.onPartitionsAssigned, kafka.examples.ExactlyOnceMessageProcessor.onPartitionsLost, ... (+30114 more)</td>
+                <td class="entity-list">kafka.examples.ExactlyOnceMessageProcessor.getOffsetsToCommit, kafka.examples.ExactlyOnceMessageProcessor.getRemainingRecords, kafka.examples.Producer.asyncSend, kafka.examples.Utils.printErr, kafka.examples.Utils.printHelp, kafka.examples.Utils.printOut, kafka.server.NetworkUtils, kafka.server.NetworkUtils.buildNetworkClient, ... (+31124 more)</td>
             </tr>
         
         </tbody>
     </table>
 
-    <h2 id="smells">Architectural Smells (11)</h2>
+    <h2 id="smells">Architectural Smells (8)</h2>
     
     
     <div class="smell high">
@@ -239,26 +241,15 @@ graph TD
         <p class="smell-detail"><strong>Affects:</strong> Builders, Docker, Examples, Kafka, Share</p>
     </div>
     
-    <div class="smell medium">
+    <div class="smell low">
         <div class="smell-header">
-            <span class="badge medium">medium</span>
+            <span class="badge low">low</span>
             <strong>SmellType.CONCERN_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Builders contains 27 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Builders into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail">Builders: insufficient coverage for cohesion (java call relations are not fully collected). Observed 22 entities and 0 internal dependencies.</p>
+        <p class="smell-detail"><strong>Why:</strong> Missing internal calls can make a cohesive component appear sparse. This is an analysis limitation; multiple responsibilities have not been established. Import-cycle detection remains available.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Collect and validate call coverage or inspect source responsibilities before deciding whether to split this component.</p>
         <p class="smell-detail"><strong>Affects:</strong> Builders</p>
-    </div>
-    
-    <div class="smell high">
-        <div class="smell-header">
-            <span class="badge high">high</span>
-            <strong>SmellType.CONCERN_OVERLOAD</strong>
-        </div>
-        <p class="smell-detail">Share contains 197 entities but only 0 internal dependencies (0.00 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Share into smaller, focused components with single responsibilities.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Share</p>
     </div>
     
     <div class="smell medium">
@@ -277,32 +268,10 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Exception' pattern is scattered across 3 components: Kafka, Server, Share</p>
-        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Exception'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Kafka, Server, Share</p>
-    </div>
-    
-    <div class="smell medium">
-        <div class="smell-header">
-            <span class="badge medium">medium</span>
-            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
-        </div>
-        <p class="smell-detail">'Handler' pattern is scattered across 3 components: Docker, Kafka, Share</p>
+        <p class="smell-detail">'Handler' pattern is scattered across 3 components: Docker, Examples, Kafka</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Handler'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Docker, Kafka, Share</p>
-    </div>
-    
-    <div class="smell medium">
-        <div class="smell-header">
-            <span class="badge medium">medium</span>
-            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
-        </div>
-        <p class="smell-detail">'Listener' pattern is scattered across 3 components: Docker, Kafka, Share</p>
-        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Listener'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Docker, Kafka, Share</p>
+        <p class="smell-detail"><strong>Affects:</strong> Docker, Examples, Kafka</p>
     </div>
     
     <div class="smell medium">
@@ -321,10 +290,10 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Utils' pattern is scattered across 4 components: Docker, Examples, Kafka, Share</p>
+        <p class="smell-detail">'Utils' pattern is scattered across 3 components: Examples, Kafka, Share</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Docker, Examples, Kafka, Share</p>
+        <p class="smell-detail"><strong>Affects:</strong> Examples, Kafka, Share</p>
     </div>
     
     <div class="smell high">

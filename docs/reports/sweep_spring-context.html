@@ -104,7 +104,7 @@
             <div class="label">Entities</div>
         </div>
         <div class="stat-card">
-            <div class="number">8782</div>
+            <div class="number">2697</div>
             <div class="label">Dependencies</div>
         </div>
         <div class="stat-card">
@@ -117,38 +117,36 @@
         </div>
     </div>
 
+        
+
     
 
     <h2 id="diagram">Architecture Diagram</h2>
     <div class="card">
         <pre class="mermaid">
 graph TD
-    Cache["Cache\n(318 entities)"]
-    Context["Context\n(1330 entities)"]
-    Ejb["Ejb\n(5 entities)"]
-    Format["Format\n(265 entities)"]
-    Instrument["Instrument\n(86 entities)"]
-    Jmx["Jmx\n(423 entities)"]
-    Jndi["Jndi\n(135 entities)"]
-    Resilience["Resilience\n(14 entities)"]
-    Scheduling["Scheduling\n(503 entities)"]
-    Scripting["Scripting\n(118 entities)"]
-    Ui["Ui\n(36 entities)"]
-    Validation["Validation\n(312 entities)"]
+    Cache["Cache\n(362 entities)"]
+    Context["Context\n(1153 entities)"]
+    Ejb["Ejb\n(10 entities)"]
+    Format["Format\n(205 entities)"]
+    Instrument["Instrument\n(74 entities)"]
+    Jmx["Jmx\n(416 entities)"]
+    Jndi["Jndi\n(94 entities)"]
+    Resilience["Resilience\n(30 entities)"]
+    Scheduling["Scheduling\n(572 entities)"]
+    Scripting["Scripting\n(138 entities)"]
+    Ui["Ui\n(31 entities)"]
+    Validation["Validation\n(460 entities)"]
     Cache --> Context
     Context --> Cache
     Context --> Format
     Context --> Instrument
     Context --> Jmx
-    Context --> Resilience
+    Context --> Jndi
     Context --> Scheduling
-    Context --> Scripting
     Context --> Validation
+    Ejb --> Jndi
     Format --> Context
-    Format --> Validation
-    Instrument --> Context
-    Jmx --> Context
-    Jndi --> Ejb
     Jndi --> Scheduling
     Resilience --> Context
     Resilience --> Format
@@ -157,11 +155,12 @@ graph TD
     Scripting --> Context
     Ui --> Validation
     Validation --> Context
+    Validation --> Format
         </pre>
     </div>
 
     
-    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.springframework') with dependency-affinity facade refinement (422 entities reassigned).</div>
+    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.springframework') with dependency-affinity facade refinement (68 entities reassigned).</div>
     
 
     <h2 id="components">Components</h2>
@@ -180,97 +179,97 @@ graph TD
             <tr>
                 <td><strong>Cache</strong></td>
                 <td>Entities in cache</td>
-                <td>318</td>
+                <td>362</td>
                 
-                <td class="entity-list">org.springframework.cache.Cache, org.springframework.cache.Cache.clear, org.springframework.cache.Cache.evict, org.springframework.cache.Cache.evictIfPresent, org.springframework.cache.Cache.get, org.springframework.cache.Cache.getName, org.springframework.cache.Cache.getNativeCache, org.springframework.cache.Cache.invalidate, ... (+310 more)</td>
+                <td class="entity-list">org.springframework.cache.Cache, org.springframework.cache.Cache.clear, org.springframework.cache.Cache.evict, org.springframework.cache.Cache.evictIfPresent, org.springframework.cache.Cache.get, org.springframework.cache.Cache.getName, org.springframework.cache.Cache.getNativeCache, org.springframework.cache.Cache.invalidate, ... (+354 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Context</strong></td>
                 <td>Entities in context</td>
-                <td>1330</td>
+                <td>1153</td>
                 
-                <td class="entity-list">org.springframework.cache.annotation.AbstractCachingConfiguration.setConfigurers, org.springframework.cache.annotation.AbstractCachingConfiguration.setImportMetadata, org.springframework.cache.annotation.AbstractCachingConfiguration.useCachingConfigurer, org.springframework.cache.annotation.CachingConfigurationSelector, org.springframework.cache.annotation.CachingConfigurationSelector.getAspectJImports, org.springframework.cache.annotation.CachingConfigurationSelector.getProxyImports, org.springframework.cache.annotation.CachingConfigurationSelector.selectImports, org.springframework.cache.interceptor.CacheAspectSupport.CacheAspectSupport, ... (+1322 more)</td>
+                <td class="entity-list">org.springframework.cache.annotation.AbstractCachingConfiguration, org.springframework.cache.annotation.CachingConfigurationSelector, org.springframework.cache.annotation.CachingConfigurationSelector.getProxyImports, org.springframework.cache.annotation.CachingConfigurationSelector.selectImports, org.springframework.cache.interceptor.CacheAspectSupport.setBeanFactory, org.springframework.cache.interceptor.CacheOperationExpressionEvaluator.condition, org.springframework.cache.interceptor.CacheOperationExpressionEvaluator.key, org.springframework.cache.interceptor.CacheOperationExpressionEvaluator.unless, ... (+1145 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Ejb</strong></td>
                 <td>Entities in ejb</td>
-                <td>5</td>
+                <td>10</td>
                 
-                <td class="entity-list">org.springframework.ejb.config.AbstractJndiLocatingBeanDefinitionParser, org.springframework.ejb.config.AbstractJndiLocatingBeanDefinitionParser.isEligibleAttribute, org.springframework.ejb.config.AbstractJndiLocatingBeanDefinitionParser.postProcess, org.springframework.ejb.config.JeeNamespaceHandler, org.springframework.ejb.config.JeeNamespaceHandler.init</td>
+                <td class="entity-list">org.springframework.ejb.config.AbstractJndiLocatingBeanDefinitionParser, org.springframework.ejb.config.AbstractJndiLocatingBeanDefinitionParser.isEligibleAttribute, org.springframework.ejb.config.AbstractJndiLocatingBeanDefinitionParser.postProcess, org.springframework.ejb.config.JeeNamespaceHandler, org.springframework.ejb.config.JeeNamespaceHandler.init, org.springframework.ejb.config.JndiLookupBeanDefinitionParser, org.springframework.ejb.config.JndiLookupBeanDefinitionParser.doParse, org.springframework.ejb.config.JndiLookupBeanDefinitionParser.isEligibleAttribute, ... (+2 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Format</strong></td>
                 <td>Entities in format</td>
-                <td>265</td>
+                <td>205</td>
                 
-                <td class="entity-list">org.springframework.format.AnnotationFormatterFactory, org.springframework.format.AnnotationFormatterFactory.getFieldTypes, org.springframework.format.AnnotationFormatterFactory.getParser, org.springframework.format.AnnotationFormatterFactory.getPrinter, org.springframework.format.Formatter, org.springframework.format.FormatterRegistrar, org.springframework.format.FormatterRegistrar.registerFormatters, org.springframework.format.FormatterRegistry, ... (+257 more)</td>
+                <td class="entity-list">org.springframework.format.AnnotationFormatterFactory, org.springframework.format.AnnotationFormatterFactory.getFieldTypes, org.springframework.format.AnnotationFormatterFactory.getParser, org.springframework.format.AnnotationFormatterFactory.getPrinter, org.springframework.format.Formatter, org.springframework.format.FormatterRegistrar, org.springframework.format.FormatterRegistrar.registerFormatters, org.springframework.format.FormatterRegistry, ... (+197 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Instrument</strong></td>
                 <td>Entities in instrument</td>
-                <td>86</td>
+                <td>74</td>
                 
-                <td class="entity-list">org.springframework.context.annotation.LoadTimeWeavingConfigurer, org.springframework.context.annotation.LoadTimeWeavingConfigurer.getLoadTimeWeaver, org.springframework.context.weaving.AspectJWeavingEnabler.enableAspectJWeaving, org.springframework.context.weaving.AspectJWeavingEnabler.getOrder, org.springframework.context.weaving.AspectJWeavingEnabler.postProcessBeanFactory, org.springframework.context.weaving.AspectJWeavingEnabler.setBeanClassLoader, org.springframework.context.weaving.AspectJWeavingEnabler.setLoadTimeWeaver, org.springframework.context.weaving.DefaultContextLoadTimeWeaver.DefaultContextLoadTimeWeaver, ... (+78 more)</td>
+                <td class="entity-list">org.springframework.context.annotation.LoadTimeWeavingConfigurer.getLoadTimeWeaver, org.springframework.context.weaving.AspectJWeavingEnabler.enableAspectJWeaving, org.springframework.context.weaving.AspectJWeavingEnabler.setLoadTimeWeaver, org.springframework.context.weaving.DefaultContextLoadTimeWeaver.createServerSpecificLoadTimeWeaver, org.springframework.context.weaving.DefaultContextLoadTimeWeaver.destroy, org.springframework.context.weaving.DefaultContextLoadTimeWeaver.setBeanClassLoader, org.springframework.context.weaving.LoadTimeWeaverAware.setLoadTimeWeaver, org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver, ... (+66 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Jmx</strong></td>
                 <td>Entities in jmx</td>
-                <td>423</td>
+                <td>416</td>
                 
-                <td class="entity-list">org.springframework.context.annotation.MBeanExportConfiguration.mbeanExporter, org.springframework.context.annotation.MBeanExportConfiguration.setBeanFactory, org.springframework.context.annotation.MBeanExportConfiguration.setEnvironment, org.springframework.context.annotation.MBeanExportConfiguration.setImportMetadata, org.springframework.context.annotation.MBeanExportConfiguration.setupDomain, org.springframework.context.annotation.MBeanExportConfiguration.setupRegistrationPolicy, org.springframework.context.annotation.MBeanExportConfiguration.setupServer, org.springframework.context.config.MBeanExportBeanDefinitionParser, ... (+415 more)</td>
+                <td class="entity-list">org.springframework.context.annotation.MBeanExportConfiguration.mbeanExporter, org.springframework.context.annotation.MBeanExportConfiguration.setupDomain, org.springframework.context.annotation.MBeanExportConfiguration.setupRegistrationPolicy, org.springframework.context.annotation.MBeanExportConfiguration.setupServer, org.springframework.context.config.MBeanExportBeanDefinitionParser.parseInternal, org.springframework.context.config.MBeanServerBeanDefinitionParser.parseInternal, org.springframework.jmx.JmxException, org.springframework.jmx.JmxException.JmxException, ... (+408 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Jndi</strong></td>
                 <td>Entities in jndi</td>
-                <td>135</td>
+                <td>94</td>
                 
-                <td class="entity-list">org.springframework.context.annotation.CommonAnnotationBeanPostProcessor, org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.CommonAnnotationBeanPostProcessor, org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource, org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.buildLazyResourceProxy, org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.buildResourceMetadata, org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.findResourceMetadata, org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getAutowireCandidateResolver, org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getInjectedElements, ... (+127 more)</td>
+                <td class="entity-list">org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.CommonAnnotationBeanPostProcessor, org.springframework.ejb.config.JndiLookupBeanDefinitionParser.getBeanClass, org.springframework.ejb.config.LocalStatelessSessionBeanDefinitionParser.getBeanClass, org.springframework.ejb.config.LocalStatelessSessionBeanDefinitionParser.isEligibleAttribute, org.springframework.ejb.config.RemoteStatelessSessionBeanDefinitionParser.getBeanClass, org.springframework.ejb.config.RemoteStatelessSessionBeanDefinitionParser.isEligibleAttribute, org.springframework.jndi.JndiAccessor, org.springframework.jndi.JndiAccessor.getJndiEnvironment, ... (+86 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Resilience</strong></td>
                 <td>Entities in resilience</td>
-                <td>14</td>
+                <td>30</td>
                 
-                <td class="entity-list">org.springframework.resilience.InvocationRejectedException, org.springframework.resilience.InvocationRejectedException.InvocationRejectedException, org.springframework.resilience.InvocationRejectedException.getTarget, org.springframework.resilience.annotation.RetryAnnotationBeanPostProcessor, org.springframework.resilience.annotation.RetryAnnotationBeanPostProcessor.RetryAnnotationBeanPostProcessor, org.springframework.resilience.annotation.RetryAnnotationBeanPostProcessor.setApplicationEventPublisher, org.springframework.resilience.annotation.RetryAnnotationBeanPostProcessor.setEmbeddedValueResolver, org.springframework.resilience.retry.AbstractRetryInterceptor, ... (+6 more)</td>
+                <td class="entity-list">org.springframework.resilience.InvocationRejectedException, org.springframework.resilience.InvocationRejectedException.InvocationRejectedException, org.springframework.resilience.InvocationRejectedException.getTarget, org.springframework.resilience.annotation.ConcurrencyLimitBeanPostProcessor, org.springframework.resilience.annotation.ConcurrencyLimitBeanPostProcessor.ConcurrencyLimitBeanPostProcessor, org.springframework.resilience.annotation.ConcurrencyLimitBeanPostProcessor.setEmbeddedValueResolver, org.springframework.resilience.annotation.ResilientMethodsConfiguration, org.springframework.resilience.annotation.ResilientMethodsConfiguration.concurrencyLimitAdvisor, ... (+22 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Scheduling</strong></td>
                 <td>Entities in scheduling</td>
-                <td>503</td>
+                <td>572</td>
                 
-                <td class="entity-list">org.springframework.scheduling.SchedulingAwareRunnable, org.springframework.scheduling.SchedulingAwareRunnable.getQualifier, org.springframework.scheduling.SchedulingAwareRunnable.isLongLived, org.springframework.scheduling.SchedulingException, org.springframework.scheduling.SchedulingException.SchedulingException, org.springframework.scheduling.SchedulingTaskExecutor, org.springframework.scheduling.SchedulingTaskExecutor.prefersShortLivedTasks, org.springframework.scheduling.TaskScheduler, ... (+495 more)</td>
+                <td class="entity-list">org.springframework.scheduling.SchedulingAwareRunnable, org.springframework.scheduling.SchedulingAwareRunnable.getQualifier, org.springframework.scheduling.SchedulingAwareRunnable.isLongLived, org.springframework.scheduling.SchedulingException, org.springframework.scheduling.SchedulingException.SchedulingException, org.springframework.scheduling.SchedulingTaskExecutor, org.springframework.scheduling.SchedulingTaskExecutor.prefersShortLivedTasks, org.springframework.scheduling.TaskScheduler, ... (+564 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Scripting</strong></td>
                 <td>Entities in scripting</td>
-                <td>118</td>
+                <td>138</td>
                 
-                <td class="entity-list">org.springframework.scripting.ScriptCompilationException, org.springframework.scripting.ScriptCompilationException.ScriptCompilationException, org.springframework.scripting.ScriptCompilationException.getScriptSource, org.springframework.scripting.ScriptEvaluator, org.springframework.scripting.ScriptEvaluator.evaluate, org.springframework.scripting.ScriptFactory, org.springframework.scripting.ScriptFactory.getScriptInterfaces, org.springframework.scripting.ScriptFactory.getScriptSourceLocator, ... (+110 more)</td>
+                <td class="entity-list">org.springframework.scripting.ScriptCompilationException, org.springframework.scripting.ScriptCompilationException.ScriptCompilationException, org.springframework.scripting.ScriptCompilationException.getScriptSource, org.springframework.scripting.ScriptEvaluator, org.springframework.scripting.ScriptEvaluator.evaluate, org.springframework.scripting.ScriptFactory, org.springframework.scripting.ScriptFactory.getScriptInterfaces, org.springframework.scripting.ScriptFactory.getScriptSourceLocator, ... (+130 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Ui</strong></td>
                 <td>Entities in ui</td>
-                <td>36</td>
+                <td>31</td>
                 
-                <td class="entity-list">org.springframework.ui.ConcurrentModel, org.springframework.ui.ConcurrentModel.ConcurrentModel, org.springframework.ui.ConcurrentModel.addAllAttributes, org.springframework.ui.ConcurrentModel.addAttribute, org.springframework.ui.ConcurrentModel.asMap, org.springframework.ui.ConcurrentModel.containsAttribute, org.springframework.ui.ConcurrentModel.getAttribute, org.springframework.ui.ConcurrentModel.mergeAttributes, ... (+28 more)</td>
+                <td class="entity-list">org.springframework.ui.ConcurrentModel, org.springframework.ui.ConcurrentModel.ConcurrentModel, org.springframework.ui.ConcurrentModel.addAllAttributes, org.springframework.ui.ConcurrentModel.addAttribute, org.springframework.ui.ConcurrentModel.asMap, org.springframework.ui.ConcurrentModel.containsAttribute, org.springframework.ui.ConcurrentModel.getAttribute, org.springframework.ui.ConcurrentModel.mergeAttributes, ... (+23 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Validation</strong></td>
                 <td>Entities in validation</td>
-                <td>312</td>
+                <td>460</td>
                 
-                <td class="entity-list">org.springframework.validation.AbstractBindingResult, org.springframework.validation.AbstractBindingResult.AbstractBindingResult, org.springframework.validation.AbstractBindingResult.addAllErrors, org.springframework.validation.AbstractBindingResult.addError, org.springframework.validation.AbstractBindingResult.equals, org.springframework.validation.AbstractBindingResult.findEditor, org.springframework.validation.AbstractBindingResult.formatFieldValue, org.springframework.validation.AbstractBindingResult.getActualFieldValue, ... (+304 more)</td>
+                <td class="entity-list">org.springframework.validation.AbstractBindingResult, org.springframework.validation.AbstractBindingResult.AbstractBindingResult, org.springframework.validation.AbstractBindingResult.addAllErrors, org.springframework.validation.AbstractBindingResult.addError, org.springframework.validation.AbstractBindingResult.equals, org.springframework.validation.AbstractBindingResult.findEditor, org.springframework.validation.AbstractBindingResult.formatFieldValue, org.springframework.validation.AbstractBindingResult.getActualFieldValue, ... (+452 more)</td>
             </tr>
         
         </tbody>
@@ -284,20 +283,20 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.DEPENDENCY_CYCLE</strong>
         </div>
-        <p class="smell-detail">Circular dependency among 9 components: Cache <-> Context <-> Format <-> Instrument <-> Jmx <-> Resilience <-> Scheduling <-> Scripting <-> Validation</p>
+        <p class="smell-detail">Circular dependency among 6 components: Cache <-> Context <-> Format <-> Jndi <-> Scheduling <-> Validation</p>
         <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
         <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
-        <p class="smell-detail"><strong>Affects:</strong> Cache, Context, Format, Instrument, Jmx, Resilience, Scheduling, Scripting, Validation</p>
+        <p class="smell-detail"><strong>Affects:</strong> Cache, Context, Format, Jndi, Scheduling, Validation</p>
     </div>
     
-    <div class="smell medium">
+    <div class="smell low">
         <div class="smell-header">
-            <span class="badge medium">medium</span>
+            <span class="badge low">low</span>
             <strong>SmellType.CONCERN_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Ui contains 36 entities but only 12 internal dependencies (0.33 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Ui into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail">Ui: insufficient coverage for cohesion (java call relations are not fully collected). Observed 31 entities and 10 internal dependencies.</p>
+        <p class="smell-detail"><strong>Why:</strong> Missing internal calls can make a cohesive component appear sparse. This is an analysis limitation; multiple responsibilities have not been established. Import-cycle detection remains available.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Collect and validate call coverage or inspect source responsibilities before deciding whether to split this component.</p>
         <p class="smell-detail"><strong>Affects:</strong> Ui</p>
     </div>
     
@@ -312,15 +311,15 @@ graph TD
         <p class="smell-detail"><strong>Affects:</strong> Context, Format, Validation</p>
     </div>
     
-    <div class="smell medium">
+    <div class="smell high">
         <div class="smell-header">
-            <span class="badge medium">medium</span>
+            <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Configuration' pattern is scattered across 4 components: Cache, Context, Scheduling, Scripting</p>
+        <p class="smell-detail">'Configuration' pattern is scattered across 6 components: Cache, Context, Resilience, Scheduling, Scripting, Validation</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Configuration'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Cache, Context, Scheduling, Scripting</p>
+        <p class="smell-detail"><strong>Affects:</strong> Cache, Context, Resilience, Scheduling, Scripting, Validation</p>
     </div>
     
     <div class="smell high">
@@ -339,10 +338,10 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Factory' pattern is scattered across 9 components: Cache, Context, Format, Instrument, Jmx, Jndi, Scheduling, Scripting, Validation</p>
+        <p class="smell-detail">'Factory' pattern is scattered across 8 components: Cache, Context, Format, Jmx, Jndi, Scheduling, Scripting, Validation</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Factory'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Cache, Context, Format, Instrument, Jmx, Jndi, Scheduling, Scripting, Validation</p>
+        <p class="smell-detail"><strong>Affects:</strong> Cache, Context, Format, Jmx, Jndi, Scheduling, Scripting, Validation</p>
     </div>
     
     <div class="smell high">
@@ -361,10 +360,10 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Manager' pattern is scattered across 3 components: Cache, Context, Jmx</p>
+        <p class="smell-detail">'Provider' pattern is scattered across 3 components: Context, Jndi, Validation</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Manager'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Cache, Context, Jmx</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Provider'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Context, Jndi, Validation</p>
     </div>
     
     <div class="smell medium">
@@ -372,10 +371,10 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Provider' pattern is scattered across 3 components: Context, Jndi, Validation</p>
+        <p class="smell-detail">'Service' pattern is scattered across 3 components: Context, Format, Validation</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Provider'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Context, Jndi, Validation</p>
+        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Service'-related functionality into a dedicated component to reduce scattering.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Context, Format, Validation</p>
     </div>
     
     <div class="smell high">
@@ -394,7 +393,7 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.LINK_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Context is depended on by 8 other components (73% of all components).</p>
+        <p class="smell-detail">Context is depended on by 6 other components (55% of all components).</p>
         <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
         <p class="smell-detail"><strong>Fix:</strong> Consider splitting Context into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
         <p class="smell-detail"><strong>Affects:</strong> Context</p>

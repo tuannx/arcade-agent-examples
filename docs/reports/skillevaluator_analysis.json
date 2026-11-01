@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-10-09T19:59:16.635848+00:00",
+  "timestamp": "2026-11-01T03:26:36.869311+00:00",
   "repo_name": "SkillEvaluator",
   "language": "python",
   "languages": [
     "python"
   ],
-  "commit_sha": "local",
-  "ref": "local",
+  "commit_sha": "0b685eb8c31dc1a40fa01fc5d026fd1cc30de255",
+  "ref": "refs/heads/main",
   "algorithm": "pkg",
   "num_components": 26,
   "num_entities": 642,
-  "num_edges": 440,
+  "num_edges": 519,
   "source_num_entities": 3339,
   "class_count": 225,
   "function_count": 2222,
@@ -28,6 +28,10 @@
     },
     {
       "source": "Cli",
+      "target": "Constants"
+    },
+    {
+      "source": "Cli",
       "target": "LoggingConfig"
     },
     {
@@ -41,6 +45,10 @@
     {
       "source": "Cli",
       "target": "Utils"
+    },
+    {
+      "source": "Deduplication",
+      "target": "Constants"
     },
     {
       "source": "Deduplication",
@@ -64,7 +72,15 @@
     },
     {
       "source": "Embedding",
+      "target": "Constants"
+    },
+    {
+      "source": "Embedding",
       "target": "Deduplication"
+    },
+    {
+      "source": "Embedding",
+      "target": "Models"
     },
     {
       "source": "Embedding",
@@ -75,8 +91,24 @@
       "target": "Utils"
     },
     {
+      "source": "Evaluation",
+      "target": "Constants"
+    },
+    {
+      "source": "Evaluation",
+      "target": "Inference"
+    },
+    {
+      "source": "Evaluation",
+      "target": "SourceIdentity"
+    },
+    {
       "source": "Evidence",
       "target": "Reporting"
+    },
+    {
+      "source": "Inference",
+      "target": "Constants"
     },
     {
       "source": "Inference",
@@ -91,12 +123,28 @@
       "target": "ProviderConfig"
     },
     {
+      "source": "Models",
+      "target": "Constants"
+    },
+    {
+      "source": "Reporting",
+      "target": "Constants"
+    },
+    {
+      "source": "Reporting",
+      "target": "SourceIdentity"
+    },
+    {
       "source": "Reporting",
       "target": "Utils"
     },
     {
       "source": "SourceIdentity",
       "target": "Reporting"
+    },
+    {
+      "source": "Tier1",
+      "target": "Constants"
     },
     {
       "source": "Tier1",
@@ -113,6 +161,10 @@
     {
       "source": "Tier1",
       "target": "Validators"
+    },
+    {
+      "source": "Tier2",
+      "target": "Constants"
     },
     {
       "source": "Tier2",
@@ -164,7 +216,15 @@
     },
     {
       "source": "Validators",
+      "target": "Constants"
+    },
+    {
+      "source": "Validators",
       "target": "Embedding"
+    },
+    {
+      "source": "Validators",
+      "target": "Inference"
     },
     {
       "source": "Validators",
@@ -221,19 +281,16 @@
     {
       "name": "CliCore",
       "responsibility": "Entities in cli_core",
-      "num_entities": 5,
+      "num_entities": 2,
       "class_count": 0,
-      "function_count": 5,
+      "function_count": 2,
       "method_count": 0,
       "entity_kind_counts": {
-        "function": 5
+        "function": 2
       },
       "entities": [
-        "skillevaluator.cli_core.detect_content_type",
-        "skillevaluator.cli_core.resolve_plugin_path",
         "skillevaluator.cli_core.resolve_rules_path",
-        "skillevaluator.cli_core.resolve_skill_path",
-        "skillevaluator.cli_core.resolve_workflows_path"
+        "skillevaluator.cli_core.resolve_skill_path"
       ]
     },
     {
@@ -274,27 +331,38 @@
     {
       "name": "Constants",
       "responsibility": "Entities in constants",
-      "num_entities": 1,
-      "class_count": 1,
-      "function_count": 0,
-      "method_count": 0,
+      "num_entities": 10,
+      "class_count": 2,
+      "function_count": 8,
+      "method_count": 2,
       "entity_kind_counts": {
-        "class": 1
+        "class": 2,
+        "function": 8,
+        "method": 2
       },
       "entities": [
-        "skillevaluator.constants.ExitCode"
+        "skillevaluator.cli_core.detect_content_type",
+        "skillevaluator.cli_core.resolve_plugin_path",
+        "skillevaluator.cli_core.resolve_workflows_path",
+        "skillevaluator.constants.ExitCode",
+        "skillevaluator.embedding.extractor._ExtractionBudget",
+        "skillevaluator.evaluation.dimension_judge.compute_dimensions_deterministic",
+        "skillevaluator.models.quality.score_to_grade",
+        "skillevaluator.utils.helpers.find_bundled_plugin_skills",
+        "skillevaluator.utils.helpers.find_skills_in_directory",
+        "skillevaluator.validators.workflows_schema.parse_workflows_manifest"
       ]
     },
     {
       "name": "Deduplication",
       "responsibility": "Entities in deduplication",
-      "num_entities": 21,
+      "num_entities": 19,
       "class_count": 9,
-      "function_count": 12,
+      "function_count": 10,
       "method_count": 17,
       "entity_kind_counts": {
         "class": 9,
-        "function": 12,
+        "function": 10,
         "method": 17
       },
       "entities": [
@@ -316,22 +384,20 @@
         "skillevaluator.deduplication.utils.skill_collector._SecureReadError",
         "skillevaluator.deduplication.utils.skill_collector._SecureRoot",
         "skillevaluator.deduplication.utils.skill_collector.collect_files",
-        "skillevaluator.embedding.extractor.extract_from_rule",
-        "skillevaluator.embedding.extractor.extract_from_workflow",
         "skillevaluator.tier2.commands.run_context_optimization_check"
       ]
     },
     {
       "name": "Embedding",
       "responsibility": "Entities in embedding",
-      "num_entities": 15,
-      "class_count": 8,
-      "function_count": 7,
-      "method_count": 23,
+      "num_entities": 17,
+      "class_count": 7,
+      "function_count": 10,
+      "method_count": 21,
       "entity_kind_counts": {
-        "class": 8,
-        "function": 7,
-        "method": 23
+        "class": 7,
+        "function": 10,
+        "method": 21
       },
       "entities": [
         "skillevaluator.embedding.client.EmbeddingClient",
@@ -340,32 +406,35 @@
         "skillevaluator.embedding.client.unit_vector_similarity",
         "skillevaluator.embedding.client.validate_embedding_vector",
         "skillevaluator.embedding.extractor.ContentEntry",
-        "skillevaluator.embedding.extractor._ExtractionBudget",
         "skillevaluator.embedding.extractor.discover_and_extract",
+        "skillevaluator.embedding.extractor.extract_from_rule",
         "skillevaluator.embedding.extractor.extract_from_skill",
+        "skillevaluator.embedding.extractor.extract_from_workflow",
         "skillevaluator.embedding.limits.validate_max_entries",
         "skillevaluator.embedding.limits.validate_max_scalar_comparisons",
         "skillevaluator.embedding.registry.EmbeddingRegistry",
         "skillevaluator.embedding.registry.RegistryEntry",
         "skillevaluator.embedding.registry.SimilarityMatch",
-        "skillevaluator.embedding.registry._DuplicateCatalogKeyError"
+        "skillevaluator.embedding.registry._DuplicateCatalogKeyError",
+        "skillevaluator.embedding.registry.classify"
       ]
     },
     {
       "name": "Evaluation",
       "responsibility": "Entities in evaluation",
-      "num_entities": 14,
-      "class_count": 6,
+      "num_entities": 16,
+      "class_count": 8,
       "function_count": 8,
-      "method_count": 11,
+      "method_count": 19,
       "entity_kind_counts": {
-        "class": 6,
+        "class": 8,
         "function": 8,
-        "method": 11
+        "method": 19
       },
       "entities": [
+        "skillevaluator.evaluation.dimension_judge.DimensionJudge",
         "skillevaluator.evaluation.dimension_judge.compute_dimensions",
-        "skillevaluator.evaluation.dimension_judge.compute_dimensions_deterministic",
+        "skillevaluator.evaluation.insights_judge.InsightsJudge",
         "skillevaluator.evaluation.insights_judge.build_insights",
         "skillevaluator.evaluation.options.DatasetOptions",
         "skillevaluator.evaluation.options.EvaluationOptions",
@@ -375,6 +444,7 @@
         "skillevaluator.evaluation.tier3_report._ReportBudget",
         "skillevaluator.evaluation.tier3_report.agent_eval_result_from_directory",
         "skillevaluator.evaluation.tier3_report.agent_eval_result_from_run",
+        "skillevaluator.evaluation.tier3_report.build_agent_eval_payload",
         "skillevaluator.evaluation.tier3_report.render_agent_eval_html_report",
         "skillevaluator.tier3.commands.create_dataset",
         "skillevaluator.tier3.generate_dataset.main"
@@ -400,18 +470,16 @@
     {
       "name": "Inference",
       "responsibility": "Entities in inference",
-      "num_entities": 21,
-      "class_count": 10,
+      "num_entities": 18,
+      "class_count": 7,
       "function_count": 11,
-      "method_count": 40,
+      "method_count": 28,
       "entity_kind_counts": {
-        "class": 10,
+        "class": 7,
         "function": 11,
-        "method": 40
+        "method": 28
       },
       "entities": [
-        "skillevaluator.evaluation.dimension_judge.DimensionJudge",
-        "skillevaluator.evaluation.insights_judge.InsightsJudge",
         "skillevaluator.inference.client.LLMClient",
         "skillevaluator.inference.client.SchemaTargetKey",
         "skillevaluator.inference.diagnostics.llm_failure_diagnostic",
@@ -429,8 +497,7 @@
         "skillevaluator.inference.types.EmptyLLMResponseError",
         "skillevaluator.inference.types.LLMClientError",
         "skillevaluator.inference.types.LLMVerdict",
-        "skillevaluator.tier3.eval_core.llm_judge.call_public_llm",
-        "skillevaluator.validators.rubric_eval.RubricJudge"
+        "skillevaluator.tier3.eval_core.llm_judge.call_public_llm"
       ]
     },
     {
@@ -454,14 +521,14 @@
     {
       "name": "ModelCatalog",
       "responsibility": "Entities in model_catalog",
-      "num_entities": 16,
-      "class_count": 11,
+      "num_entities": 18,
+      "class_count": 13,
       "function_count": 5,
-      "method_count": 19,
+      "method_count": 20,
       "entity_kind_counts": {
-        "class": 11,
+        "class": 13,
         "function": 5,
-        "method": 19
+        "method": 20
       },
       "entities": [
         "skillevaluator.model_catalog.CatalogModel",
@@ -469,8 +536,10 @@
         "skillevaluator.model_catalog.ModelCatalogFailureKind",
         "skillevaluator.model_catalog.ModelRecord",
         "skillevaluator.model_catalog._DeadlineConnectionMixin",
+        "skillevaluator.model_catalog._DeadlineHTTPConnection",
         "skillevaluator.model_catalog._DeadlineHTTPHandler",
         "skillevaluator.model_catalog._DeadlineHTTPResponse",
+        "skillevaluator.model_catalog._DeadlineHTTPSConnection",
         "skillevaluator.model_catalog._DeadlineHTTPSHandler",
         "skillevaluator.model_catalog._DeadlineResponseSocket",
         "skillevaluator.model_catalog._DeadlineSocketRaw",
@@ -499,17 +568,16 @@
     {
       "name": "Models",
       "responsibility": "Entities in models",
-      "num_entities": 31,
+      "num_entities": 29,
       "class_count": 24,
-      "function_count": 7,
+      "function_count": 5,
       "method_count": 74,
       "entity_kind_counts": {
         "class": 24,
-        "function": 7,
+        "function": 5,
         "method": 74
       },
       "entities": [
-        "skillevaluator.embedding.registry.classify",
         "skillevaluator.evaluation.tier3_report.advisory_skip_result",
         "skillevaluator.evaluation.tier3_report.dataset_required_result",
         "skillevaluator.models.field_validators.ensure_string_list",
@@ -522,7 +590,6 @@
         "skillevaluator.models.quality.QualityDimension",
         "skillevaluator.models.quality.QualityIssue",
         "skillevaluator.models.quality.QualityScoreResult",
-        "skillevaluator.models.quality.score_to_grade",
         "skillevaluator.models.result.Finding",
         "skillevaluator.models.result.Severity",
         "skillevaluator.models.result.SuccessDetail",
@@ -564,14 +631,14 @@
     {
       "name": "Reporting",
       "responsibility": "Entities in reporting",
-      "num_entities": 35,
-      "class_count": 12,
+      "num_entities": 36,
+      "class_count": 13,
       "function_count": 23,
-      "method_count": 82,
+      "method_count": 97,
       "entity_kind_counts": {
-        "class": 12,
+        "class": 13,
         "function": 23,
-        "method": 82
+        "method": 97
       },
       "entities": [
         "skillevaluator.reporting.base.ReporterBase",
@@ -579,6 +646,7 @@
         "skillevaluator.reporting.base.additional_errors",
         "skillevaluator.reporting.base.is_advisory_agent_eval_skip",
         "skillevaluator.reporting.base.passes_required_gate",
+        "skillevaluator.reporting.benchmark.BenchmarkReporter",
         "skillevaluator.reporting.cli.CLIReporter",
         "skillevaluator.reporting.console_ui.TierBlock",
         "skillevaluator.reporting.console_ui.TierRow",
@@ -614,18 +682,16 @@
     {
       "name": "SourceIdentity",
       "responsibility": "Entities in source_identity",
-      "num_entities": 11,
-      "class_count": 3,
-      "function_count": 8,
-      "method_count": 22,
+      "num_entities": 9,
+      "class_count": 2,
+      "function_count": 7,
+      "method_count": 7,
       "entity_kind_counts": {
-        "class": 3,
-        "function": 8,
-        "method": 22
+        "class": 2,
+        "function": 7,
+        "method": 7
       },
       "entities": [
-        "skillevaluator.evaluation.tier3_report.build_agent_eval_payload",
-        "skillevaluator.reporting.benchmark.BenchmarkReporter",
         "skillevaluator.reporting.json_reporter.JSONReporter",
         "skillevaluator.source_identity.EvaluatedSourceConflict",
         "skillevaluator.source_identity.evaluated_source_carriers",
@@ -691,19 +757,17 @@
     {
       "name": "Tier3",
       "responsibility": "Entities in tier3",
-      "num_entities": 333,
-      "class_count": 99,
+      "num_entities": 331,
+      "class_count": 97,
       "function_count": 233,
-      "method_count": 300,
+      "method_count": 299,
       "entity_kind_counts": {
-        "class": 99,
+        "class": 97,
         "function": 233,
-        "method": 300,
+        "method": 299,
         "module": 1
       },
       "entities": [
-        "skillevaluator.model_catalog._DeadlineHTTPConnection",
-        "skillevaluator.model_catalog._DeadlineHTTPSConnection",
         "skillevaluator.tier3.case_ids.safe_child",
         "skillevaluator.tier3.case_ids.validate_case_id",
         "skillevaluator.tier3.case_ids.validate_case_ids",
@@ -1087,13 +1151,13 @@
     {
       "name": "Utils",
       "responsibility": "Entities in utils",
-      "num_entities": 37,
+      "num_entities": 35,
       "class_count": 6,
-      "function_count": 31,
+      "function_count": 29,
       "method_count": 13,
       "entity_kind_counts": {
         "class": 6,
-        "function": 31,
+        "function": 29,
         "method": 13
       },
       "entities": [
@@ -1102,8 +1166,6 @@
         "skillevaluator.tier3.harbor.adapter.prebuild_task_environments",
         "skillevaluator.tier3.output_provenance.write_output_file_atomically",
         "skillevaluator.tier_workflows.require_skill",
-        "skillevaluator.utils.helpers.find_bundled_plugin_skills",
-        "skillevaluator.utils.helpers.find_skills_in_directory",
         "skillevaluator.utils.helpers.get_skill_name_from_path",
         "skillevaluator.utils.helpers.make_timestamped_basename",
         "skillevaluator.utils.helpers.resolve_git_remote_url",
@@ -1140,13 +1202,13 @@
       "name": "Validators",
       "responsibility": "Entities in validators",
       "num_entities": 44,
-      "class_count": 26,
-      "function_count": 18,
-      "method_count": 264,
+      "class_count": 27,
+      "function_count": 17,
+      "method_count": 268,
       "entity_kind_counts": {
-        "class": 26,
-        "function": 18,
-        "method": 264
+        "class": 27,
+        "function": 17,
+        "method": 268
       },
       "entities": [
         "skillevaluator.tier_workflows.run_tier1_workflow",
@@ -1179,6 +1241,7 @@
         "skillevaluator.validators.policy.resolve_policy",
         "skillevaluator.validators.quality_score.QualityScoreValidator",
         "skillevaluator.validators.rubric_eval.RubricEvalValidator",
+        "skillevaluator.validators.rubric_eval.RubricJudge",
         "skillevaluator.validators.rubric_eval._UnavailableRubricReport",
         "skillevaluator.validators.rubric_eval._UnsafeRubricInputError",
         "skillevaluator.validators.rules_schema.RulesSchemaValidator",
@@ -1191,56 +1254,55 @@
         "skillevaluator.validators.similarity.SimilarityValidator",
         "skillevaluator.validators.unicode_smuggle.UnicodeSmuggleValidator",
         "skillevaluator.validators.version.VersionValidator",
-        "skillevaluator.validators.workflows_schema.WorkflowsSchemaValidator",
-        "skillevaluator.validators.workflows_schema.parse_workflows_manifest"
+        "skillevaluator.validators.workflows_schema.WorkflowsSchemaValidator"
       ]
     }
   ],
   "metrics": {
-    "RCI": 0.5136,
-    "TurboMQ": 7.6933,
-    "BasicMQ": 0.2959,
-    "IntraConnectivity": 0.0561,
-    "InterConnectivity": 0.059,
-    "TwoWayPairRatio": 0.0541
+    "RCI": 0.4644,
+    "TurboMQ": 6.6751,
+    "BasicMQ": 0.2567,
+    "IntraConnectivity": 0.0589,
+    "InterConnectivity": 0.0474,
+    "TwoWayPairRatio": 0.0588
   },
   "derived_metrics": {
-    "DependencyHealth": 0.9432,
-    "ComponentBalance": 0.2684,
-    "HubBalance": 0.68,
-    "BoundaryClarity": 0.98,
-    "DependencyDistribution": 0.5464,
-    "SmellDiscipline": 0.6615,
-    "PrincipleAlignmentScore": 0.7918,
-    "BalancedArchitectureScore": 0.5624
+    "DependencyHealth": 0.9475,
+    "ComponentBalance": 0.2771,
+    "HubBalance": 0.6,
+    "BoundaryClarity": 0.9708,
+    "DependencyDistribution": 0.5833,
+    "SmellDiscipline": 0.4923,
+    "PrincipleAlignmentScore": 0.7496,
+    "BalancedArchitectureScore": 0.5009
   },
   "principle_signals": {
-    "AcyclicDependencies": 0.9077,
-    "LayeringHealth": 0.9343,
+    "AcyclicDependencies": 0.7385,
+    "LayeringHealth": 0.8952,
     "ResponsibilityFocus": 0.7538,
     "InterfaceSegregation": 1.0,
-    "ComponentBalance": 0.2684,
-    "HubBalance": 0.68,
-    "BoundaryClarity": 0.98,
-    "DependencyDistribution": 0.5464,
-    "SmellDiscipline": 0.6615
+    "ComponentBalance": 0.2771,
+    "HubBalance": 0.6,
+    "BoundaryClarity": 0.9708,
+    "DependencyDistribution": 0.5833,
+    "SmellDiscipline": 0.4923
   },
   "score_drivers": {
     "risks": [
       {
         "name": "ComponentBalance",
-        "value": 0.2684,
-        "gap_to_ideal": 0.7316
-      },
-      {
-        "name": "DependencyDistribution",
-        "value": 0.5464,
-        "gap_to_ideal": 0.4536
+        "value": 0.2771,
+        "gap_to_ideal": 0.7229
       },
       {
         "name": "SmellDiscipline",
-        "value": 0.6615,
-        "gap_to_ideal": 0.3385
+        "value": 0.4923,
+        "gap_to_ideal": 0.5077
+      },
+      {
+        "name": "DependencyDistribution",
+        "value": 0.5833,
+        "gap_to_ideal": 0.4167
       }
     ],
     "strengths": [
@@ -1251,25 +1313,29 @@
       },
       {
         "name": "BoundaryClarity",
-        "value": 0.98,
-        "gap_to_ideal": 0.02
+        "value": 0.9708,
+        "gap_to_ideal": 0.0292
       },
       {
         "name": "LayeringHealth",
-        "value": 0.9343,
-        "gap_to_ideal": 0.0657
+        "value": 0.8952,
+        "gap_to_ideal": 0.1048
       }
     ]
   },
+  "graph_quality": null,
   "smells": [
     {
       "smell_type": "Dependency Cycle",
-      "severity": "low",
+      "severity": "high",
       "affected_components": [
+        "Evaluation",
+        "Reporting",
+        "SourceIdentity",
         "Tier3",
         "Utils"
       ],
-      "description": "Circular dependency among 2 components: Tier3 <-> Utils",
+      "description": "Circular dependency among 5 components: Evaluation <-> Reporting <-> SourceIdentity <-> Tier3 <-> Utils",
       "explanation": "Dependency cycles make components tightly coupled \u2014 you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.",
       "suggestion": "Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP)."
     },
@@ -1301,7 +1367,7 @@
       "affected_components": [
         "Tier3"
       ],
-      "description": "Tier3 contains 333 entities but only 90 internal dependencies (0.27 per entity), suggesting multiple responsibilities.",
+      "description": "Tier3 contains 331 entities but only 102 internal dependencies (0.31 per entity), suggesting multiple responsibilities.",
       "explanation": "Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.",
       "suggestion": "Consider splitting Tier3 into smaller, focused components with single responsibilities."
     },
@@ -1311,7 +1377,7 @@
       "affected_components": [
         "Utils"
       ],
-      "description": "Utils contains 37 entities but only 5 internal dependencies (0.14 per entity), suggesting multiple responsibilities.",
+      "description": "Utils contains 35 entities but only 5 internal dependencies (0.14 per entity), suggesting multiple responsibilities.",
       "explanation": "Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.",
       "suggestion": "Consider splitting Utils into smaller, focused components with single responsibilities."
     },

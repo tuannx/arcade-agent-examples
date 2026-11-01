@@ -104,7 +104,7 @@
             <div class="label">Entities</div>
         </div>
         <div class="stat-card">
-            <div class="number">13955</div>
+            <div class="number">6452</div>
             <div class="label">Dependencies</div>
         </div>
         <div class="stat-card">
@@ -117,25 +117,28 @@
         </div>
     </div>
 
+        
+
     
 
     <h2 id="diagram">Architecture Diagram</h2>
     <div class="card">
         <pre class="mermaid">
 graph TD
-    Aot["Aot\n(279 entities)"]
-    Asm["Asm\n(822 entities)"]
-    Cglib["Cglib\n(1030 entities)"]
-    Core["Core\n(1513 entities)"]
-    Objenesis["Objenesis\n(6 entities)"]
-    Util["Util\n(1741 entities)"]
+    Aot["Aot\n(361 entities)"]
+    Asm["Asm\n(611 entities)"]
+    Cglib["Cglib\n(882 entities)"]
+    Core["Core\n(2061 entities)"]
+    Objenesis["Objenesis\n(5 entities)"]
+    Util["Util\n(1471 entities)"]
     Aot --> Asm
     Aot --> Cglib
     Aot --> Core
     Aot --> Util
     Asm --> Cglib
-    Asm --> Util
+    Cglib --> Aot
     Cglib --> Asm
+    Cglib --> Core
     Core --> Aot
     Core --> Asm
     Core --> Cglib
@@ -150,7 +153,7 @@ graph TD
     </div>
 
     
-    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.springframework') with dependency-affinity facade refinement (1569 entities reassigned).</div>
+    <div class="rationale">Package-based grouping (depth=1 after common prefix 'org.springframework') with dependency-affinity facade refinement (465 entities reassigned).</div>
     
 
     <h2 id="components">Components</h2>
@@ -169,49 +172,49 @@ graph TD
             <tr>
                 <td><strong>Aot</strong></td>
                 <td>Entities in aot</td>
-                <td>279</td>
+                <td>361</td>
                 
-                <td class="entity-list">org.springframework.aot.AotDetector, org.springframework.aot.AotDetector.useGeneratedArtifacts, org.springframework.aot.generate.AccessControl, org.springframework.aot.generate.AccessControl.AccessControl, org.springframework.aot.generate.AccessControl.forClass, org.springframework.aot.generate.AccessControl.forMember, org.springframework.aot.generate.AccessControl.forResolvableType, org.springframework.aot.generate.AccessControl.getVisibility, ... (+271 more)</td>
+                <td class="entity-list">org.springframework.aot.AotDetector, org.springframework.aot.generate.AccessControl, org.springframework.aot.generate.AccessControl.AccessControl, org.springframework.aot.generate.AccessControl.forClass, org.springframework.aot.generate.AccessControl.forMember, org.springframework.aot.generate.AccessControl.getVisibility, org.springframework.aot.generate.AccessControl.isAccessibleFrom, org.springframework.aot.generate.AccessControl.isPublic, ... (+353 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Asm</strong></td>
                 <td>Entities in asm</td>
-                <td>822</td>
+                <td>611</td>
                 
-                <td class="entity-list">org.springframework.asm.AnnotationVisitor, org.springframework.asm.AnnotationVisitor.AnnotationVisitor, org.springframework.asm.AnnotationVisitor.getDelegate, org.springframework.asm.AnnotationVisitor.visit, org.springframework.asm.AnnotationVisitor.visitAnnotation, org.springframework.asm.AnnotationVisitor.visitArray, org.springframework.asm.AnnotationVisitor.visitEnd, org.springframework.asm.AnnotationVisitor.visitEnum, ... (+814 more)</td>
+                <td class="entity-list">org.springframework.asm.AnnotationVisitor, org.springframework.asm.AnnotationVisitor.AnnotationVisitor, org.springframework.asm.AnnotationVisitor.getDelegate, org.springframework.asm.AnnotationVisitor.visit, org.springframework.asm.AnnotationVisitor.visitAnnotation, org.springframework.asm.AnnotationVisitor.visitArray, org.springframework.asm.AnnotationVisitor.visitEnd, org.springframework.asm.AnnotationVisitor.visitEnum, ... (+603 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Cglib</strong></td>
                 <td>Entities in cglib</td>
-                <td>1030</td>
+                <td>882</td>
                 
-                <td class="entity-list">org.springframework.aot.generate.MethodReference.toCodeBlock, org.springframework.aot.generate.MethodReference.toInvokeCodeBlock, org.springframework.aot.hint.JdkProxyHint.JdkProxyHint, org.springframework.aot.hint.JdkProxyHint.equals, org.springframework.aot.hint.JdkProxyHint.getProxiedInterfaces, org.springframework.aot.hint.JdkProxyHint.getReachableType, org.springframework.aot.hint.JdkProxyHint.hasJavaSerialization, org.springframework.aot.hint.JdkProxyHint.hashCode, ... (+1022 more)</td>
+                <td class="entity-list">org.springframework.aot.generate.NameGenerator.generateUniqueName, org.springframework.aot.hint.predicate.ReflectionHintsPredicates.onField, org.springframework.aot.hint.predicate.ResourceHintsPredicates.forResource, org.springframework.cglib.SpringCglibInfo, org.springframework.cglib.beans.BeanCopier, org.springframework.cglib.beans.BeanCopier.copy, org.springframework.cglib.beans.BeanCopier.create, org.springframework.cglib.beans.BeanGenerator, ... (+874 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Core</strong></td>
                 <td>Entities in core</td>
-                <td>1513</td>
+                <td>2061</td>
                 
-                <td class="entity-list">org.springframework.aot.hint.support.PathMatchingResourcePatternResolverRuntimeHints, org.springframework.aot.hint.support.PathMatchingResourcePatternResolverRuntimeHints.registerHints, org.springframework.aot.nativex.RuntimeHintsWriter, org.springframework.aot.nativex.RuntimeHintsWriter.write, org.springframework.core.AliasRegistry, org.springframework.core.AliasRegistry.getAliases, org.springframework.core.AliasRegistry.isAlias, org.springframework.core.AliasRegistry.registerAlias, ... (+1505 more)</td>
+                <td class="entity-list">org.springframework.aot.AotDetector.useGeneratedArtifacts, org.springframework.aot.generate.AccessControl.forResolvableType, org.springframework.aot.generate.GeneratedFiles.addClassFile, org.springframework.aot.generate.GeneratedFiles.addResourceFile, org.springframework.aot.generate.GeneratedFiles.addSourceFile, org.springframework.aot.generate.InMemoryGeneratedFiles.getGeneratedFileContent, org.springframework.aot.hint.BindingReflectionHintsRegistrar.collectReferencedTypes, org.springframework.aot.hint.BindingReflectionHintsRegistrar.forEachJacksonAnnotation, ... (+2053 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Objenesis</strong></td>
                 <td>Entities in objenesis</td>
-                <td>6</td>
+                <td>5</td>
                 
-                <td class="entity-list">org.springframework.objenesis.SpringObjenesis, org.springframework.objenesis.SpringObjenesis.SpringObjenesis, org.springframework.objenesis.SpringObjenesis.getInstantiatorOf, org.springframework.objenesis.SpringObjenesis.isWorthTrying, org.springframework.objenesis.SpringObjenesis.newInstance, org.springframework.objenesis.SpringObjenesis.newInstantiatorOf</td>
+                <td class="entity-list">org.springframework.objenesis.SpringObjenesis, org.springframework.objenesis.SpringObjenesis.getInstantiatorOf, org.springframework.objenesis.SpringObjenesis.isWorthTrying, org.springframework.objenesis.SpringObjenesis.newInstance, org.springframework.objenesis.SpringObjenesis.newInstantiatorOf</td>
             </tr>
         
             <tr>
                 <td><strong>Util</strong></td>
                 <td>Entities in util</td>
-                <td>1741</td>
+                <td>1471</td>
                 
-                <td class="entity-list">org.springframework.aot.generate.DefaultGenerationContext.DefaultGenerationContext, org.springframework.aot.generate.DefaultGenerationContext.getGeneratedClasses, org.springframework.aot.generate.DefaultGenerationContext.getGeneratedFiles, org.springframework.aot.generate.DefaultGenerationContext.getGeneratedResources, org.springframework.aot.generate.DefaultGenerationContext.getRuntimeHints, org.springframework.aot.generate.DefaultGenerationContext.withName, org.springframework.aot.generate.DefaultGenerationContext.writeGeneratedContent, org.springframework.aot.generate.DefaultMethodReference.DefaultMethodReference, ... (+1733 more)</td>
+                <td class="entity-list">org.springframework.aot.generate.AppendableConsumerInputStreamSource.AppendableConsumerInputStreamSource, org.springframework.aot.generate.DefaultMethodReference.toCodeBlock, org.springframework.aot.generate.DefaultMethodReference.toInvokeCodeBlock, org.springframework.aot.generate.FileSystemGeneratedFiles.handleFile, org.springframework.aot.generate.FileSystemGeneratedFiles.toPath, org.springframework.aot.generate.GeneratedClass.assertSameType, org.springframework.aot.generate.GeneratedClass.generateJavaFile, org.springframework.aot.generate.GeneratedFiles.getClassNamePath, ... (+1463 more)</td>
             </tr>
         
         </tbody>
@@ -247,10 +250,10 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Factory' pattern is scattered across 4 components: Asm, Cglib, Core, Util</p>
+        <p class="smell-detail">'Factory' pattern is scattered across 3 components: Cglib, Core, Util</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Factory'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Affects:</strong> Cglib, Core, Util</p>
     </div>
     
     <div class="smell medium">
@@ -269,10 +272,10 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Helper' pattern is scattered across 4 components: Asm, Cglib, Core, Util</p>
+        <p class="smell-detail">'Helper' pattern is scattered across 3 components: Cglib, Core, Util</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Helper'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Affects:</strong> Cglib, Core, Util</p>
     </div>
     
     <div class="smell medium">
@@ -280,21 +283,21 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Provider' pattern is scattered across 3 components: Cglib, Core, Util</p>
-        <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Centralize 'Provider'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Cglib, Core, Util</p>
-    </div>
-    
-    <div class="smell high">
-        <div class="smell-header">
-            <span class="badge high">high</span>
-            <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
-        </div>
-        <p class="smell-detail">'Utils' pattern is scattered across 5 components: Aot, Asm, Cglib, Core, Util</p>
+        <p class="smell-detail">'Utils' pattern is scattered across 4 components: Aot, Cglib, Core, Util</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Aot, Asm, Cglib, Core, Util</p>
+        <p class="smell-detail"><strong>Affects:</strong> Aot, Cglib, Core, Util</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Aot is depended on by 3 other components (60% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Aot into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Aot</p>
     </div>
     
     <div class="smell high">
@@ -319,23 +322,23 @@ graph TD
         <p class="smell-detail"><strong>Affects:</strong> Cglib</p>
     </div>
     
-    <div class="smell medium">
-        <div class="smell-header">
-            <span class="badge medium">medium</span>
-            <strong>SmellType.LINK_OVERLOAD</strong>
-        </div>
-        <p class="smell-detail">Core is depended on by 3 other components (60% of all components).</p>
-        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Core into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
-        <p class="smell-detail"><strong>Affects:</strong> Core</p>
-    </div>
-    
     <div class="smell high">
         <div class="smell-header">
             <span class="badge high">high</span>
             <strong>SmellType.LINK_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Util is depended on by 4 other components (80% of all components).</p>
+        <p class="smell-detail">Core is depended on by 4 other components (80% of all components).</p>
+        <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Core into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
+        <p class="smell-detail"><strong>Affects:</strong> Core</p>
+    </div>
+    
+    <div class="smell medium">
+        <div class="smell-header">
+            <span class="badge medium">medium</span>
+            <strong>SmellType.LINK_OVERLOAD</strong>
+        </div>
+        <p class="smell-detail">Util is depended on by 3 other components (60% of all components).</p>
         <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
         <p class="smell-detail"><strong>Fix:</strong> Consider splitting Util into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
         <p class="smell-detail"><strong>Affects:</strong> Util</p>

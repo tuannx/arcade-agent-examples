@@ -91,7 +91,7 @@
         
         <a href="#diagram">Diagram</a>
         <a href="#components">Components</a>
-        <a href="#smells">Smells (17)</a>
+        <a href="#smells">Smells (15)</a>
         <a href="#dependencies">Dependencies</a>
     </nav>
 
@@ -104,7 +104,7 @@
             <div class="label">Entities</div>
         </div>
         <div class="stat-card">
-            <div class="number">19118</div>
+            <div class="number">5969</div>
             <div class="label">Dependencies</div>
         </div>
         <div class="stat-card">
@@ -112,10 +112,12 @@
             <div class="label">Components</div>
         </div>
         <div class="stat-card">
-            <div class="number">17</div>
+            <div class="number">15</div>
             <div class="label">Smells</div>
         </div>
     </div>
+
+        
 
     
 
@@ -123,25 +125,25 @@
     <div class="card">
         <pre class="mermaid">
 graph TD
-    Http["Http\n(1715 entities)"]
-    Client["Client\n(235 entities)"]
-    Codec["Codec\n(523 entities)"]
-    Converter["Converter\n(312 entities)"]
-    Server["Server\n(351 entities)"]
-    Support["Support\n(16 entities)"]
-    Web["Web\n(20 entities)"]
-    Accept["Accept\n(88 entities)"]
-    Bind["Bind\n(197 entities)"]
-    Client2["Client2\n(221 entities)"]
-    Context["Context\n(516 entities)"]
-    Cors["Cors\n(66 entities)"]
-    Filter["Filter\n(125 entities)"]
-    Jsf["Jsf\n(23 entities)"]
-    Method["Method\n(198 entities)"]
-    Multipart["Multipart\n(135 entities)"]
-    Server2["Server2\n(292 entities)"]
-    Service["Service\n(119 entities)"]
-    Util["Util\n(527 entities)"]
+    Http["Http\n(1025 entities)"]
+    Client["Client\n(376 entities)"]
+    Codec["Codec\n(596 entities)"]
+    Converter["Converter\n(420 entities)"]
+    Server["Server\n(524 entities)"]
+    Support["Support\n(72 entities)"]
+    Web["Web\n(52 entities)"]
+    Accept["Accept\n(95 entities)"]
+    Bind["Bind\n(229 entities)"]
+    Client2["Client2\n(181 entities)"]
+    Context["Context\n(524 entities)"]
+    Cors["Cors\n(92 entities)"]
+    Filter["Filter\n(134 entities)"]
+    Jsf["Jsf\n(27 entities)"]
+    Method["Method\n(224 entities)"]
+    Multipart["Multipart\n(110 entities)"]
+    Server2["Server2\n(260 entities)"]
+    Service["Service\n(197 entities)"]
+    Util["Util\n(541 entities)"]
     Accept --> Context
     Accept --> Http
     Accept --> Server
@@ -169,9 +171,9 @@ graph TD
     Codec --> Server
     Codec --> Util
     Context --> Http
+    Context --> Multipart
     Context --> Util
     Context --> Web
-    Converter --> Codec
     Converter --> Http
     Cors --> Http
     Cors --> Server
@@ -185,11 +187,10 @@ graph TD
     Filter --> Server2
     Filter --> Util
     Http --> Accept
+    Http --> Bind
     Http --> Client
     Http --> Client2
-    Http --> Codec
     Http --> Converter
-    Http --> Service
     Jsf --> Context
     Jsf --> Util
     Method --> Bind
@@ -208,6 +209,7 @@ graph TD
     Multipart --> Web
     Server --> Http
     Server --> Support
+    Server --> Util
     Server2 --> Codec
     Server2 --> Http
     Server2 --> Server
@@ -215,7 +217,6 @@ graph TD
     Server2 --> Web
     Service --> Bind
     Service --> Client
-    Service --> Codec
     Service --> Http
     Service --> Multipart
     Service --> Util
@@ -223,13 +224,12 @@ graph TD
     Util --> Accept
     Util --> Http
     Util --> Server
-    Util --> Service
     Web --> Http
         </pre>
     </div>
 
     
-    <div class="rationale">Package-based grouping (depth=2 after common prefix 'org.springframework') with dependency-affinity facade refinement (1629 entities reassigned).</div>
+    <div class="rationale">Package-based grouping (depth=2 after common prefix 'org.springframework') with dependency-affinity facade refinement (846 entities reassigned).</div>
     
 
     <h2 id="components">Components</h2>
@@ -248,159 +248,159 @@ graph TD
             <tr>
                 <td><strong>Http</strong></td>
                 <td>Entities in http</td>
-                <td>1715</td>
+                <td>1025</td>
                 
-                <td class="entity-list">org.springframework.http.CacheControl, org.springframework.http.CacheControl.CacheControl, org.springframework.http.CacheControl.appendDirective, org.springframework.http.CacheControl.cachePrivate, org.springframework.http.CacheControl.cachePublic, org.springframework.http.CacheControl.empty, org.springframework.http.CacheControl.getHeaderValue, org.springframework.http.CacheControl.immutable, ... (+1707 more)</td>
+                <td class="entity-list">org.springframework.http.CacheControl, org.springframework.http.CacheControl.CacheControl, org.springframework.http.CacheControl.appendDirective, org.springframework.http.CacheControl.cachePrivate, org.springframework.http.CacheControl.cachePublic, org.springframework.http.CacheControl.empty, org.springframework.http.CacheControl.getHeaderValue, org.springframework.http.CacheControl.immutable, ... (+1017 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Client</strong></td>
                 <td>Entities in http.client</td>
-                <td>235</td>
+                <td>376</td>
                 
-                <td class="entity-list">org.springframework.http.client.AbstractBufferingClientHttpRequest, org.springframework.http.client.AbstractClientHttpRequest, org.springframework.http.client.AbstractClientHttpRequestFactoryWrapper, org.springframework.http.client.AbstractStreamingClientHttpRequest, org.springframework.http.client.BufferingClientHttpRequestFactory, org.springframework.http.client.BufferingClientHttpRequestWrapper, org.springframework.http.client.BufferingClientHttpResponseWrapper, org.springframework.http.client.ClientHttpRequest, ... (+227 more)</td>
+                <td class="entity-list">org.springframework.http.client.AbstractBufferingClientHttpRequest, org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal, org.springframework.http.client.AbstractBufferingClientHttpRequest.executeWithRequestAndBody, org.springframework.http.client.AbstractClientHttpRequest, org.springframework.http.client.AbstractClientHttpRequest.assertNotExecuted, org.springframework.http.client.AbstractClientHttpRequest.execute, org.springframework.http.client.AbstractClientHttpRequest.executeInternal, org.springframework.http.client.AbstractClientHttpRequest.getAttributes, ... (+368 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Codec</strong></td>
                 <td>Entities in http.codec</td>
-                <td>523</td>
+                <td>596</td>
                 
-                <td class="entity-list">org.springframework.http.codec.AbstractJacksonDecoder, org.springframework.http.codec.AbstractJacksonEncoder, org.springframework.http.codec.AbstractJacksonEncoder.AbstractJacksonEncoder, org.springframework.http.codec.AbstractJacksonEncoder.canEncode, org.springframework.http.codec.AbstractJacksonEncoder.createObjectWriter, org.springframework.http.codec.AbstractJacksonEncoder.customizeWriter, org.springframework.http.codec.AbstractJacksonEncoder.encode, org.springframework.http.codec.AbstractJacksonEncoder.encodeStreamingValue, ... (+515 more)</td>
+                <td class="entity-list">org.springframework.http.codec.AbstractJacksonDecoder, org.springframework.http.codec.AbstractJacksonDecoder.AbstractJacksonDecoder, org.springframework.http.codec.AbstractJacksonDecoder.canDecode, org.springframework.http.codec.AbstractJacksonDecoder.createObjectReader, org.springframework.http.codec.AbstractJacksonDecoder.customizeReader, org.springframework.http.codec.AbstractJacksonDecoder.decode, org.springframework.http.codec.AbstractJacksonDecoder.decodeToMono, org.springframework.http.codec.AbstractJacksonDecoder.getAnnotation, ... (+588 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Converter</strong></td>
                 <td>Entities in http.converter</td>
-                <td>312</td>
+                <td>420</td>
                 
-                <td class="entity-list">org.springframework.http.codec.json.Jackson2SmileDecoder.Jackson2SmileDecoder, org.springframework.http.converter.AbstractGenericHttpMessageConverter, org.springframework.http.converter.AbstractHttpMessageConverter, org.springframework.http.converter.AbstractJacksonHttpMessageConverter, org.springframework.http.converter.AbstractJacksonHttpMessageConverter.AbstractJacksonHttpMessageConverter, org.springframework.http.converter.AbstractJacksonHttpMessageConverter.canRead, org.springframework.http.converter.AbstractJacksonHttpMessageConverter.canWrite, org.springframework.http.converter.AbstractJacksonHttpMessageConverter.canWriteRepeatedly, ... (+304 more)</td>
+                <td class="entity-list">org.springframework.http.codec.json.AbstractJackson2Encoder.encodeValue, org.springframework.http.converter.AbstractGenericHttpMessageConverter, org.springframework.http.converter.AbstractGenericHttpMessageConverter.supports, org.springframework.http.converter.AbstractHttpMessageConverter, org.springframework.http.converter.AbstractHttpMessageConverter.getDefaultCharset, org.springframework.http.converter.AbstractHttpMessageConverter.read, org.springframework.http.converter.AbstractHttpMessageConverter.readInternal, org.springframework.http.converter.AbstractHttpMessageConverter.setDefaultCharset, ... (+412 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Server</strong></td>
                 <td>Entities in http.server</td>
-                <td>351</td>
+                <td>524</td>
                 
-                <td class="entity-list">org.springframework.http.codec.AbstractJacksonDecoder.AbstractJacksonDecoder, org.springframework.http.codec.AbstractJacksonDecoder.canDecode, org.springframework.http.codec.AbstractJacksonDecoder.createObjectReader, org.springframework.http.codec.AbstractJacksonDecoder.customizeReader, org.springframework.http.codec.AbstractJacksonDecoder.decode, org.springframework.http.codec.AbstractJacksonDecoder.decodeToMono, org.springframework.http.codec.AbstractJacksonDecoder.getAnnotation, org.springframework.http.codec.AbstractJacksonDecoder.getContextClass, ... (+343 more)</td>
+                <td class="entity-list">org.springframework.http.codec.AbstractJacksonDecoder.getDecodeHints, org.springframework.http.codec.DecoderHttpMessageReader.read, org.springframework.http.codec.DecoderHttpMessageReader.readMono, org.springframework.http.codec.HttpMessageDecoder.getDecodeHints, org.springframework.http.codec.HttpMessageReader.read, org.springframework.http.codec.HttpMessageReader.readMono, org.springframework.http.codec.ResourceHttpMessageReader.getReadHints, org.springframework.http.codec.json.AbstractJackson2Decoder.getDecodeHints, ... (+516 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Support</strong></td>
                 <td>Entities in http.support</td>
-                <td>16</td>
+                <td>72</td>
                 
-                <td class="entity-list">org.springframework.http.support.HttpComponentsHeadersAdapter, org.springframework.http.support.JacksonHandlerInstantiator, org.springframework.http.support.JacksonHandlerInstantiator.JacksonHandlerInstantiator, org.springframework.http.support.JacksonHandlerInstantiator.converterInstance, org.springframework.http.support.JacksonHandlerInstantiator.deserializerInstance, org.springframework.http.support.JacksonHandlerInstantiator.keyDeserializerInstance, org.springframework.http.support.JacksonHandlerInstantiator.namingStrategyInstance, org.springframework.http.support.JacksonHandlerInstantiator.objectIdGeneratorInstance, ... (+8 more)</td>
+                <td class="entity-list">org.springframework.http.support.HttpComponentsHeadersAdapter, org.springframework.http.support.HttpComponentsHeadersAdapter.add, org.springframework.http.support.HttpComponentsHeadersAdapter.addAll, org.springframework.http.support.HttpComponentsHeadersAdapter.clear, org.springframework.http.support.HttpComponentsHeadersAdapter.containsKey, org.springframework.http.support.HttpComponentsHeadersAdapter.containsValue, org.springframework.http.support.HttpComponentsHeadersAdapter.entrySet, org.springframework.http.support.HttpComponentsHeadersAdapter.get, ... (+64 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Web</strong></td>
                 <td>Entities in web</td>
-                <td>20</td>
+                <td>52</td>
                 
-                <td class="entity-list">org.springframework.web.ErrorResponse, org.springframework.web.ErrorResponseException, org.springframework.web.HttpMediaTypeException, org.springframework.web.HttpMediaTypeNotAcceptableException, org.springframework.web.HttpMediaTypeNotSupportedException, org.springframework.web.HttpRequestHandler, org.springframework.web.HttpRequestHandler.handleRequest, org.springframework.web.HttpRequestMethodNotSupportedException, ... (+12 more)</td>
+                <td class="entity-list">org.springframework.web.DefaultErrorResponseBuilder, org.springframework.web.DefaultErrorResponseBuilder.DefaultErrorResponseBuilder, org.springframework.web.DefaultErrorResponseBuilder.build, org.springframework.web.DefaultErrorResponseBuilder.detail, org.springframework.web.DefaultErrorResponseBuilder.detailMessageArguments, org.springframework.web.DefaultErrorResponseBuilder.detailMessageCode, org.springframework.web.DefaultErrorResponseBuilder.header, org.springframework.web.DefaultErrorResponseBuilder.headers, ... (+44 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Accept</strong></td>
                 <td>Entities in web.accept</td>
-                <td>88</td>
+                <td>95</td>
                 
-                <td class="entity-list">org.springframework.web.accept.AbstractMappingContentNegotiationStrategy, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.AbstractMappingContentNegotiationStrategy, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.getMediaTypeKey, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.handleMatch, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.handleNoMatch, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.isIgnoreUnknownExtensions, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.isUseRegisteredExtensionsOnly, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.resolveMediaTypeKey, ... (+80 more)</td>
+                <td class="entity-list">org.springframework.web.accept.AbstractMappingContentNegotiationStrategy, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.handleNoMatch, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.isIgnoreUnknownExtensions, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.isUseRegisteredExtensionsOnly, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.resolveMediaTypeKey, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.resolveMediaTypes, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.setIgnoreUnknownExtensions, org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.setUseRegisteredExtensionsOnly, ... (+87 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Bind</strong></td>
                 <td>Entities in web.bind</td>
-                <td>197</td>
+                <td>229</td>
                 
-                <td class="entity-list">org.springframework.web.bind.MethodArgumentNotValidException, org.springframework.web.bind.MethodArgumentNotValidException.MethodArgumentNotValidException, org.springframework.web.bind.MethodArgumentNotValidException.getBody, org.springframework.web.bind.MethodArgumentNotValidException.getDetailMessageArguments, org.springframework.web.bind.MethodArgumentNotValidException.getMessage, org.springframework.web.bind.MethodArgumentNotValidException.getParameter, org.springframework.web.bind.MethodArgumentNotValidException.getStatusCode, org.springframework.web.bind.MissingMatrixVariableException, ... (+189 more)</td>
+                <td class="entity-list">org.springframework.web.bind.EscapedErrors.EscapedErrors, org.springframework.web.bind.EscapedErrors.addAllErrors, org.springframework.web.bind.EscapedErrors.escapeObjectErrors, org.springframework.web.bind.EscapedErrors.getAllErrors, org.springframework.web.bind.EscapedErrors.getErrorCount, org.springframework.web.bind.EscapedErrors.getFieldError, org.springframework.web.bind.EscapedErrors.getFieldErrorCount, org.springframework.web.bind.EscapedErrors.getFieldErrors, ... (+221 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Client2</strong></td>
                 <td>Entities in web.client</td>
-                <td>221</td>
+                <td>181</td>
                 
-                <td class="entity-list">org.springframework.web.client.ApiVersionFormatter, org.springframework.web.client.ApiVersionFormatter.formatVersion, org.springframework.web.client.ApiVersionInserter, org.springframework.web.client.ClientHttpResponseDecorator, org.springframework.web.client.ClientHttpResponseDecorator.ClientHttpResponseDecorator, org.springframework.web.client.ClientHttpResponseDecorator.close, org.springframework.web.client.ClientHttpResponseDecorator.getBody, org.springframework.web.client.ClientHttpResponseDecorator.getDelegate, ... (+213 more)</td>
+                <td class="entity-list">org.springframework.web.client.ApiVersionFormatter, org.springframework.web.client.ApiVersionFormatter.formatVersion, org.springframework.web.client.ApiVersionInserter, org.springframework.web.client.ApiVersionInserter.builder, org.springframework.web.client.ApiVersionInserter.useHeader, org.springframework.web.client.ApiVersionInserter.useMediaTypeParam, org.springframework.web.client.ApiVersionInserter.usePathSegment, org.springframework.web.client.ApiVersionInserter.useQueryParam, ... (+173 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Context</strong></td>
                 <td>Entities in web.context</td>
-                <td>516</td>
+                <td>524</td>
                 
-                <td class="entity-list">org.springframework.web.bind.support.DefaultSessionAttributeStore.cleanupAttribute, org.springframework.web.bind.support.DefaultSessionAttributeStore.getAttributeNameInSession, org.springframework.web.bind.support.DefaultSessionAttributeStore.retrieveAttribute, org.springframework.web.bind.support.DefaultSessionAttributeStore.setAttributeNamePrefix, org.springframework.web.bind.support.DefaultSessionAttributeStore.storeAttribute, org.springframework.web.bind.support.SessionAttributeStore.cleanupAttribute, org.springframework.web.bind.support.SessionAttributeStore.retrieveAttribute, org.springframework.web.bind.support.SessionAttributeStore.storeAttribute, ... (+508 more)</td>
+                <td class="entity-list">org.springframework.web.accept.AbstractMappingContentNegotiationStrategy.getMediaTypeKey, org.springframework.web.accept.ParameterContentNegotiationStrategy.getMediaTypeKey, org.springframework.web.bind.support.DefaultSessionAttributeStore.cleanupAttribute, org.springframework.web.bind.support.DefaultSessionAttributeStore.getAttributeNameInSession, org.springframework.web.bind.support.DefaultSessionAttributeStore.retrieveAttribute, org.springframework.web.bind.support.DefaultSessionAttributeStore.storeAttribute, org.springframework.web.bind.support.SessionAttributeStore.cleanupAttribute, org.springframework.web.bind.support.SessionAttributeStore.retrieveAttribute, ... (+516 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Cors</strong></td>
                 <td>Entities in web.cors</td>
-                <td>66</td>
+                <td>92</td>
                 
-                <td class="entity-list">org.springframework.web.cors.CorsConfiguration, org.springframework.web.cors.CorsConfigurationSource, org.springframework.web.cors.CorsConfigurationSource.getCorsConfiguration, org.springframework.web.cors.CorsProcessor, org.springframework.web.cors.CorsProcessor.processRequest, org.springframework.web.cors.CorsUtils, org.springframework.web.cors.CorsUtils.getPort, org.springframework.web.cors.CorsUtils.isCorsRequest, ... (+58 more)</td>
+                <td class="entity-list">org.springframework.web.cors.CorsConfiguration, org.springframework.web.cors.CorsConfiguration.CorsConfiguration, org.springframework.web.cors.CorsConfiguration.addAllowedHeader, org.springframework.web.cors.CorsConfiguration.addAllowedOrigin, org.springframework.web.cors.CorsConfiguration.addAllowedOriginPattern, org.springframework.web.cors.CorsConfiguration.addExposedHeader, org.springframework.web.cors.CorsConfiguration.checkHeaders, org.springframework.web.cors.CorsConfiguration.checkOrigin, ... (+84 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Filter</strong></td>
                 <td>Entities in web.filter</td>
-                <td>125</td>
+                <td>134</td>
                 
-                <td class="entity-list">org.springframework.web.filter.AbstractRequestLoggingFilter, org.springframework.web.filter.AbstractRequestLoggingFilter.afterRequest, org.springframework.web.filter.AbstractRequestLoggingFilter.beforeRequest, org.springframework.web.filter.AbstractRequestLoggingFilter.createMessage, org.springframework.web.filter.AbstractRequestLoggingFilter.doFilterInternal, org.springframework.web.filter.AbstractRequestLoggingFilter.getAfterMessage, org.springframework.web.filter.AbstractRequestLoggingFilter.getBeforeMessage, org.springframework.web.filter.AbstractRequestLoggingFilter.getHeaderPredicate, ... (+117 more)</td>
+                <td class="entity-list">org.springframework.web.filter.AbstractRequestLoggingFilter, org.springframework.web.filter.AbstractRequestLoggingFilter.afterRequest, org.springframework.web.filter.AbstractRequestLoggingFilter.beforeRequest, org.springframework.web.filter.AbstractRequestLoggingFilter.createMessage, org.springframework.web.filter.AbstractRequestLoggingFilter.getAfterMessage, org.springframework.web.filter.AbstractRequestLoggingFilter.getBeforeMessage, org.springframework.web.filter.AbstractRequestLoggingFilter.getHeaderPredicate, org.springframework.web.filter.AbstractRequestLoggingFilter.getMaxPayloadLength, ... (+126 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Jsf</strong></td>
                 <td>Entities in web.jsf</td>
-                <td>23</td>
+                <td>27</td>
                 
-                <td class="entity-list">org.springframework.web.jsf.DecoratingNavigationHandler, org.springframework.web.jsf.DecoratingNavigationHandler.DecoratingNavigationHandler, org.springframework.web.jsf.DecoratingNavigationHandler.callNextHandlerInChain, org.springframework.web.jsf.DecoratingNavigationHandler.getDecoratedNavigationHandler, org.springframework.web.jsf.DecoratingNavigationHandler.handleNavigation, org.springframework.web.jsf.FacesContextUtils, org.springframework.web.jsf.FacesContextUtils.getRequiredWebApplicationContext, org.springframework.web.jsf.FacesContextUtils.getSessionMutex, ... (+15 more)</td>
+                <td class="entity-list">org.springframework.web.jsf.DecoratingNavigationHandler, org.springframework.web.jsf.DecoratingNavigationHandler.DecoratingNavigationHandler, org.springframework.web.jsf.DecoratingNavigationHandler.callNextHandlerInChain, org.springframework.web.jsf.DecoratingNavigationHandler.getDecoratedNavigationHandler, org.springframework.web.jsf.DecoratingNavigationHandler.handleNavigation, org.springframework.web.jsf.DelegatingNavigationHandlerProxy, org.springframework.web.jsf.DelegatingNavigationHandlerProxy.DelegatingNavigationHandlerProxy, org.springframework.web.jsf.DelegatingNavigationHandlerProxy.getBeanFactory, ... (+19 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Method</strong></td>
                 <td>Entities in web.method</td>
-                <td>198</td>
+                <td>224</td>
                 
-                <td class="entity-list">org.springframework.web.method.ControllerAdviceBean, org.springframework.web.method.ControllerAdviceBean.ControllerAdviceBean, org.springframework.web.method.ControllerAdviceBean.createBeanTypePredicate, org.springframework.web.method.ControllerAdviceBean.equals, org.springframework.web.method.ControllerAdviceBean.findAnnotatedBeans, org.springframework.web.method.ControllerAdviceBean.getBeanType, org.springframework.web.method.ControllerAdviceBean.getOrder, org.springframework.web.method.ControllerAdviceBean.hashCode, ... (+190 more)</td>
+                <td class="entity-list">org.springframework.web.method.ControllerAdviceBean, org.springframework.web.method.ControllerAdviceBean.ControllerAdviceBean, org.springframework.web.method.ControllerAdviceBean.createBeanTypePredicate, org.springframework.web.method.ControllerAdviceBean.equals, org.springframework.web.method.ControllerAdviceBean.findAnnotatedBeans, org.springframework.web.method.ControllerAdviceBean.getBeanType, org.springframework.web.method.ControllerAdviceBean.getOrder, org.springframework.web.method.ControllerAdviceBean.hashCode, ... (+216 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Multipart</strong></td>
                 <td>Entities in web.multipart</td>
-                <td>135</td>
+                <td>110</td>
                 
-                <td class="entity-list">org.springframework.web.bind.WebDataBinder.WebDataBinder, org.springframework.web.bind.WebDataBinder.adaptEmptyArrayIndices, org.springframework.web.bind.WebDataBinder.bindMultipart, org.springframework.web.bind.WebDataBinder.checkFieldDefaults, org.springframework.web.bind.WebDataBinder.checkFieldMarkers, org.springframework.web.bind.WebDataBinder.doBind, org.springframework.web.bind.WebDataBinder.getEmptyValue, org.springframework.web.bind.WebDataBinder.getFieldDefaultPrefix, ... (+127 more)</td>
+                <td class="entity-list">org.springframework.web.bind.WebDataBinder.bindMultipart, org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.supportsParameter, org.springframework.web.multipart.MaxUploadSizeExceededException, org.springframework.web.multipart.MaxUploadSizeExceededException.MaxUploadSizeExceededException, org.springframework.web.multipart.MaxUploadSizeExceededException.getMaxUploadSize, org.springframework.web.multipart.MultipartException, org.springframework.web.multipart.MultipartException.MultipartException, org.springframework.web.multipart.MultipartFile, ... (+102 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Server2</strong></td>
                 <td>Entities in web.server</td>
-                <td>292</td>
+                <td>260</td>
                 
-                <td class="entity-list">org.springframework.web.cors.reactive.PreFlightRequestHandler, org.springframework.web.cors.reactive.PreFlightRequestHandler.handlePreFlight, org.springframework.web.cors.reactive.PreFlightRequestWebFilter, org.springframework.web.cors.reactive.PreFlightRequestWebFilter.PreFlightRequestWebFilter, org.springframework.web.cors.reactive.PreFlightRequestWebFilter.filter, org.springframework.web.filter.reactive.ServerWebExchangeContextFilter, org.springframework.web.filter.reactive.ServerWebExchangeContextFilter.filter, org.springframework.web.filter.reactive.ServerWebExchangeContextFilter.getExchange, ... (+284 more)</td>
+                <td class="entity-list">org.springframework.web.bind.support.WebExchangeDataBinder.bind, org.springframework.web.bind.support.WebExchangeDataBinder.construct, org.springframework.web.bind.support.WebExchangeDataBinder.getValuesToBind, org.springframework.web.cors.reactive.PreFlightRequestHandler.handlePreFlight, org.springframework.web.filter.reactive.ServerWebExchangeContextFilter, org.springframework.web.filter.reactive.ServerWebExchangeContextFilter.filter, org.springframework.web.filter.reactive.ServerWebExchangeContextFilter.getExchange, org.springframework.web.server.ContentTooLargeException, ... (+252 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Service</strong></td>
                 <td>Entities in web.service</td>
-                <td>119</td>
+                <td>197</td>
                 
-                <td class="entity-list">org.springframework.web.service.annotation.HttpExchangeBeanRegistrationAotProcessor, org.springframework.web.service.annotation.HttpExchangeBeanRegistrationAotProcessor.processAheadOfTime, org.springframework.web.service.annotation.HttpExchangeReflectiveProcessor, org.springframework.web.service.annotation.HttpExchangeReflectiveProcessor.registerMethodHints, org.springframework.web.service.annotation.HttpExchangeReflectiveProcessor.registerParameterTypeHints, org.springframework.web.service.annotation.HttpExchangeReflectiveProcessor.registerReflectionHints, org.springframework.web.service.annotation.HttpExchangeReflectiveProcessor.registerReturnTypeHints, org.springframework.web.service.invoker.AbstractNamedValueArgumentResolver, ... (+111 more)</td>
+                <td class="entity-list">org.springframework.web.client.support.NotFoundRestClientAdapterDecorator.NotFoundRestClientAdapterDecorator, org.springframework.web.client.support.RestClientAdapter.exchange, org.springframework.web.client.support.RestClientAdapter.exchangeForBody, org.springframework.web.client.support.RestTemplateAdapter.exchange, org.springframework.web.client.support.RestTemplateAdapter.exchangeForBody, org.springframework.web.service.annotation.HttpExchangeBeanRegistrationAotProcessor, org.springframework.web.service.annotation.HttpExchangeBeanRegistrationAotProcessor.processAheadOfTime, org.springframework.web.service.annotation.HttpExchangeReflectiveProcessor, ... (+189 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Util</strong></td>
                 <td>Entities in web.util</td>
-                <td>527</td>
+                <td>541</td>
                 
-                <td class="entity-list">org.springframework.http.codec.ServerSentEvent.ServerSentEvent, org.springframework.http.codec.ServerSentEvent.appendAttribute, org.springframework.http.codec.ServerSentEvent.builder, org.springframework.http.codec.ServerSentEvent.comment, org.springframework.http.codec.ServerSentEvent.data, org.springframework.http.codec.ServerSentEvent.equals, org.springframework.http.codec.ServerSentEvent.event, org.springframework.http.codec.ServerSentEvent.format, ... (+519 more)</td>
+                <td class="entity-list">org.springframework.http.codec.ServerSentEvent.format, org.springframework.http.codec.ServerSentEventHttpMessageWriter.writeStringData, org.springframework.web.accept.QueryApiVersionResolver, org.springframework.web.accept.QueryApiVersionResolver.resolveVersion, org.springframework.web.bind.EscapedErrors, org.springframework.web.bind.EscapedErrors.escapeObjectError, org.springframework.web.bind.EscapedErrors.getFieldValue, org.springframework.web.bind.MethodArgumentNotValidException.getDetailMessageArguments, ... (+533 more)</td>
             </tr>
         
         </tbody>
     </table>
 
-    <h2 id="smells">Architectural Smells (17)</h2>
+    <h2 id="smells">Architectural Smells (15)</h2>
     
     
     <div class="smell high">
@@ -414,59 +414,37 @@ graph TD
         <p class="smell-detail"><strong>Affects:</strong> Accept, Bind, Client, Client2, Codec, Context, Converter, Cors, Filter, Http, Multipart, Server, Server2, Service, Support, Util, Web</p>
     </div>
     
-    <div class="smell high">
+    <div class="smell low">
         <div class="smell-header">
-            <span class="badge high">high</span>
+            <span class="badge low">low</span>
             <strong>SmellType.CONCERN_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Accept contains 88 entities but only 13 internal dependencies (0.15 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Accept into smaller, focused components with single responsibilities.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Accept</p>
+        <p class="smell-detail">Support: insufficient coverage for cohesion (java call relations are not fully collected). Observed 72 entities and 0 internal dependencies.</p>
+        <p class="smell-detail"><strong>Why:</strong> Missing internal calls can make a cohesive component appear sparse. This is an analysis limitation; multiple responsibilities have not been established. Import-cycle detection remains available.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Collect and validate call coverage or inspect source responsibilities before deciding whether to split this component.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Support</p>
     </div>
     
-    <div class="smell high">
+    <div class="smell low">
         <div class="smell-header">
-            <span class="badge high">high</span>
+            <span class="badge low">low</span>
             <strong>SmellType.CONCERN_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Client2 contains 221 entities but only 50 internal dependencies (0.23 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Client2 into smaller, focused components with single responsibilities.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Client2</p>
-    </div>
-    
-    <div class="smell high">
-        <div class="smell-header">
-            <span class="badge high">high</span>
-            <strong>SmellType.CONCERN_OVERLOAD</strong>
-        </div>
-        <p class="smell-detail">Filter contains 125 entities but only 16 internal dependencies (0.13 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Filter into smaller, focused components with single responsibilities.</p>
+        <p class="smell-detail">Filter: insufficient coverage for cohesion (java call relations are not fully collected). Observed 134 entities and 36 internal dependencies.</p>
+        <p class="smell-detail"><strong>Why:</strong> Missing internal calls can make a cohesive component appear sparse. This is an analysis limitation; multiple responsibilities have not been established. Import-cycle detection remains available.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Collect and validate call coverage or inspect source responsibilities before deciding whether to split this component.</p>
         <p class="smell-detail"><strong>Affects:</strong> Filter</p>
     </div>
     
-    <div class="smell high">
+    <div class="smell low">
         <div class="smell-header">
-            <span class="badge high">high</span>
+            <span class="badge low">low</span>
             <strong>SmellType.CONCERN_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Service contains 119 entities but only 37 internal dependencies (0.31 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Service into smaller, focused components with single responsibilities.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Service</p>
-    </div>
-    
-    <div class="smell high">
-        <div class="smell-header">
-            <span class="badge high">high</span>
-            <strong>SmellType.CONCERN_OVERLOAD</strong>
-        </div>
-        <p class="smell-detail">Util contains 527 entities but only 115 internal dependencies (0.22 per entity), suggesting multiple responsibilities.</p>
-        <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
-        <p class="smell-detail"><strong>Fix:</strong> Consider splitting Util into smaller, focused components with single responsibilities.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Util</p>
+        <p class="smell-detail">Jsf: insufficient coverage for cohesion (java call relations are not fully collected). Observed 27 entities and 10 internal dependencies.</p>
+        <p class="smell-detail"><strong>Why:</strong> Missing internal calls can make a cohesive component appear sparse. This is an analysis limitation; multiple responsibilities have not been established. Import-cycle detection remains available.</p>
+        <p class="smell-detail"><strong>Fix:</strong> Collect and validate call coverage or inspect source responsibilities before deciding whether to split this component.</p>
+        <p class="smell-detail"><strong>Affects:</strong> Jsf</p>
     </div>
     
     <div class="smell high">
@@ -474,21 +452,21 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Adapter' pattern is scattered across 7 components: Client2, Http, Method, Server, Server2, Service, Support</p>
+        <p class="smell-detail">'Adapter' pattern is scattered across 8 components: Bind, Client2, Http, Method, Server, Server2, Service, Support</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Adapter'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Client2, Http, Method, Server, Server2, Service, Support</p>
+        <p class="smell-detail"><strong>Affects:</strong> Bind, Client2, Http, Method, Server, Server2, Service, Support</p>
     </div>
     
-    <div class="smell medium">
+    <div class="smell high">
         <div class="smell-header">
-            <span class="badge medium">medium</span>
+            <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Config' pattern is scattered across 3 components: Codec, Context, Http</p>
+        <p class="smell-detail">'Config' pattern is scattered across 5 components: Client, Codec, Context, Filter, Server</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Config'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Codec, Context, Http</p>
+        <p class="smell-detail"><strong>Affects:</strong> Client, Codec, Context, Filter, Server</p>
     </div>
     
     <div class="smell high">
@@ -496,10 +474,10 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Exception' pattern is scattered across 14 components: Accept, Bind, Client2, Codec, Context, Converter, Filter, Http, Method, Multipart, Server, Server2, Util, Web</p>
+        <p class="smell-detail">'Exception' pattern is scattered across 15 components: Accept, Bind, Client, Client2, Codec, Context, Converter, Filter, Http, Method, Multipart, Server, Server2, Util, Web</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Exception'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Accept, Bind, Client2, Codec, Context, Converter, Filter, Http, Method, Multipart, Server, Server2, Util, Web</p>
+        <p class="smell-detail"><strong>Affects:</strong> Accept, Bind, Client, Client2, Codec, Context, Converter, Filter, Http, Method, Multipart, Server, Server2, Util, Web</p>
     </div>
     
     <div class="smell high">
@@ -507,10 +485,10 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Factory' pattern is scattered across 11 components: Bind, Client, Client2, Codec, Context, Converter, Http, Method, Server, Service, Util</p>
+        <p class="smell-detail">'Factory' pattern is scattered across 12 components: Bind, Client, Client2, Codec, Context, Converter, Http, Jsf, Method, Server, Service, Util</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Factory'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Bind, Client, Client2, Codec, Context, Converter, Http, Method, Server, Service, Util</p>
+        <p class="smell-detail"><strong>Affects:</strong> Bind, Client, Client2, Codec, Context, Converter, Http, Jsf, Method, Server, Service, Util</p>
     </div>
     
     <div class="smell high">
@@ -518,10 +496,10 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Handler' pattern is scattered across 12 components: Accept, Client2, Context, Cors, Filter, Http, Jsf, Method, Server, Server2, Util, Web</p>
+        <p class="smell-detail">'Handler' pattern is scattered across 13 components: Accept, Bind, Client2, Context, Converter, Cors, Filter, Jsf, Method, Server, Server2, Util, Web</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Handler'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Accept, Client2, Context, Cors, Filter, Http, Jsf, Method, Server, Server2, Util, Web</p>
+        <p class="smell-detail"><strong>Affects:</strong> Accept, Bind, Client2, Context, Converter, Cors, Filter, Jsf, Method, Server, Server2, Util, Web</p>
     </div>
     
     <div class="smell medium">
@@ -529,21 +507,21 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Helper' pattern is scattered across 4 components: Codec, Cors, Server, Util</p>
+        <p class="smell-detail">'Helper' pattern is scattered across 3 components: Codec, Server, Util</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Helper'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Codec, Cors, Server, Util</p>
+        <p class="smell-detail"><strong>Affects:</strong> Codec, Server, Util</p>
     </div>
     
-    <div class="smell high">
+    <div class="smell medium">
         <div class="smell-header">
-            <span class="badge high">high</span>
+            <span class="badge medium">medium</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Listener' pattern is scattered across 5 components: Context, Http, Server2, Util, Web</p>
+        <p class="smell-detail">'Listener' pattern is scattered across 4 components: Context, Server, Server2, Util</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Listener'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Context, Http, Server2, Util, Web</p>
+        <p class="smell-detail"><strong>Affects:</strong> Context, Server, Server2, Util</p>
     </div>
     
     <div class="smell medium">
@@ -562,10 +540,10 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.SCATTERED_FUNCTIONALITY</strong>
         </div>
-        <p class="smell-detail">'Utils' pattern is scattered across 9 components: Bind, Client2, Context, Converter, Cors, Http, Jsf, Multipart, Util</p>
+        <p class="smell-detail">'Utils' pattern is scattered across 9 components: Bind, Client2, Codec, Context, Converter, Cors, Jsf, Multipart, Util</p>
         <p class="smell-detail"><strong>Why:</strong> When a single concern is spread across many components, changes to that concern require modifying multiple places, increasing the risk of inconsistencies and bugs.</p>
         <p class="smell-detail"><strong>Fix:</strong> Centralize 'Utils'-related functionality into a dedicated component to reduce scattering.</p>
-        <p class="smell-detail"><strong>Affects:</strong> Bind, Client2, Context, Converter, Cors, Http, Jsf, Multipart, Util</p>
+        <p class="smell-detail"><strong>Affects:</strong> Bind, Client2, Codec, Context, Converter, Cors, Jsf, Multipart, Util</p>
     </div>
     
     <div class="smell high">
@@ -584,7 +562,7 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.LINK_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Util is depended on by 12 other components (67% of all components).</p>
+        <p class="smell-detail">Util is depended on by 13 other components (72% of all components).</p>
         <p class="smell-detail"><strong>Why:</strong> A component with too many dependents becomes a bottleneck. Any change to it can cascade across the entire system, making evolution risky and expensive.</p>
         <p class="smell-detail"><strong>Fix:</strong> Consider splitting Util into smaller interfaces so dependents only couple to what they actually use (ISP).</p>
         <p class="smell-detail"><strong>Affects:</strong> Util</p>

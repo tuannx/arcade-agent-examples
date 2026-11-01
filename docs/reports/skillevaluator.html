@@ -104,7 +104,7 @@
             <div class="label">Entities</div>
         </div>
         <div class="stat-card">
-            <div class="number">440</div>
+            <div class="number">519</div>
             <div class="label">Dependencies</div>
         </div>
         <div class="stat-card">
@@ -117,6 +117,8 @@
         </div>
     </div>
 
+        
+
     
     <h2 id="metrics">Quality Metrics</h2>
     
@@ -124,32 +126,32 @@
     <div>
     
         <div class="metric-card">
-            <div class="value">0.514</div>
+            <div class="value">0.464</div>
             <div class="name">RCI</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">7.693</div>
+            <div class="value">6.675</div>
             <div class="name">TurboMQ</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.296</div>
+            <div class="value">0.257</div>
             <div class="name">BasicMQ</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.056</div>
+            <div class="value">0.059</div>
             <div class="name">IntraConnectivity</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.059</div>
+            <div class="value">0.047</div>
             <div class="name">InterConnectivity</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.054</div>
+            <div class="value">0.059</div>
             <div class="name">TwoWayPairRatio</div>
         </div>
     
@@ -159,42 +161,42 @@
     <div>
     
         <div class="metric-card">
-            <div class="value">0.943</div>
+            <div class="value">0.948</div>
             <div class="name">DependencyHealth</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.268</div>
+            <div class="value">0.277</div>
             <div class="name">ComponentBalance</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.680</div>
+            <div class="value">0.600</div>
             <div class="name">HubBalance</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.980</div>
+            <div class="value">0.971</div>
             <div class="name">BoundaryClarity</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.546</div>
+            <div class="value">0.583</div>
             <div class="name">DependencyDistribution</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.661</div>
+            <div class="value">0.492</div>
             <div class="name">SmellDiscipline</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.792</div>
+            <div class="value">0.750</div>
             <div class="name">PrincipleAlignmentScore</div>
         </div>
     
         <div class="metric-card">
-            <div class="value">0.562</div>
+            <div class="value">0.501</div>
             <div class="name">BalancedArchitectureScore</div>
         </div>
     
@@ -207,54 +209,67 @@
         <pre class="mermaid">
 graph TD
     Cli["Cli\n(23 entities)"]
-    CliCore["CliCore\n(5 entities)"]
+    CliCore["CliCore\n(2 entities)"]
     CliHelp["CliHelp\n(4 entities)"]
     Config["Config\n(3 entities)"]
-    Constants["Constants\n(1 entities)"]
-    Deduplication["Deduplication\n(21 entities)"]
-    Embedding["Embedding\n(15 entities)"]
-    Evaluation["Evaluation\n(14 entities)"]
+    Constants["Constants\n(10 entities)"]
+    Deduplication["Deduplication\n(19 entities)"]
+    Embedding["Embedding\n(17 entities)"]
+    Evaluation["Evaluation\n(16 entities)"]
     Evidence["Evidence\n(2 entities)"]
-    Inference["Inference\n(21 entities)"]
+    Inference["Inference\n(18 entities)"]
     LoggingConfig["LoggingConfig\n(3 entities)"]
-    ModelCatalog["ModelCatalog\n(16 entities)"]
+    ModelCatalog["ModelCatalog\n(18 entities)"]
     ModelCommands["ModelCommands\n(1 entities)"]
-    Models["Models\n(31 entities)"]
+    Models["Models\n(29 entities)"]
     ProviderConfig["ProviderConfig\n(4 entities)"]
-    Reporting["Reporting\n(35 entities)"]
-    SourceIdentity["SourceIdentity\n(11 entities)"]
+    Reporting["Reporting\n(36 entities)"]
+    SourceIdentity["SourceIdentity\n(9 entities)"]
     Spdx["Spdx\n(2 entities)"]
     Tier1["Tier1\n(8 entities)"]
     Tier2["Tier2\n(2 entities)"]
-    Tier3["Tier3\n(333 entities)"]
+    Tier3["Tier3\n(331 entities)"]
     Tier3Environments["Tier3Environments\n(1 entities)"]
     TierGroup["TierGroup\n(4 entities)"]
     TierWorkflows["TierWorkflows\n(1 entities)"]
-    Utils["Utils\n(37 entities)"]
+    Utils["Utils\n(35 entities)"]
     Validators["Validators\n(44 entities)"]
     Cli --> CliHelp
+    Cli --> Constants
     Cli --> LoggingConfig
     Cli --> Reporting
     Cli --> Tier1
     Cli --> Utils
+    Deduplication --> Constants
     Deduplication --> Embedding
     Deduplication --> Inference
     Deduplication --> Models
     Deduplication --> Utils
     Deduplication --> Validators
+    Embedding --> Constants
     Embedding --> Deduplication
+    Embedding --> Models
     Embedding --> ProviderConfig
     Embedding --> Utils
+    Evaluation --> Constants
+    Evaluation --> Inference
+    Evaluation --> SourceIdentity
     Evidence --> Reporting
+    Inference --> Constants
     Inference --> ProviderConfig
     ModelCommands --> ModelCatalog
     ModelCommands --> ProviderConfig
+    Models --> Constants
+    Reporting --> Constants
+    Reporting --> SourceIdentity
     Reporting --> Utils
     SourceIdentity --> Reporting
+    Tier1 --> Constants
     Tier1 --> Models
     Tier1 --> Reporting
     Tier1 --> Utils
     Tier1 --> Validators
+    Tier2 --> Constants
     Tier2 --> Embedding
     Tier2 --> Validators
     Tier3 --> Evaluation
@@ -267,7 +282,9 @@ graph TD
     Utils --> Models
     Utils --> Tier3
     Validators --> Config
+    Validators --> Constants
     Validators --> Embedding
+    Validators --> Inference
     Validators --> Models
     Validators --> Spdx
     Validators --> Utils
@@ -275,7 +292,7 @@ graph TD
     </div>
 
     
-    <div class="rationale">Package-based grouping (depth=1 after common prefix 'skillevaluator') with dependency-affinity facade refinement (30 entities reassigned).</div>
+    <div class="rationale">Package-based grouping (depth=1 after common prefix 'skillevaluator') with dependency-affinity facade refinement (29 entities reassigned).</div>
     
 
     <h2 id="components">Components</h2>
@@ -302,9 +319,9 @@ graph TD
             <tr>
                 <td><strong>CliCore</strong></td>
                 <td>Entities in cli_core</td>
-                <td>5</td>
+                <td>2</td>
                 
-                <td class="entity-list">skillevaluator.cli_core.detect_content_type, skillevaluator.cli_core.resolve_plugin_path, skillevaluator.cli_core.resolve_rules_path, skillevaluator.cli_core.resolve_skill_path, skillevaluator.cli_core.resolve_workflows_path</td>
+                <td class="entity-list">skillevaluator.cli_core.resolve_rules_path, skillevaluator.cli_core.resolve_skill_path</td>
             </tr>
         
             <tr>
@@ -326,33 +343,33 @@ graph TD
             <tr>
                 <td><strong>Constants</strong></td>
                 <td>Entities in constants</td>
-                <td>1</td>
+                <td>10</td>
                 
-                <td class="entity-list">skillevaluator.constants.ExitCode</td>
+                <td class="entity-list">skillevaluator.cli_core.detect_content_type, skillevaluator.cli_core.resolve_plugin_path, skillevaluator.cli_core.resolve_workflows_path, skillevaluator.constants.ExitCode, skillevaluator.embedding.extractor._ExtractionBudget, skillevaluator.evaluation.dimension_judge.compute_dimensions_deterministic, skillevaluator.models.quality.score_to_grade, skillevaluator.utils.helpers.find_bundled_plugin_skills, ... (+2 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Deduplication</strong></td>
                 <td>Entities in deduplication</td>
-                <td>21</td>
+                <td>19</td>
                 
-                <td class="entity-list">skillevaluator.deduplication.intra_skill.intra_skill_validator.IntraSkillValidator, skillevaluator.deduplication.intra_skill.llm_analyzer.analyze_cluster, skillevaluator.deduplication.intra_skill.llm_analyzer.build_user_prompt, skillevaluator.deduplication.intra_skill.llm_analyzer.verdict_to_severity, skillevaluator.deduplication.intra_skill.semantic_clustering.ContentCluster, skillevaluator.deduplication.intra_skill.semantic_clustering.UnionFind, skillevaluator.deduplication.intra_skill.semantic_clustering.build_clusters, skillevaluator.deduplication.utils.chunker.ContentChunk, ... (+13 more)</td>
+                <td class="entity-list">skillevaluator.deduplication.intra_skill.intra_skill_validator.IntraSkillValidator, skillevaluator.deduplication.intra_skill.llm_analyzer.analyze_cluster, skillevaluator.deduplication.intra_skill.llm_analyzer.build_user_prompt, skillevaluator.deduplication.intra_skill.llm_analyzer.verdict_to_severity, skillevaluator.deduplication.intra_skill.semantic_clustering.ContentCluster, skillevaluator.deduplication.intra_skill.semantic_clustering.UnionFind, skillevaluator.deduplication.intra_skill.semantic_clustering.build_clusters, skillevaluator.deduplication.utils.chunker.ContentChunk, ... (+11 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Embedding</strong></td>
                 <td>Entities in embedding</td>
-                <td>15</td>
+                <td>17</td>
                 
-                <td class="entity-list">skillevaluator.embedding.client.EmbeddingClient, skillevaluator.embedding.client.SimilarityConfigError, skillevaluator.embedding.client.normalize_embedding_vector, skillevaluator.embedding.client.unit_vector_similarity, skillevaluator.embedding.client.validate_embedding_vector, skillevaluator.embedding.extractor.ContentEntry, skillevaluator.embedding.extractor._ExtractionBudget, skillevaluator.embedding.extractor.discover_and_extract, ... (+7 more)</td>
+                <td class="entity-list">skillevaluator.embedding.client.EmbeddingClient, skillevaluator.embedding.client.SimilarityConfigError, skillevaluator.embedding.client.normalize_embedding_vector, skillevaluator.embedding.client.unit_vector_similarity, skillevaluator.embedding.client.validate_embedding_vector, skillevaluator.embedding.extractor.ContentEntry, skillevaluator.embedding.extractor.discover_and_extract, skillevaluator.embedding.extractor.extract_from_rule, ... (+9 more)</td>
             </tr>
         
             <tr>
                 <td><strong>Evaluation</strong></td>
                 <td>Entities in evaluation</td>
-                <td>14</td>
+                <td>16</td>
                 
-                <td class="entity-list">skillevaluator.evaluation.dimension_judge.compute_dimensions, skillevaluator.evaluation.dimension_judge.compute_dimensions_deterministic, skillevaluator.evaluation.insights_judge.build_insights, skillevaluator.evaluation.options.DatasetOptions, skillevaluator.evaluation.options.EvaluationOptions, skillevaluator.evaluation.results.DatasetGenerationError, skillevaluator.evaluation.results.DatasetGenerationResult, skillevaluator.evaluation.service.EvaluationService, ... (+6 more)</td>
+                <td class="entity-list">skillevaluator.evaluation.dimension_judge.DimensionJudge, skillevaluator.evaluation.dimension_judge.compute_dimensions, skillevaluator.evaluation.insights_judge.InsightsJudge, skillevaluator.evaluation.insights_judge.build_insights, skillevaluator.evaluation.options.DatasetOptions, skillevaluator.evaluation.options.EvaluationOptions, skillevaluator.evaluation.results.DatasetGenerationError, skillevaluator.evaluation.results.DatasetGenerationResult, ... (+8 more)</td>
             </tr>
         
             <tr>
@@ -366,9 +383,9 @@ graph TD
             <tr>
                 <td><strong>Inference</strong></td>
                 <td>Entities in inference</td>
-                <td>21</td>
+                <td>18</td>
                 
-                <td class="entity-list">skillevaluator.evaluation.dimension_judge.DimensionJudge, skillevaluator.evaluation.insights_judge.InsightsJudge, skillevaluator.inference.client.LLMClient, skillevaluator.inference.client.SchemaTargetKey, skillevaluator.inference.diagnostics.llm_failure_diagnostic, skillevaluator.inference.diagnostics.safe_llm_labels, skillevaluator.inference.finding_verifier.FindingVerifier, skillevaluator.inference.retry.RetryConfig, ... (+13 more)</td>
+                <td class="entity-list">skillevaluator.inference.client.LLMClient, skillevaluator.inference.client.SchemaTargetKey, skillevaluator.inference.diagnostics.llm_failure_diagnostic, skillevaluator.inference.diagnostics.safe_llm_labels, skillevaluator.inference.finding_verifier.FindingVerifier, skillevaluator.inference.retry.RetryConfig, skillevaluator.inference.retry.calculate_full_jitter_delay, skillevaluator.inference.retry.extract_http_status, ... (+10 more)</td>
             </tr>
         
             <tr>
@@ -382,9 +399,9 @@ graph TD
             <tr>
                 <td><strong>ModelCatalog</strong></td>
                 <td>Entities in model_catalog</td>
-                <td>16</td>
+                <td>18</td>
                 
-                <td class="entity-list">skillevaluator.model_catalog.CatalogModel, skillevaluator.model_catalog.ModelCatalogError, skillevaluator.model_catalog.ModelCatalogFailureKind, skillevaluator.model_catalog.ModelRecord, skillevaluator.model_catalog._DeadlineConnectionMixin, skillevaluator.model_catalog._DeadlineHTTPHandler, skillevaluator.model_catalog._DeadlineHTTPResponse, skillevaluator.model_catalog._DeadlineHTTPSHandler, ... (+8 more)</td>
+                <td class="entity-list">skillevaluator.model_catalog.CatalogModel, skillevaluator.model_catalog.ModelCatalogError, skillevaluator.model_catalog.ModelCatalogFailureKind, skillevaluator.model_catalog.ModelRecord, skillevaluator.model_catalog._DeadlineConnectionMixin, skillevaluator.model_catalog._DeadlineHTTPConnection, skillevaluator.model_catalog._DeadlineHTTPHandler, skillevaluator.model_catalog._DeadlineHTTPResponse, ... (+10 more)</td>
             </tr>
         
             <tr>
@@ -398,9 +415,9 @@ graph TD
             <tr>
                 <td><strong>Models</strong></td>
                 <td>Entities in models</td>
-                <td>31</td>
+                <td>29</td>
                 
-                <td class="entity-list">skillevaluator.embedding.registry.classify, skillevaluator.evaluation.tier3_report.advisory_skip_result, skillevaluator.evaluation.tier3_report.dataset_required_result, skillevaluator.models.field_validators.ensure_string_list, skillevaluator.models.field_validators.parse_nested_model, skillevaluator.models.plugin.PluginAuthor, skillevaluator.models.plugin.PluginDependencySection, skillevaluator.models.plugin.PluginManifest, ... (+23 more)</td>
+                <td class="entity-list">skillevaluator.evaluation.tier3_report.advisory_skip_result, skillevaluator.evaluation.tier3_report.dataset_required_result, skillevaluator.models.field_validators.ensure_string_list, skillevaluator.models.field_validators.parse_nested_model, skillevaluator.models.plugin.PluginAuthor, skillevaluator.models.plugin.PluginDependencySection, skillevaluator.models.plugin.PluginManifest, skillevaluator.models.plugin.PluginMcpEntry, ... (+21 more)</td>
             </tr>
         
             <tr>
@@ -414,17 +431,17 @@ graph TD
             <tr>
                 <td><strong>Reporting</strong></td>
                 <td>Entities in reporting</td>
-                <td>35</td>
+                <td>36</td>
                 
-                <td class="entity-list">skillevaluator.reporting.base.ReporterBase, skillevaluator.reporting.base.UnsafeReportPathError, skillevaluator.reporting.base.additional_errors, skillevaluator.reporting.base.is_advisory_agent_eval_skip, skillevaluator.reporting.base.passes_required_gate, skillevaluator.reporting.cli.CLIReporter, skillevaluator.reporting.console_ui.TierBlock, skillevaluator.reporting.console_ui.TierRow, ... (+27 more)</td>
+                <td class="entity-list">skillevaluator.reporting.base.ReporterBase, skillevaluator.reporting.base.UnsafeReportPathError, skillevaluator.reporting.base.additional_errors, skillevaluator.reporting.base.is_advisory_agent_eval_skip, skillevaluator.reporting.base.passes_required_gate, skillevaluator.reporting.benchmark.BenchmarkReporter, skillevaluator.reporting.cli.CLIReporter, skillevaluator.reporting.console_ui.TierBlock, ... (+28 more)</td>
             </tr>
         
             <tr>
                 <td><strong>SourceIdentity</strong></td>
                 <td>Entities in source_identity</td>
-                <td>11</td>
+                <td>9</td>
                 
-                <td class="entity-list">skillevaluator.evaluation.tier3_report.build_agent_eval_payload, skillevaluator.reporting.benchmark.BenchmarkReporter, skillevaluator.reporting.json_reporter.JSONReporter, skillevaluator.source_identity.EvaluatedSourceConflict, skillevaluator.source_identity.evaluated_source_carriers, skillevaluator.source_identity.evaluated_source_revision, skillevaluator.source_identity.is_container_revision, skillevaluator.source_identity.merge_evaluated_sources, ... (+3 more)</td>
+                <td class="entity-list">skillevaluator.reporting.json_reporter.JSONReporter, skillevaluator.source_identity.EvaluatedSourceConflict, skillevaluator.source_identity.evaluated_source_carriers, skillevaluator.source_identity.evaluated_source_revision, skillevaluator.source_identity.is_container_revision, skillevaluator.source_identity.merge_evaluated_sources, skillevaluator.source_identity.normalized_evaluated_source, skillevaluator.source_identity.recorded_evaluated_source, ... (+1 more)</td>
             </tr>
         
             <tr>
@@ -454,9 +471,9 @@ graph TD
             <tr>
                 <td><strong>Tier3</strong></td>
                 <td>Entities in tier3</td>
-                <td>333</td>
+                <td>331</td>
                 
-                <td class="entity-list">skillevaluator.model_catalog._DeadlineHTTPConnection, skillevaluator.model_catalog._DeadlineHTTPSConnection, skillevaluator.tier3.case_ids.safe_child, skillevaluator.tier3.case_ids.validate_case_id, skillevaluator.tier3.case_ids.validate_case_ids, skillevaluator.tier3.case_ids.validate_output_directory_path, skillevaluator.tier3.commands.compare_results, skillevaluator.tier3.commands.doctor, ... (+325 more)</td>
+                <td class="entity-list">skillevaluator.tier3.case_ids.safe_child, skillevaluator.tier3.case_ids.validate_case_id, skillevaluator.tier3.case_ids.validate_case_ids, skillevaluator.tier3.case_ids.validate_output_directory_path, skillevaluator.tier3.commands.compare_results, skillevaluator.tier3.commands.doctor, skillevaluator.tier3.commands.evaluate, skillevaluator.tier3.commands.harbor_view, ... (+323 more)</td>
             </tr>
         
             <tr>
@@ -486,9 +503,9 @@ graph TD
             <tr>
                 <td><strong>Utils</strong></td>
                 <td>Entities in utils</td>
-                <td>37</td>
+                <td>35</td>
                 
-                <td class="entity-list">skillevaluator.tier3.commands.init_custom_grader, skillevaluator.tier3.harbor.adapter.build_eval_base_image, skillevaluator.tier3.harbor.adapter.prebuild_task_environments, skillevaluator.tier3.output_provenance.write_output_file_atomically, skillevaluator.tier_workflows.require_skill, skillevaluator.utils.helpers.find_bundled_plugin_skills, skillevaluator.utils.helpers.find_skills_in_directory, skillevaluator.utils.helpers.get_skill_name_from_path, ... (+29 more)</td>
+                <td class="entity-list">skillevaluator.tier3.commands.init_custom_grader, skillevaluator.tier3.harbor.adapter.build_eval_base_image, skillevaluator.tier3.harbor.adapter.prebuild_task_environments, skillevaluator.tier3.output_provenance.write_output_file_atomically, skillevaluator.tier_workflows.require_skill, skillevaluator.utils.helpers.get_skill_name_from_path, skillevaluator.utils.helpers.make_timestamped_basename, skillevaluator.utils.helpers.resolve_git_remote_url, ... (+27 more)</td>
             </tr>
         
             <tr>
@@ -505,15 +522,15 @@ graph TD
     <h2 id="smells">Architectural Smells (7)</h2>
     
     
-    <div class="smell low">
+    <div class="smell high">
         <div class="smell-header">
-            <span class="badge low">low</span>
+            <span class="badge high">high</span>
             <strong>SmellType.DEPENDENCY_CYCLE</strong>
         </div>
-        <p class="smell-detail">Circular dependency among 2 components: Tier3 <-> Utils</p>
+        <p class="smell-detail">Circular dependency among 5 components: Evaluation <-> Reporting <-> SourceIdentity <-> Tier3 <-> Utils</p>
         <p class="smell-detail"><strong>Why:</strong> Dependency cycles make components tightly coupled — you cannot change, test, or deploy any component in the cycle independently. This hinders maintainability, increases build times, and makes the system harder to understand.</p>
         <p class="smell-detail"><strong>Fix:</strong> Break the cycle by introducing an interface/abstraction that one component depends on, inverting the dependency direction. Consider the Dependency Inversion Principle (DIP).</p>
-        <p class="smell-detail"><strong>Affects:</strong> Tier3, Utils</p>
+        <p class="smell-detail"><strong>Affects:</strong> Evaluation, Reporting, SourceIdentity, Tier3, Utils</p>
     </div>
     
     <div class="smell medium">
@@ -543,7 +560,7 @@ graph TD
             <span class="badge high">high</span>
             <strong>SmellType.CONCERN_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Tier3 contains 333 entities but only 90 internal dependencies (0.27 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail">Tier3 contains 331 entities but only 102 internal dependencies (0.31 per entity), suggesting multiple responsibilities.</p>
         <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
         <p class="smell-detail"><strong>Fix:</strong> Consider splitting Tier3 into smaller, focused components with single responsibilities.</p>
         <p class="smell-detail"><strong>Affects:</strong> Tier3</p>
@@ -554,7 +571,7 @@ graph TD
             <span class="badge medium">medium</span>
             <strong>SmellType.CONCERN_OVERLOAD</strong>
         </div>
-        <p class="smell-detail">Utils contains 37 entities but only 5 internal dependencies (0.14 per entity), suggesting multiple responsibilities.</p>
+        <p class="smell-detail">Utils contains 35 entities but only 5 internal dependencies (0.14 per entity), suggesting multiple responsibilities.</p>
         <p class="smell-detail"><strong>Why:</strong> Large components are harder to understand, test, and maintain. When their internals are also sparsely connected, that usually means the component is acting as a bucket for unrelated concerns rather than a cohesive module.</p>
         <p class="smell-detail"><strong>Fix:</strong> Consider splitting Utils into smaller, focused components with single responsibilities.</p>
         <p class="smell-detail"><strong>Affects:</strong> Utils</p>
