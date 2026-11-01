@@ -1,4 +1,4 @@
-# PR monitor — 2026-10-31
+# PR monitor — 2026-11-01
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -50,6 +50,7 @@
 - https://github.com/checkstyle/checkstyle/pull/18872 · +445/-14 · files 23 · comments 19 · Issue #16100: adding basic md comment grammar support
 - https://github.com/checkstyle/checkstyle/pull/21516 · +219/-1 · files 4 · comments 17 · Issue #6020: fix indentation of wrapped arguments in chained calls
 - https://github.com/checkstyle/checkstyle/pull/21565 · +1154/-0 · files 33 · comments 9 · Add FinalPatternVariable check
+- https://github.com/checkstyle/checkstyle/pull/21673 · +691/-4 · files 25 · comments 4 · Issue #21672: Add DuplicateMapOrSetKeyCheck
 
 ## flowable/flowable-engine
 - https://github.com/flowable/flowable-engine/pull/3028 · +697/-0 · files 11 · comments 4 · Add ability to dynamically search for comments
@@ -121,4 +122,4 @@
 - https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 95
+Total matched: 96
