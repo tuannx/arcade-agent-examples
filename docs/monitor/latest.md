@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-04
+# PR monitor — 2026-11-05
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -30,7 +30,6 @@
 - https://github.com/apache/seatunnel/pull/10399 · +1724/-45 · files 28 · comments 13 · [Feature][Zeta] Add compaction support to IMAP external storage
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
 - https://github.com/apache/seatunnel/pull/11960 · +4368/-1059 · files 38 · comments 5 · [Improve][Flink] Replace the local schema coordinator with a checkpointed data-plane protocol
-- https://github.com/apache/seatunnel/pull/11829 · +675/-0 · files 3 · comments 4 · [Feature][CDC][DDL] Add schema evolution timeline design
 - https://github.com/apache/seatunnel/pull/12201 · +1072/-55 · files 11 · comments 0 · [Improve][Zeta] Preserve WAIT queue order across master failover
 - https://github.com/apache/seatunnel/pull/12277 · +1211/-24 · files 17 · comments 5 · [Improve][Zeta] Budget promoted cooperative workers in TaskExecutionService
 - https://github.com/apache/seatunnel/pull/12309 · +292/-117 · files 27 · comments 6 · [Improve][Connector-V2] Use Commons Secure XML and forbid direct JAXP factories
@@ -95,7 +94,6 @@
 
 ## aeron-io/aeron
 - https://github.com/aeron-io/aeron/pull/1775 · +1523/-281 · files 41 · comments 9 · [Java] New term buffer cleanup logic
-- https://github.com/aeron-io/aeron/pull/1931 · +762/-17 · files 10 · comments 1 · Log Publisher Fragmented Message Tracker
 - https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
 
@@ -119,7 +117,6 @@
 - https://github.com/apache/tomcat/pull/987 · +800/-0 · files 7 · comments 0 · Improve/Refactor MBean Utilities and Add Unit Tests for Catalina MBeans
 - https://github.com/apache/tomcat/pull/914 · +762/-77 · files 20 · comments 5 · Add configurable compression
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
-- https://github.com/apache/tomcat/pull/928 · +1173/-21 · files 12 · comments 8 · Add validation framework for imposing specific rules for configuration values
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 96
+Total matched: 93

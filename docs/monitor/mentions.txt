@@ -19,7 +19,6 @@ OpenFeign/feign#3551
 apache/seatunnel#10399
 apache/seatunnel#10779
 apache/seatunnel#11960
-apache/seatunnel#11829
 apache/seatunnel#12201
 apache/seatunnel#12277
 apache/seatunnel#12309
@@ -74,7 +73,6 @@ apache/iceberg#15101
 apache/iceberg#14800
 apache/iceberg#15830
 aeron-io/aeron#1775
-aeron-io/aeron#1931
 aeron-io/aeron#1994
 aeron-io/aeron#2129
 testcontainers/testcontainers-java#11140
@@ -92,5 +90,4 @@ apache/tomcat#986
 apache/tomcat#987
 apache/tomcat#914
 apache/tomcat#980
-apache/tomcat#928
 apache/tomcat#1064
