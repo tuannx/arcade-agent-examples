@@ -33,7 +33,6 @@ checkstyle/checkstyle#21413
 checkstyle/checkstyle#20338
 checkstyle/checkstyle#21567
 checkstyle/checkstyle#21497
-checkstyle/checkstyle#18872
 checkstyle/checkstyle#21516
 checkstyle/checkstyle#21565
 checkstyle/checkstyle#21673
@@ -55,7 +54,6 @@ apache/jmeter#6437
 apache/iceberg#10090
 apache/iceberg#11258
 apache/iceberg#10962
-apache/iceberg#9772
 apache/iceberg#12216
 apache/iceberg#12014
 apache/iceberg#11180
@@ -72,6 +70,7 @@ apache/iceberg#15595
 apache/iceberg#15101
 apache/iceberg#14800
 apache/iceberg#15830
+apache/iceberg#8202
 aeron-io/aeron#1775
 aeron-io/aeron#1994
 aeron-io/aeron#2129

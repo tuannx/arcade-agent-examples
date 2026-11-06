@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-05
+# PR monitor — 2026-11-06
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -46,7 +46,6 @@
 - https://github.com/checkstyle/checkstyle/pull/20338 · +182/-5 · files 8 · comments 28 · Issue #20221: Validate JavadocMethod tags in compact source files
 - https://github.com/checkstyle/checkstyle/pull/21567 · +160/-145 · files 35 · comments 2 · Issue #21552: fix violation comment rules to match outside MODIFIERS
 - https://github.com/checkstyle/checkstyle/pull/21497 · +133/-1 · files 3 · comments 20 · Issue #18858: Fix EmptyLineSeparator false positive for anonymous class
-- https://github.com/checkstyle/checkstyle/pull/18872 · +445/-14 · files 23 · comments 19 · Issue #16100: adding basic md comment grammar support
 - https://github.com/checkstyle/checkstyle/pull/21516 · +219/-1 · files 4 · comments 17 · Issue #6020: fix indentation of wrapped arguments in chained calls
 - https://github.com/checkstyle/checkstyle/pull/21565 · +1154/-0 · files 33 · comments 9 · Add FinalPatternVariable check
 - https://github.com/checkstyle/checkstyle/pull/21673 · +691/-4 · files 25 · comments 4 · Issue #21672: Add DuplicateMapOrSetKeyCheck
@@ -74,7 +73,6 @@
 - https://github.com/apache/iceberg/pull/10090 · +455/-122 · files 7 · comments 12 · Parquet: Make row-group filters cooperate to filter
 - https://github.com/apache/iceberg/pull/11258 · +77/-9 · files 4 · comments 33 · More accurate estimate on parquet row groups size
 - https://github.com/apache/iceberg/pull/10962 · +119/-10 · files 4 · comments 46 · Core/RewriteFiles: Duplicate Data Bug - Fixed dropping delete files that are still required
-- https://github.com/apache/iceberg/pull/9772 · +297/-297 · files 4 · comments 17 · Parquet, Arrow: Refactor vectorized reader
 - https://github.com/apache/iceberg/pull/12216 · +2218/-1138 · files 35 · comments 1 · WIP: File format api
 - https://github.com/apache/iceberg/pull/12014 · +693/-48 · files 15 · comments 38 · Core: Implementation of version metadata table for view
 - https://github.com/apache/iceberg/pull/11180 · +3605/-18 · files 36 · comments 181 · API, Core: Add scan planning apis to REST Catalog
@@ -91,6 +89,7 @@
 - https://github.com/apache/iceberg/pull/15101 · +15391/-141 · files 90 · comments 7 · Secondary Index metadata handling POC implementation
 - https://github.com/apache/iceberg/pull/14800 · +954/-139 · files 52 · comments 20 · Spark, Arrow, Parquet: Add vectorized read support for parquet v2 encodings 
 - https://github.com/apache/iceberg/pull/15830 · +588/-2 · files 2 · comments 24 · REST Spec: Add resolve endpoint for catalog objects
+- https://github.com/apache/iceberg/pull/8202 · +15/-0 · files 2 · comments 56 · Core: Add KLL Datasketch as standard blob types to puffin file
 
 ## aeron-io/aeron
 - https://github.com/aeron-io/aeron/pull/1775 · +1523/-281 · files 41 · comments 9 · [Java] New term buffer cleanup logic
@@ -119,4 +118,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 93
+Total matched: 92
