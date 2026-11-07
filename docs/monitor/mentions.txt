@@ -20,7 +20,6 @@ apache/seatunnel#10399
 apache/seatunnel#10779
 apache/seatunnel#11960
 apache/seatunnel#12201
-apache/seatunnel#12277
 apache/seatunnel#12309
 apache/seatunnel#12112
 apache/seatunnel#12308
@@ -81,7 +80,6 @@ dropwizard/dropwizard#10746
 apache/tomcat#399
 apache/tomcat#596
 apache/tomcat#316
-apache/tomcat#277
 apache/tomcat#473
 apache/tomcat#873
 apache/tomcat#985

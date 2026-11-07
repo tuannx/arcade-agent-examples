@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-06
+# PR monitor — 2026-11-07
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -31,7 +31,6 @@
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
 - https://github.com/apache/seatunnel/pull/11960 · +4368/-1059 · files 38 · comments 5 · [Improve][Flink] Replace the local schema coordinator with a checkpointed data-plane protocol
 - https://github.com/apache/seatunnel/pull/12201 · +1072/-55 · files 11 · comments 0 · [Improve][Zeta] Preserve WAIT queue order across master failover
-- https://github.com/apache/seatunnel/pull/12277 · +1211/-24 · files 17 · comments 5 · [Improve][Zeta] Budget promoted cooperative workers in TaskExecutionService
 - https://github.com/apache/seatunnel/pull/12309 · +292/-117 · files 27 · comments 6 · [Improve][Connector-V2] Use Commons Secure XML and forbid direct JAXP factories
 - https://github.com/apache/seatunnel/pull/12112 · +601/-28 · files 10 · comments 2 · [Improve][Connector-V2] Bound JDBC split assignment with request refill
 - https://github.com/apache/seatunnel/pull/12308 · +2028/-166 · files 19 · comments 3 · [Feature][Connector-V2][TiDB-CDC] Support multi-table sync in one source
@@ -108,7 +107,6 @@
 - https://github.com/apache/tomcat/pull/399 · +7/-0 · files 1 · comments 20 · Add getRequest method to RequestFacade, to get the wrapped Request
 - https://github.com/apache/tomcat/pull/596 · +215/-12 · files 2 · comments 19 · Use SELECT...FOR UPDATE to update session data in the database instead of DELETE, INSERT.
 - https://github.com/apache/tomcat/pull/316 · +1529/-1153 · files 92 · comments 11 · refactor: standardize the HTML, CSS and JSP in the webapps folder.
-- https://github.com/apache/tomcat/pull/277 · +106/-1 · files 5 · comments 34 · Refuse adding invalid HTTP 2.0 headers
 - https://github.com/apache/tomcat/pull/473 · +547/-6 · files 7 · comments 4 · Add support for additional user attributes to DataSourceRealm
 - https://github.com/apache/tomcat/pull/873 · +563/-0 · files 5 · comments 2 · Filter to limit target file size of ranged put request
 - https://github.com/apache/tomcat/pull/985 · +1056/-0 · files 5 · comments 0 · Improve test coverage for storeconfig module
@@ -118,4 +116,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 92
+Total matched: 90
