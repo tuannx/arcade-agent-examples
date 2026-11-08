@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-07
+# PR monitor — 2026-11-08
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -48,6 +48,7 @@
 - https://github.com/checkstyle/checkstyle/pull/21516 · +219/-1 · files 4 · comments 17 · Issue #6020: fix indentation of wrapped arguments in chained calls
 - https://github.com/checkstyle/checkstyle/pull/21565 · +1154/-0 · files 33 · comments 9 · Add FinalPatternVariable check
 - https://github.com/checkstyle/checkstyle/pull/21673 · +691/-4 · files 25 · comments 4 · Issue #21672: Add DuplicateMapOrSetKeyCheck
+- https://github.com/checkstyle/checkstyle/pull/21835 · +197/-183 · files 62 · comments 0 · Issue #4997: Column number in DetailAST and DetailNode should start with 1
 
 ## flowable/flowable-engine
 - https://github.com/flowable/flowable-engine/pull/3028 · +697/-0 · files 11 · comments 4 · Add ability to dynamically search for comments
@@ -116,4 +117,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 90
+Total matched: 91
