@@ -14,8 +14,6 @@ facebook/react#35517
 facebook/react#35191
 facebook/react#35562
 vuejs/core#8701
-OpenFeign/feign#3645
-OpenFeign/feign#3551
 apache/seatunnel#10399
 apache/seatunnel#10779
 apache/seatunnel#11960
@@ -74,6 +72,7 @@ apache/iceberg#8202
 aeron-io/aeron#1775
 aeron-io/aeron#1994
 aeron-io/aeron#2129
+aeron-io/aeron#2240
 testcontainers/testcontainers-java#11140
 testcontainers/testcontainers-java#11331
 testcontainers/testcontainers-java#4465

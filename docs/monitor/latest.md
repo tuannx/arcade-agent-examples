@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-09
+# PR monitor — 2026-11-10
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -23,8 +23,7 @@
 - https://github.com/vuejs/core/pull/8701 · +581/-145 · files 9 · comments 1 · feat(keep-alive): allow custom caching strategy
 
 ## OpenFeign/feign
-- https://github.com/OpenFeign/feign/pull/3645 · +1124/-0 · files 14 · comments 0 · feign-kotlin: add non-blocking WebClient AsyncClient and improve coroutine support
-- https://github.com/OpenFeign/feign/pull/3551 · +520/-39 · files 7 · comments 20 · Streaming decoder support2
+- no PR over threshold in top 30 updated
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10399 · +1724/-45 · files 28 · comments 13 · [Feature][Zeta] Add compaction support to IMAP external storage
@@ -95,6 +94,7 @@
 - https://github.com/aeron-io/aeron/pull/1775 · +1523/-281 · files 41 · comments 9 · [Java] New term buffer cleanup logic
 - https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
+- https://github.com/aeron-io/aeron/pull/2240 · +801/-2 · files 229 · comments 0 · [Java] Add missing `Override` annotations.
 
 ## testcontainers/testcontainers-java
 - https://github.com/testcontainers/testcontainers-java/pull/11140 · +278/-247 · files 3 · comments 0 · Change com.squareup.okhttp3:okhttp:5.1.0 to Apache HttpClient5
@@ -117,4 +117,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 91
+Total matched: 90
