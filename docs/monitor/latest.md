@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-10
+# PR monitor — 2026-11-11
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -23,7 +23,7 @@
 - https://github.com/vuejs/core/pull/8701 · +581/-145 · files 9 · comments 1 · feat(keep-alive): allow custom caching strategy
 
 ## OpenFeign/feign
-- no PR over threshold in top 30 updated
+- https://github.com/OpenFeign/feign/pull/3680 · +675/-0 · files 5 · comments 0 · Add CompositeContract to mix annotation styles on one interface
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10399 · +1724/-45 · files 28 · comments 13 · [Feature][Zeta] Add compaction support to IMAP external storage
@@ -48,6 +48,9 @@
 - https://github.com/checkstyle/checkstyle/pull/21565 · +1154/-0 · files 33 · comments 9 · Add FinalPatternVariable check
 - https://github.com/checkstyle/checkstyle/pull/21673 · +691/-4 · files 25 · comments 4 · Issue #21672: Add DuplicateMapOrSetKeyCheck
 - https://github.com/checkstyle/checkstyle/pull/21835 · +197/-183 · files 62 · comments 0 · Issue #4997: Column number in DetailAST and DetailNode should start with 1
+- https://github.com/checkstyle/checkstyle/pull/21696 · +666/-181 · files 42 · comments 8 · Issue #17117: Add considerEnclosingScope property to JavadocVariable
+- https://github.com/checkstyle/checkstyle/pull/19009 · +1290/-2 · files 28 · comments 120 · Issue #17707: Add new check JavaLineLengthCheck
+- https://github.com/checkstyle/checkstyle/pull/21671 · +597/-4 · files 25 · comments 5 · Issue #21670: Add DuplicateConditionIfChainCheck
 
 ## flowable/flowable-engine
 - https://github.com/flowable/flowable-engine/pull/3028 · +697/-0 · files 11 · comments 4 · Add ability to dynamically search for comments
@@ -63,10 +66,10 @@
 - https://github.com/apache/jmeter/pull/727 · +62/-3 · files 7 · comments 17 · Bug 66269: Add NoThreadClone to HeaderManager to reduce heap utilization
 - https://github.com/apache/jmeter/pull/5871 · +1137/-76 · files 219 · comments 0 · Add GUI Effect Checker to ensure UI actions are called on UI thread only
 - https://github.com/apache/jmeter/pull/5963 · +2618/-1 · files 23 · comments 9 · Extras/format converters
-- https://github.com/apache/jmeter/pull/6270 · +786/-185 · files 20 · comments 0 · Feature to Change component after adding  element to testplan
 - https://github.com/apache/jmeter/pull/6256 · +151/-0 · files 4 · comments 18 · Add fail option for regex extractor
 - https://github.com/apache/jmeter/pull/6406 · +742/-224 · files 59 · comments 13 · Make Jmeter able to support nanoseconds for testing and reporting
 - https://github.com/apache/jmeter/pull/6437 · +50/-50 · files 37 · comments 0 · Fix bogus casing on the "setUp Thread Group" title.
+- https://github.com/apache/jmeter/pull/6453 · +112/-65 · files 30 · comments 21 · Caching the length/size in a variable for collections in order to avo…
 
 ## apache/iceberg
 - https://github.com/apache/iceberg/pull/10090 · +455/-122 · files 7 · comments 12 · Parquet: Make row-group filters cooperate to filter
@@ -94,7 +97,6 @@
 - https://github.com/aeron-io/aeron/pull/1775 · +1523/-281 · files 41 · comments 9 · [Java] New term buffer cleanup logic
 - https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
-- https://github.com/aeron-io/aeron/pull/2240 · +801/-2 · files 229 · comments 0 · [Java] Add missing `Override` annotations.
 
 ## testcontainers/testcontainers-java
 - https://github.com/testcontainers/testcontainers-java/pull/11140 · +278/-247 · files 3 · comments 0 · Change com.squareup.okhttp3:okhttp:5.1.0 to Apache HttpClient5
@@ -117,4 +119,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 90
+Total matched: 93

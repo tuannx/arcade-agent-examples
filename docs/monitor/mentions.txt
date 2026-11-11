@@ -14,6 +14,7 @@ facebook/react#35517
 facebook/react#35191
 facebook/react#35562
 vuejs/core#8701
+OpenFeign/feign#3680
 apache/seatunnel#10399
 apache/seatunnel#10779
 apache/seatunnel#11960
@@ -34,6 +35,9 @@ checkstyle/checkstyle#21516
 checkstyle/checkstyle#21565
 checkstyle/checkstyle#21673
 checkstyle/checkstyle#21835
+checkstyle/checkstyle#21696
+checkstyle/checkstyle#19009
+checkstyle/checkstyle#21671
 flowable/flowable-engine#3028
 flowable/flowable-engine#3694
 flowable/flowable-engine#3797
@@ -45,10 +49,10 @@ apache/jmeter#637
 apache/jmeter#727
 apache/jmeter#5871
 apache/jmeter#5963
-apache/jmeter#6270
 apache/jmeter#6256
 apache/jmeter#6406
 apache/jmeter#6437
+apache/jmeter#6453
 apache/iceberg#10090
 apache/iceberg#11258
 apache/iceberg#10962
@@ -72,7 +76,6 @@ apache/iceberg#8202
 aeron-io/aeron#1775
 aeron-io/aeron#1994
 aeron-io/aeron#2129
-aeron-io/aeron#2240
 testcontainers/testcontainers-java#11140
 testcontainers/testcontainers-java#11331
 testcontainers/testcontainers-java#4465
