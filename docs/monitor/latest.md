@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-11
+# PR monitor — 2026-11-12
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -41,7 +41,6 @@
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
 - https://github.com/checkstyle/checkstyle/pull/21413 · +104/-5173 · files 83 · comments 12 · Issue #21398: Replace source-controlled redirect pages with a centralized redirect mechanism
-- https://github.com/checkstyle/checkstyle/pull/20338 · +182/-5 · files 8 · comments 28 · Issue #20221: Validate JavadocMethod tags in compact source files
 - https://github.com/checkstyle/checkstyle/pull/21567 · +160/-145 · files 35 · comments 2 · Issue #21552: fix violation comment rules to match outside MODIFIERS
 - https://github.com/checkstyle/checkstyle/pull/21497 · +133/-1 · files 3 · comments 20 · Issue #18858: Fix EmptyLineSeparator false positive for anonymous class
 - https://github.com/checkstyle/checkstyle/pull/21516 · +219/-1 · files 4 · comments 17 · Issue #6020: fix indentation of wrapped arguments in chained calls
@@ -95,7 +94,6 @@
 
 ## aeron-io/aeron
 - https://github.com/aeron-io/aeron/pull/1775 · +1523/-281 · files 41 · comments 9 · [Java] New term buffer cleanup logic
-- https://github.com/aeron-io/aeron/pull/1994 · +1292/-126 · files 32 · comments 13 · Config annotation updates
 - https://github.com/aeron-io/aeron/pull/2129 · +5138/-705 · files 28 · comments 3 · [Java] Allow contexts to be configured from Properties instance.
 
 ## testcontainers/testcontainers-java
@@ -119,4 +117,4 @@
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
 
-Total matched: 93
+Total matched: 91

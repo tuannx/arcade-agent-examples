@@ -28,7 +28,6 @@ apache/seatunnel#12498
 apache/seatunnel#11215
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
-checkstyle/checkstyle#20338
 checkstyle/checkstyle#21567
 checkstyle/checkstyle#21497
 checkstyle/checkstyle#21516
@@ -74,7 +73,6 @@ apache/iceberg#14800
 apache/iceberg#15830
 apache/iceberg#8202
 aeron-io/aeron#1775
-aeron-io/aeron#1994
 aeron-io/aeron#2129
 testcontainers/testcontainers-java#11140
 testcontainers/testcontainers-java#11331
