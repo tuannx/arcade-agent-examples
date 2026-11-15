@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-14
+# PR monitor — 2026-11-15
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -30,13 +30,13 @@
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
 - https://github.com/apache/seatunnel/pull/11960 · +4368/-1059 · files 38 · comments 5 · [Improve][Flink] Replace the local schema coordinator with a checkpointed data-plane protocol
 - https://github.com/apache/seatunnel/pull/12201 · +1072/-55 · files 11 · comments 0 · [Improve][Zeta] Preserve WAIT queue order across master failover
-- https://github.com/apache/seatunnel/pull/12309 · +292/-117 · files 27 · comments 6 · [Improve][Connector-V2] Use Commons Secure XML and forbid direct JAXP factories
 - https://github.com/apache/seatunnel/pull/12112 · +601/-28 · files 10 · comments 2 · [Improve][Connector-V2] Bound JDBC split assignment with request refill
 - https://github.com/apache/seatunnel/pull/12308 · +2028/-166 · files 19 · comments 3 · [Feature][Connector-V2][TiDB-CDC] Support multi-table sync in one source
-- https://github.com/apache/seatunnel/pull/12014 · +2448/-30 · files 56 · comments 12 · [Feature][Connector-V2] Support MySQL-CDC TRUNCATE TABLE as a table-operation event
-- https://github.com/apache/seatunnel/pull/10808 · +2516/-173 · files 54 · comments 33 · [Fix][Zeta] Fix master worker separated cluster routing
-- https://github.com/apache/seatunnel/pull/12498 · +1029/-1 · files 12 · comments 5 · [Improve][Connector-V2] Batch DuckLake JDBC writes through a temporary table
 - https://github.com/apache/seatunnel/pull/11215 · +583/-1 · files 7 · comments 19 · [Feature][Zeta] Add SeaTunnel Engine cluster health and topology metrics
+- https://github.com/apache/seatunnel/pull/12552 · +529/-17 · files 12 · comments 0 · [Feature][CLI] Add Cheaper Inference LLM gateway provider
+- https://github.com/apache/seatunnel/pull/12292 · +1594/-111 · files 17 · comments 1 · [Improve][Connector-V2] Lazy JDBC split generation with index probing
+- https://github.com/apache/seatunnel/pull/11897 · +559/-0 · files 3 · comments 13 · [Feature][CI&CD] Add upgrade compatibility STIP design document (Phase 2)
+- https://github.com/apache/seatunnel/pull/11867 · +746/-49 · files 4 · comments 2 · [Feature][Connector-CDC] Support composite primary key in MySQL CDC snapshot split
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck

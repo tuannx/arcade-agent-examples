@@ -19,13 +19,13 @@ apache/seatunnel#10399
 apache/seatunnel#10779
 apache/seatunnel#11960
 apache/seatunnel#12201
-apache/seatunnel#12309
 apache/seatunnel#12112
 apache/seatunnel#12308
-apache/seatunnel#12014
-apache/seatunnel#10808
-apache/seatunnel#12498
 apache/seatunnel#11215
+apache/seatunnel#12552
+apache/seatunnel#12292
+apache/seatunnel#11897
+apache/seatunnel#11867
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
 checkstyle/checkstyle#21567
