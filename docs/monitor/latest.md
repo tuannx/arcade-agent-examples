@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-15
+# PR monitor — 2026-11-17
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -26,7 +26,6 @@
 - https://github.com/OpenFeign/feign/pull/3680 · +675/-0 · files 5 · comments 0 · Add CompositeContract to mix annotation styles on one interface
 
 ## apache/seatunnel
-- https://github.com/apache/seatunnel/pull/10399 · +1724/-45 · files 28 · comments 13 · [Feature][Zeta] Add compaction support to IMAP external storage
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
 - https://github.com/apache/seatunnel/pull/11960 · +4368/-1059 · files 38 · comments 5 · [Improve][Flink] Replace the local schema coordinator with a checkpointed data-plane protocol
 - https://github.com/apache/seatunnel/pull/12201 · +1072/-55 · files 11 · comments 0 · [Improve][Zeta] Preserve WAIT queue order across master failover
@@ -37,6 +36,7 @@
 - https://github.com/apache/seatunnel/pull/12292 · +1594/-111 · files 17 · comments 1 · [Improve][Connector-V2] Lazy JDBC split generation with index probing
 - https://github.com/apache/seatunnel/pull/11897 · +559/-0 · files 3 · comments 13 · [Feature][CI&CD] Add upgrade compatibility STIP design document (Phase 2)
 - https://github.com/apache/seatunnel/pull/11867 · +746/-49 · files 4 · comments 2 · [Feature][Connector-CDC] Support composite primary key in MySQL CDC snapshot split
+- https://github.com/apache/seatunnel/pull/11866 · +580/-2 · files 8 · comments 15 · [Fix][Connector-V2] Fix PostgreSQL JDBC driver conflict with OpenGauss
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -47,7 +47,6 @@
 - https://github.com/checkstyle/checkstyle/pull/21565 · +1154/-0 · files 33 · comments 9 · Add FinalPatternVariable check
 - https://github.com/checkstyle/checkstyle/pull/21673 · +691/-4 · files 25 · comments 4 · Issue #21672: Add DuplicateMapOrSetKeyCheck
 - https://github.com/checkstyle/checkstyle/pull/21835 · +197/-183 · files 62 · comments 0 · Issue #4997: Column number in DetailAST and DetailNode should start with 1
-- https://github.com/checkstyle/checkstyle/pull/21696 · +666/-181 · files 42 · comments 8 · Issue #17117: Add considerEnclosingScope property to JavadocVariable
 - https://github.com/checkstyle/checkstyle/pull/19009 · +1290/-2 · files 28 · comments 120 · Issue #17707: Add new check JavaLineLengthCheck
 - https://github.com/checkstyle/checkstyle/pull/21671 · +597/-4 · files 25 · comments 5 · Issue #21670: Add DuplicateConditionIfChainCheck
 
@@ -115,7 +114,5 @@
 - https://github.com/apache/tomcat/pull/987 · +800/-0 · files 7 · comments 0 · Improve/Refactor MBean Utilities and Add Unit Tests for Catalina MBeans
 - https://github.com/apache/tomcat/pull/914 · +762/-77 · files 20 · comments 5 · Add configurable compression
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
-- https://github.com/apache/tomcat/pull/1064 · +1224/-144 · files 13 · comments 1 · Add i18n support for description and display-name elements in web.xml
-- https://github.com/apache/tomcat/pull/277 · +106/-1 · files 5 · comments 35 · Refuse adding invalid HTTP 2.0 headers
 
-Total matched: 92
+Total matched: 89
