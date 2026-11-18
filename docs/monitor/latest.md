@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-17
+# PR monitor — 2026-11-18
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -114,5 +114,6 @@
 - https://github.com/apache/tomcat/pull/987 · +800/-0 · files 7 · comments 0 · Improve/Refactor MBean Utilities and Add Unit Tests for Catalina MBeans
 - https://github.com/apache/tomcat/pull/914 · +762/-77 · files 20 · comments 5 · Add configurable compression
 - https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
+- https://github.com/apache/tomcat/pull/1168 · +1800/-237 · files 10 · comments 1 · Support the RFC 7239 Forwarded header in RemoteIpValve and RemoteIpFilter
 
-Total matched: 89
+Total matched: 90
