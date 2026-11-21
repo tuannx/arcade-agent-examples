@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-20
+# PR monitor — 2026-11-21
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -25,6 +25,7 @@
 ## OpenFeign/feign
 - https://github.com/OpenFeign/feign/pull/3680 · +675/-0 · files 5 · comments 0 · Add CompositeContract to mix annotation styles on one interface
 - https://github.com/OpenFeign/feign/pull/3701 · +1642/-43 · files 19 · comments 0 · Add annotation-driven SSE Flow support to CoroutineFeign
+- https://github.com/OpenFeign/feign/pull/3703 · +607/-0 · files 3 · comments 1 · Add opt-in Spring-compatible KeyNames to feign-micrometer observations
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
@@ -37,6 +38,7 @@
 - https://github.com/apache/seatunnel/pull/11897 · +559/-0 · files 3 · comments 13 · [Feature][CI&CD] Add upgrade compatibility STIP design document (Phase 2)
 - https://github.com/apache/seatunnel/pull/11867 · +746/-49 · files 4 · comments 2 · [Feature][Connector-CDC] Support composite primary key in MySQL CDC snapshot split
 - https://github.com/apache/seatunnel/pull/11866 · +580/-2 · files 8 · comments 15 · [Fix][Connector-V2] Fix PostgreSQL JDBC driver conflict with OpenGauss
+- https://github.com/apache/seatunnel/pull/12591 · +531/-39 · files 7 · comments 0 · [Fix][Connector-V2] Bind complete field names in generated JDBC statements
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -107,13 +109,12 @@
 - https://github.com/apache/tomcat/pull/399 · +7/-0 · files 1 · comments 20 · Add getRequest method to RequestFacade, to get the wrapped Request
 - https://github.com/apache/tomcat/pull/596 · +215/-12 · files 2 · comments 19 · Use SELECT...FOR UPDATE to update session data in the database instead of DELETE, INSERT.
 - https://github.com/apache/tomcat/pull/316 · +1529/-1153 · files 92 · comments 11 · refactor: standardize the HTML, CSS and JSP in the webapps folder.
-- https://github.com/apache/tomcat/pull/473 · +547/-6 · files 7 · comments 4 · Add support for additional user attributes to DataSourceRealm
 - https://github.com/apache/tomcat/pull/873 · +563/-0 · files 5 · comments 2 · Filter to limit target file size of ranged put request
 - https://github.com/apache/tomcat/pull/985 · +1056/-0 · files 5 · comments 0 · Improve test coverage for storeconfig module
 - https://github.com/apache/tomcat/pull/986 · +724/-0 · files 5 · comments 0 · Add unit and integration tests for SSI module (catalina/ssi)
 - https://github.com/apache/tomcat/pull/987 · +800/-0 · files 7 · comments 0 · Improve/Refactor MBean Utilities and Add Unit Tests for Catalina MBeans
 - https://github.com/apache/tomcat/pull/914 · +762/-77 · files 20 · comments 5 · Add configurable compression
-- https://github.com/apache/tomcat/pull/980 · +595/-5 · files 6 · comments 0 · Improve test coverage for Catalina valves
 - https://github.com/apache/tomcat/pull/1168 · +1800/-237 · files 10 · comments 1 · Support the RFC 7239 Forwarded header in RemoteIpValve and RemoteIpFilter
+- https://github.com/apache/tomcat/pull/1173 · +2957/-11 · files 24 · comments 2 · Add support for Brotli compression of responses
 
-Total matched: 90
+Total matched: 91

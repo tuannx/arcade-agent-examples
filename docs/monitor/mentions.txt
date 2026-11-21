@@ -16,6 +16,7 @@ facebook/react#35562
 vuejs/core#8701
 OpenFeign/feign#3680
 OpenFeign/feign#3701
+OpenFeign/feign#3703
 apache/seatunnel#10779
 apache/seatunnel#12201
 apache/seatunnel#12112
@@ -26,6 +27,7 @@ apache/seatunnel#12292
 apache/seatunnel#11897
 apache/seatunnel#11867
 apache/seatunnel#11866
+apache/seatunnel#12591
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
 checkstyle/checkstyle#21567
@@ -80,11 +82,10 @@ dropwizard/dropwizard#10746
 apache/tomcat#399
 apache/tomcat#596
 apache/tomcat#316
-apache/tomcat#473
 apache/tomcat#873
 apache/tomcat#985
 apache/tomcat#986
 apache/tomcat#987
 apache/tomcat#914
-apache/tomcat#980
 apache/tomcat#1168
+apache/tomcat#1173
