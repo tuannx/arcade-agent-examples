@@ -16,7 +16,6 @@ facebook/react#35562
 vuejs/core#8701
 OpenFeign/feign#3680
 OpenFeign/feign#3701
-OpenFeign/feign#3703
 apache/seatunnel#10779
 apache/seatunnel#12201
 apache/seatunnel#12112
