@@ -24,6 +24,9 @@ arcade analyze . --report report.html
 
 Each number links to a fork Pages with the full report. Report is the product.
 
+Latest OSS evaluations (Neon, AWS JDBC Wrapper, CloudNativePG): [docs/oss-evaluations-2026-11.md](docs/oss-evaluations-2026-11.md)
+
+
 ## What the harness does daily
 
 1. Scan upstream PRs: >500 lines, >20 files, >15 comments
