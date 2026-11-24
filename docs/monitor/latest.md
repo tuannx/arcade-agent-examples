@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-23
+# PR monitor — 2026-11-24
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -23,9 +23,8 @@
 - https://github.com/vuejs/core/pull/8701 · +581/-145 · files 9 · comments 1 · feat(keep-alive): allow custom caching strategy
 
 ## OpenFeign/feign
-- https://github.com/OpenFeign/feign/pull/3701 · +1642/-43 · files 19 · comments 1 · Add annotation-driven SSE Flow support to CoroutineFeign
 - https://github.com/OpenFeign/feign/pull/3680 · +675/-0 · files 5 · comments 0 · Add CompositeContract to mix annotation styles on one interface
-- https://github.com/OpenFeign/feign/pull/3718 · +594/-5 · files 6 · comments 0 · Resolve MTOM attachments in SOAPDecoder, mark propagateContentType experimental
+- https://github.com/OpenFeign/feign/pull/3701 · +1738/-49 · files 21 · comments 2 · Add annotation-driven SSE Flow support to CoroutineFeign
 
 ## apache/seatunnel
 - https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
@@ -117,4 +116,4 @@
 - https://github.com/apache/tomcat/pull/1168 · +1800/-237 · files 10 · comments 1 · Support the RFC 7239 Forwarded header in RemoteIpValve and RemoteIpFilter
 - https://github.com/apache/tomcat/pull/1173 · +2957/-11 · files 24 · comments 2 · Add support for Brotli compression of responses
 
-Total matched: 91
+Total matched: 90
