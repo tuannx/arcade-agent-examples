@@ -25,12 +25,13 @@ apache/seatunnel#11897
 apache/seatunnel#11867
 apache/seatunnel#11866
 apache/seatunnel#12591
+apache/seatunnel#12265
+apache/seatunnel#11962
 checkstyle/checkstyle#19473
 checkstyle/checkstyle#21413
 checkstyle/checkstyle#21567
 checkstyle/checkstyle#21497
 checkstyle/checkstyle#21516
-checkstyle/checkstyle#21565
 checkstyle/checkstyle#21673
 checkstyle/checkstyle#21835
 checkstyle/checkstyle#19009

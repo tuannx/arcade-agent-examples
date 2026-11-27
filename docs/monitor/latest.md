@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-26
+# PR monitor — 2026-11-27
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -37,6 +37,8 @@
 - https://github.com/apache/seatunnel/pull/11867 · +746/-49 · files 4 · comments 2 · [Feature][Connector-CDC] Support composite primary key in MySQL CDC snapshot split
 - https://github.com/apache/seatunnel/pull/11866 · +580/-2 · files 8 · comments 15 · [Fix][Connector-V2] Fix PostgreSQL JDBC driver conflict with OpenGauss
 - https://github.com/apache/seatunnel/pull/12591 · +531/-39 · files 7 · comments 0 · [Fix][Connector-V2] Bind complete field names in generated JDBC statements
+- https://github.com/apache/seatunnel/pull/12265 · +857/-270 · files 16 · comments 2 · [Improve][Zeta] Isolate coordinator admission from job lifecycle execution
+- https://github.com/apache/seatunnel/pull/11962 · +3719/-47 · files 45 · comments 0 · [Feature][Zeta] Separate savepoint storage and introduce versioned bundles
 
 ## checkstyle/checkstyle
 - https://github.com/checkstyle/checkstyle/pull/19473 · +502/-3 · files 5 · comments 11 · Issue #10969: Fix false positives for pattern variables in RequireThisCheck
@@ -44,7 +46,6 @@
 - https://github.com/checkstyle/checkstyle/pull/21567 · +160/-145 · files 35 · comments 2 · Issue #21552: fix violation comment rules to match outside MODIFIERS
 - https://github.com/checkstyle/checkstyle/pull/21497 · +133/-1 · files 3 · comments 20 · Issue #18858: Fix EmptyLineSeparator false positive for anonymous class
 - https://github.com/checkstyle/checkstyle/pull/21516 · +219/-1 · files 4 · comments 17 · Issue #6020: fix indentation of wrapped arguments in chained calls
-- https://github.com/checkstyle/checkstyle/pull/21565 · +1154/-0 · files 33 · comments 9 · Add FinalPatternVariable check
 - https://github.com/checkstyle/checkstyle/pull/21673 · +691/-4 · files 25 · comments 4 · Issue #21672: Add DuplicateMapOrSetKeyCheck
 - https://github.com/checkstyle/checkstyle/pull/21835 · +197/-183 · files 62 · comments 0 · Issue #4997: Column number in DetailAST and DetailNode should start with 1
 - https://github.com/checkstyle/checkstyle/pull/19009 · +1290/-2 · files 28 · comments 120 · Issue #17707: Add new check JavaLineLengthCheck
@@ -115,4 +116,4 @@
 - https://github.com/apache/tomcat/pull/1168 · +1800/-237 · files 10 · comments 1 · Support the RFC 7239 Forwarded header in RemoteIpValve and RemoteIpFilter
 - https://github.com/apache/tomcat/pull/1173 · +2957/-11 · files 24 · comments 2 · Add support for Brotli compression of responses
 
-Total matched: 88
+Total matched: 89
