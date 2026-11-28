@@ -1,4 +1,4 @@
-# PR monitor — 2026-11-27
+# PR monitor — 2026-11-28
 
 ## django/django
 - https://github.com/django/django/pull/15990 · +838/-980 · files 59 · comments 73 · Replaced os.path by pathlib in tests.
@@ -26,7 +26,7 @@
 - no PR over threshold in top 30 updated
 
 ## apache/seatunnel
-- https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 9 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
+- https://github.com/apache/seatunnel/pull/10779 · +1157/-8 · files 8 · comments 10 · [Improve][Connector-V2][PostgreSQL-CDC] Prepare schema evolution parsing
 - https://github.com/apache/seatunnel/pull/12201 · +1072/-55 · files 11 · comments 0 · [Improve][Zeta] Preserve WAIT queue order across master failover
 - https://github.com/apache/seatunnel/pull/12112 · +601/-28 · files 10 · comments 2 · [Improve][Connector-V2] Bound JDBC split assignment with request refill
 - https://github.com/apache/seatunnel/pull/12308 · +2028/-166 · files 19 · comments 3 · [Feature][Connector-V2][TiDB-CDC] Support multi-table sync in one source
